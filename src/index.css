@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --abyss: #020b1a;
+  --aqua: #35d6c4;
+  --ember: #ff7a45;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 17px;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(53, 214, 196, 0.4) #010512;
+}
+
+body {
+  background: #020b1a;
+  color: #f7f1e4;
+  font-family: 'Manrope', 'Noto Sans Devanagari', system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::selection {
+  background: rgba(53, 214, 196, 0.3);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #010512;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(53, 214, 196, 0.35);
+  border-radius: 8px;
+}
+
+/* Custom cursor: hide native on precise pointers */
+@media (pointer: fine) {
+  body.has-cursor,
+  body.has-cursor * {
+    cursor: none !important;
+  }
+}
+
+canvas {
+  display: block;
+  outline: none;
+}
+
+.font-display {
+  font-family: 'Fraunces', 'Noto Sans Devanagari', Georgia, serif;
+}
+
+.glass {
+  background: rgba(10, 30, 55, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(53, 214, 196, 0.14);
+}
+
+.glass-dark {
+  background: rgba(2, 11, 26, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(247, 241, 228, 0.08);
+}
+
+.section-bg {
+  opacity: 0.78;
+}
+
+.text-gradient-aqua {
+  background: linear-gradient(120deg, #7fe8dc, #35d6c4 40%, #7fb2ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-ember {
+  background: linear-gradient(120deg, #ffb47a, #ff7a45 50%, #ff5e5b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-glow {
+  text-shadow: 0 0 30px rgba(53, 214, 196, 0.35);
+}
+
+/* Animated gradient text — premium shimmer headline effect */
+.text-shimmer {
+  background: linear-gradient(110deg, #7fe8dc 10%, #ffffff 38%, #7fe8dc 62%, #35d6c4 88%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: textShimmer 7s linear infinite;
+}
+@keyframes textShimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: -200% 50%; }
+}
+
+/* Light sweep that travels across an element on group/sibling hover */
+.shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.14) 46%, transparent 62%);
+  transform: translateX(-130%);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  border-radius: inherit;
+}
+.group:hover .shine::after,
+.shine:hover::after {
+  transform: translateX(130%);
+}
+
+.lede-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(183, 237, 228, 0.35);
+}
+
+.divider-reef {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(53, 214, 196, 0.4), transparent);
+}
+
+.input-lux {
+  @apply w-full px-4 py-3 bg-abyss/60 border border-aqua/20 rounded-xl text-cream placeholder:text-seafoam/40 focus:border-aqua/60 focus:outline-none focus:ring-1 focus:ring-aqua/40 transition-all;
+}
+
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect filter='url(%23n)' width='120' height='120'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 640px) {
+  html { font-size: 16px; }
+  .section-anchor { scroll-margin-top: 70px; }
+}
+@media (min-width: 641px) {
+  .section-anchor { scroll-margin-top: 80px; }
+}
+
+/* Devanagari (Hindi / Marathi) readability — avoid wide tracking on uppercase stylings */
+body[data-lang='hi'] .tracking-\[0\.2em\],
+body[data-lang='hi'] .tracking-\[0\.25em\],
+body[data-lang='hi'] .tracking-\[0\.3em\],
+body[data-lang='hi'] .tracking-\[0\.35em\],
+body[data-lang='hi'] .tracking-\[0\.4em\],
+body[data-lang='hi'] .tracking-\[0\.5em\],
+body[data-lang='hi'] .tracking-\[0\.55em\],
+body[data-lang='mr'] .tracking-\[0\.2em\],
+body[data-lang='mr'] .tracking-\[0\.25em\],
+body[data-lang='mr'] .tracking-\[0\.3em\],
+body[data-lang='mr'] .tracking-\[0\.35em\],
+body[data-lang='mr'] .tracking-\[0\.4em\],
+body[data-lang='mr'] .tracking-\[0\.5em\],
+body[data-lang='mr'] .tracking-\[0\.55em\] {
+  letter-spacing: 0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
