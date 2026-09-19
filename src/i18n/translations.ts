@@ -3,7 +3,7 @@ export type Lang = 'en' | 'hi' | 'mr';
 export const langLabels: Record<Lang, string> = {
   en: 'EN',
   hi: 'हिं',
-  mr: 'मरा',
+  mr: 'MR (मराठी)',
 };
 
 interface Translations {
@@ -12,154 +12,261 @@ interface Translations {
 
 export const t: Translations = {
   // ─── NAVBAR ───
-  'nav.catch': { en: 'The Catch', hi: 'समुद्री स्पेशल', mr: 'सागरी विशेष' },
-  'nav.menu': { en: 'Menu', hi: 'मेनू', mr: 'मेनू' },
-  'nav.plate': { en: 'Your Plate', hi: 'आपकी प्लेट', mr: 'तुझी प्लेट' },
-  'nav.kitchen': { en: 'Kitchen', hi: 'रसोई', mr: 'स्वयंपाकघर' },
-  'nav.journey': { en: 'Journey', hi: 'यात्रा', mr: 'प्रवास' },
-  'nav.gallery': { en: 'Gallery', hi: 'गैलरी', mr: 'गॅलरी' },
-  'nav.order': { en: 'Order', hi: 'ऑर्डर', mr: 'ऑर्डर' },
-  'nav.orderNow': { en: 'Order Now', hi: 'अभी ऑर्डर करें', mr: 'आता ऑर्डर करा' },
-  'nav.call': { en: 'Call', hi: 'कॉल', mr: 'कॉल' },
-  'nav.coastal': { en: 'Coastal Seafood', hi: 'तटीय समुद्री भोजन', mr: 'किनारपट्टी सागरी अन्न' },
+  'nav.announcement': {
+    en: 'FREE EXPRESS DELIVERY ON ALL ORDERS VIA ZOMATO · OPEN DAILY 11:30 AM – 11:30 PM',
+    hi: 'ज़ोमैटो पर सभी ऑर्डर्स पर मुफ़्त एक्सप्रेस डिलीवरी · रोज़ाना 11:30 AM – 11:30 PM',
+    mr: 'झोमॅटोवर सर्व ऑर्डर्सवर मोफत जलद वितरण · दररोज सकाळी ११:३० ते रात्री ११:३०'
+  },
+  'nav.shop': { en: 'Shop', hi: 'शॉप', mr: 'दुकान' },
+  'nav.learn': { en: 'Learn', hi: 'कहानी', mr: 'माहिती' },
+  'nav.feastBoxes': { en: 'Feast Boxes', hi: 'थाली बॉक्स', mr: 'थाळी बॉक्स' },
+  'nav.callKitchen': { en: 'Call Kitchen', hi: 'रसोई को कॉल करें', mr: 'किचनला कॉल करा' },
+  'nav.orderZomato': { en: 'Zomato', hi: 'ज़ोमैटो', mr: 'झोमॅटो' },
+  'nav.viewCart': { en: 'View Cart', hi: 'कार्ट देखें', mr: 'ऑर्डर पहा' },
+  'nav.items': { en: 'items', hi: 'आइटम', mr: 'पदार्थ' },
+  'nav.menu': { en: 'Full Menu', hi: 'पूरा मेनू', mr: 'संपूर्ण मेनू' },
+  'nav.featured': { en: 'Featured Flavors & 3D', hi: 'स्पेशल डिश व 3D', mr: 'खास डिश व 3D' },
+  'nav.nutrition': { en: 'Catch & Nutrition Facts', hi: 'पोषण व ताज़गी', mr: 'पोषण आणि ताजेपणा तथ्य' },
+  'nav.spectrum': { en: 'Flavor Spectrum', hi: 'स्वाद की दुनिया', mr: 'चवींची दुनिया' },
 
-  // ─── LOADING ───
-  'loading.text': { en: 'Freshness begins beneath the waves.', hi: 'ताजगी लहरों के नीचे शुरू होती है।', mr: 'ताजेपणा लाटांखाली सुरू होतो.' },
+  // ─── HERO 3D ───
+  'hero.3dCan': { en: '3D Can', hi: '3D कैन', mr: '3D कॅन' },
+  'hero.3dPlatter': { en: '3D Catch Platter', hi: '3D सीज़लिंग थाली', mr: '3D ताजी मासळी थाळी' },
+  'hero.prevDish': { en: 'Previous Dish', hi: 'पिछला व्यंजन', mr: 'मागील पदार्थ' },
+  'hero.nextDish': { en: 'Next Dish', hi: 'अगला व्यंजन', mr: 'पुढील पदार्थ' },
+  'hero.orderOnZomato': { en: 'ORDER ON ZOMATO', hi: 'ज़ोमैटो पर ऑर्डर करें', mr: 'झोमॅटो वरून मागवा' },
+  'hero.wildCatchTag': {
+    en: '100% WILD CATCH · STONE GROUND MASALAS',
+    hi: '100% ताज़ी मछली · सिलबट्टा मसाला',
+    mr: '१००% ताजी मासळी · दगडी पाटा मसाला'
+  },
 
-  // ─── HERO ───
-  'hero.kicker': { en: 'From the ocean to your home', hi: 'समुद्र से आपके घर तक', mr: 'सागरापासून तुमच्या घरपर्यंत' },
-  'hero.title1': { en: 'DIVE INTO', hi: 'में डुबकी लगाएं', mr: 'मध्ये डुबकी मारा' },
-  'hero.title2': { en: 'THE COAST', hi: 'तटीय समुद्र', mr: 'किनारपट्टी' },
-  'hero.desc': { en: 'Swim with the catch of the Konkan coast. Move your cursor — the sea answers.', hi: 'कोंकण तट की मछलियों के साथ तैरें। अपना कर्सर हिलाएं — सागर जवाब देता है।', mr: 'कोंकण किनाऱ्याच्या मासेसोबत पोहोचा. तुमचा कर्सर हलवा — सागर उत्तर देतो.' },
-  'hero.explore': { en: 'EXPLORE THE CATCH', hi: 'स्पेशल देखें', mr: 'विशेष पहा' },
-  'hero.dive': { en: 'DIVE DEEPER', hi: 'और गहराई में जाएं', mr: 'आणखी खोलीत जा' },
-  'hero.meet': { en: 'Meet the catch', hi: 'मछली से मिलें', mr: 'मासाशी भेटा' },
+  // ─── PRODUCT DETAILS SECTION ───
+  'details.standardPortion': {
+    en: "Standard Pack · Chef's Fresh Portion",
+    hi: 'स्टैंडर्ड पैक · 2 पीस / 355 मिली',
+    mr: 'स्टँडर्ड पॅक · २ तुकडे / ३५५ मिली'
+  },
+  'details.executiveFeast': {
+    en: 'Executive Platter · Double Catch (+₹180)',
+    hi: 'एग्जीक्यूटिव थाली · डबल फिश (+₹180)',
+    mr: 'एक्झिक्युटिव्ह थाळी · दुप्पट मासा (+₹१८०)'
+  },
+  'details.familyBox': {
+    en: 'Family Box · 4 Pcs Combo (+₹340)',
+    hi: 'फैमिली बॉक्स · 4 पीस कॉम्बो (+₹340)',
+    mr: 'फॅमिली दावत बॉक्स · ४ तुकडे कॉम्बो (+₹३४०)'
+  },
+  'details.addToOrder': { en: 'Add to Order', hi: 'ऑर्डर में जोड़ें', mr: 'ऑर्डर मध्ये जोडा' },
+  'details.addedToOrder': { en: 'Added to Order!', hi: 'ऑर्डर में जोड़ दिया!', mr: 'ऑर्डर मध्ये जोडले!' },
+  'details.zomato': { en: 'Zomato', hi: 'ज़ोमैटो', mr: 'झोमॅटो' },
+  'details.badgeWildCatch': { en: '100% WILD CATCH', hi: '100% ताज़ी मछली', mr: '१००% ताजी मासळी' },
+  'details.badgeStoneGround': { en: 'STONE GROUND MASALA', hi: 'सिलबट्टा मसाला', mr: 'दगडी पाटा मसाला' },
+  'details.badgeCrispyRava': { en: 'CRISPY RAVA CRUST', hi: 'कुरकुरा रवा फ्राई', mr: 'कुरकुरीत रवा फ्राय' },
+  'details.badgeZeroPreservatives': { en: 'ZERO PRESERVATIVES', hi: 'शून्य रसायन', mr: 'कोणतीही रसायने नाहीत' },
+  'details.lifestyleKicker': {
+    en: 'Authentic Malvan Coastal Tradition',
+    hi: 'प्रामाणिक मालवणी तटीय परंपरा',
+    mr: 'अस्सल मालवणी किनारपट्टी परंपरा'
+  },
+  'details.lifestyleDesc': {
+    en: 'Morning catch from Mumbai Docks, slow cooked with roasted coconut & kokum.',
+    hi: 'सुबह 5:30 बजे मुंबई डॉक्स की ताज़ी मछली, भुने नारियल और कोकम के साथ तैयार।',
+    mr: 'सकाळच्या ५:३० ची मुंबई बंदरावरील ताजी मासळी, भाजलेला नारळ आणि कोकम घालून तयार.'
+  },
+  'details.tableTitle': {
+    en: 'DAILY VALUE & FRESHNESS FACTS',
+    hi: 'दैनिक मूल्य एवं ताज़गी तथ्य',
+    mr: 'दैनिक मूल्य आणि ताजेपणा तथ्य'
+  },
+  'details.tableContent': { en: 'Content', hi: 'घटक', mr: 'घटक' },
+  'details.tableAmount': { en: 'Amount', hi: 'मात्रा', mr: 'प्रमाण' },
+  'details.tableDailyValue': { en: 'Daily Value', hi: 'दैनिक मूल्य', mr: 'दैनिक मूल्य' },
+  'details.calories': { en: 'Calories', hi: 'कैलोरी', mr: 'कॅलरी' },
+  'details.omega3': { en: 'Omega-3 Fatty Acids', hi: 'ओमेगा-3 फैटी एसिड', mr: 'ओमेगा-३ फॅटी ऍसिड' },
+  'details.protein': { en: 'Protein', hi: 'प्रोटीन', mr: 'प्रथिने (प्रोटीन)' },
+  'details.carbs': { en: 'Carbohydrates', hi: 'कार्बोहाइड्रेट्स', mr: 'कर्बोदके (कार्ब्स)' },
+  'details.sodium': { en: 'Sodium (Sea Salt)', hi: 'सोडियम (समुद्री नमक)', mr: 'सोडियम (समुद्री मीठ)' },
+  'details.sourcingTime': { en: 'Dockside Sourcing Time', hi: 'बंदरगाह से आने का समय', mr: 'बंदरकिनारी निवड वेळ' },
+  'details.preservatives': { en: 'Preservatives / Additives', hi: 'प्रिज़र्वेटिव्स / रसायन', mr: 'प्रिझर्व्हेटिव्ह्ज / रसायने' },
+  'details.freshDaily': { en: '100% Fresh', hi: '100% ताज़ा', mr: '१००% ताजे' },
+  'details.wild': { en: '100% Wild', hi: '100% प्राकृतिक', mr: '१००% नैसर्गिक' },
 
-  // ─── SURFACE ───
-  'surface.kicker': { en: 'From the sea', hi: 'समुद्र से', mr: 'सागरातून' },
-  'surface.title1': { en: 'FROM THE COAST', hi: 'तट से', mr: 'किनाऱ्यापासून' },
-  'surface.title2': { en: 'TO YOUR PLATE', hi: 'आपकी प्लेट तक', mr: 'तुमच्या प्लेटपर्यंत' },
-  'surface.desc': { en: 'The catch rises, the water slips away — and our kitchen takes over.', hi: 'मछली ऊपर आती है, पानी बहता है — और हमारी रसोई शुरू होती है।', mr: 'मासा वर येतो, पाणी वाहून जातं — आणि आमचे स्वयंपाकघर सुरू होतं.' },
+  // ─── COLOR BLOCK SHOWCASE ───
+  'showcase.drinkTag': { en: 'DRINK · ₹99', hi: 'पेय · ₹99', mr: 'पाचक पेय · ₹९९' },
+  'showcase.chefsSpecialTag': { en: "CHEF'S SPECIAL · ₹399", hi: 'शेफ स्पेशल · ₹399', mr: 'शेफ स्पेशल · ₹३९९' },
+  'showcase.viewDishOrder': { en: 'View Dish & Order', hi: 'डिश देखें और ऑर्डर करें', mr: 'डिश पहा आणि ऑर्डर करा' },
 
-  // ─── BRAND ───
-  'brand.title1': { en: 'COASTAL', hi: 'तटीय', mr: 'किनारपट्टी' },
-  'brand.title1b': { en: 'FLAVOURS.', hi: 'स्वाद।', mr: 'चव.' },
-  'brand.title2': { en: 'HOME-COOKED', hi: 'घर का बना', mr: 'घरगुती' },
-  'brand.title2b': { en: 'PERFECTION.', hi: 'परफेक्शन।', mr: 'परिपूर्णता.' },
-  'brand.desc': { en: 'Authentic coastal seafood, freshly prepared with the flavours of the Konkan coast.', hi: 'प्रामाणिक तटीय समुद्री भोजन, कोंकण तट के स्वाद के साथ ताज़ा तैयार।', mr: 'खऱ्या किनारपट्टीचे सागरी अन्न, कोंकण किनाऱ्याच्या चवीने ताजे तयार.' },
-  'brand.menu': { en: 'EXPLORE MENU', hi: 'मेनू देखें', mr: 'मेनू पहा' },
-  'brand.order': { en: 'ORDER NOW', hi: 'अभी ऑर्डर करें', mr: 'आता ऑर्डर करा' },
+  // ─── COMBOS HIGHLIGHT ───
+  'combos.kicker': { en: 'Complete Meal Boxes', hi: 'संपूर्ण थाली बॉक्स', mr: 'संपूर्ण थाळी बॉक्स' },
+  'combos.title': { en: 'Coastal Feasts & Combos', hi: 'तटीय दावत और कॉम्बो', mr: 'किनारपट्टी दावत आणि कॉम्बो' },
+  'combos.desc': {
+    en: 'The full Malvani dining experience packed in sealed, spill-proof meal boxes. Pan-fried catch, homestyle coconut curry, Indrayani rice, and cooling Sol Kadi.',
+    hi: 'सुरक्षित, सीलबंद बॉक्स में पूरा मालवणी भोजन। तवा फ्राई मछली, नारियल की करी, इंद्रायणी चावल और पाचक सोलकढ़ी।',
+    mr: 'अस्सल मालवणी जेवणाचा अनुभव सुरक्षित, सीलबंद बॉक्समध्ये. तवा फ्राय मासा, घरगुती नारळ करी, इंद्रायणी भात आणि पाचक सोलकढी.'
+  },
+  'combos.fullFeast': { en: 'Full Feast', hi: 'पूरी थाली', mr: 'संपूर्ण थाळी' },
+  'combos.bestValue': { en: 'Best Value', hi: 'सर्वोत्तम डील', mr: 'उत्कृष्ट मूल्य' },
+  'combos.addBox': { en: 'Add Feast Box', hi: 'थाली बॉक्स जोड़ें', mr: 'थाळी बॉक्स जोडा' },
+  'combos.added': { en: 'Added', hi: 'जोड़ दिया', mr: 'जोडले' },
+  'combos.orderZomato': { en: 'Order on Zomato', hi: 'ज़ोमैटो पर मंगाएं', mr: 'झोमॅटोवर मागवा' },
 
-  // ─── SIGNATURE ───
-  'signature.kicker': { en: 'The signature', hi: 'प्रसिद्ध डिश', mr: 'प्रसिद्ध डिश' },
-  'signature.title': { en: 'THE SIGNATURE PLATE', hi: 'प्रसिद्ध प्लेट', mr: 'प्रसिद्ध प्लेट' },
-  'signature.desc': { en: 'Pomfret with Malvani curry. Move your cursor to turn the plate — scroll to lean in.', hi: 'मालवणी करी के साथ पोम्फ्रेट। कर्सर से प्लेट घुमाएं — स्क्रॉल करें।', mr: 'मालवणी करीसह पोम्फ्रेट. कर्सरने प्लेट फिरवा — स्क्रोल करा.' },
-  'signature.hint': { en: 'Drag to rotate · Scroll to zoom · Hover ingredients', hi: 'घुमाने के लिए खींचें · ज़ूम के लिए स्क्रॉल करें', mr: 'फिरवण्यासाठी ओढा · झूम करण्यासाठी स्क्रोल करा' },
+  // ─── SOURCING STORY ───
+  'story.kicker': { en: 'The Malvani Standard', hi: 'मालवणी मानक', mr: 'अस्सल मालवणी मानके' },
+  'story.title': { en: 'Food that connects you to the coast.', hi: 'भोजन जो आपको समुद्र से जोड़े।', mr: 'सागराशी जोडणारे अस्सल अन्न.' },
+  'story.desc': {
+    en: 'We believe in whole ingredients, transparency, and honoring centuries of Konkan coastal heritage in every pan-fried fillet and clay pot curry.',
+    hi: 'हम शुद्ध सामग्री, पारदर्शिता और कोंकण तट की सदियों पुरानी विरासत का सम्मान करते हैं।',
+    mr: 'आम्ही शुद्ध घटकांवर, पारदर्शकतेवर आणि कोकण किनारपट्टीच्या शतकानुशतके जुन्या वारशावर विश्वास ठेवतो.'
+  },
+  'story.p1Title': { en: 'Harbor-to-Kitchen Catch', hi: 'बंदरगाह से सीधे रसोई', mr: 'बंदर ते स्वयंपाकघर' },
+  'story.p1Desc': {
+    en: 'Silver pomfret, king surmai, and sweet Arabian prawns selected at dawn directly from coastal docks.',
+    hi: 'चांदी सा पोम्फ्रेट, किंग सुरमई और मीठे झींगे सुबह-सुबह सीधे तट से चुने जाते हैं।',
+    mr: 'रुपरी पापलेट, सुरमई आणि अरबी समुद्रातील कोळंबी पहाटे थेट बंदरावरून निवडली जाते.'
+  },
+  'story.p1Badge': { en: 'Daily Morning Catch', hi: 'रोज सुबह की ताज़ी मछली', mr: 'दररोज सकाळची ताजी मासळी' },
+  'story.p2Title': { en: 'Stone-Ground Malvani Masala', hi: 'सिलबट्टे पर पिसा मालवणी मसाला', mr: 'दगडी पाटा मालवणी मसाला' },
+  'story.p2Desc': {
+    en: 'Whole spices slow-roasted over firewood, ground by hand with roasted coconut and dried tamarind.',
+    hi: 'धीमी आंच पर भुने खड़े मसाले, भुना नारियल और इमली सिलबट्टे पर हाथ से पीसे जाते हैं।',
+    mr: 'लाकडाच्या चुलीवर भाजलेले खडे मसाले, भाजलेला नारळ आणि चिंच हाताने दगडी पाट्यावर वाटून तयार.'
+  },
+  'story.p2Badge': { en: 'Authentic Konkan Recipe', hi: 'प्रामाणिक कोंकणी विधि', mr: 'अस्सल कोकणी पाककृती' },
+  'story.p3Title': { en: 'Wild Kokum & Pressed Coconut', hi: 'जंगली कोकम और ताज़ा नारियल दूध', mr: 'रानटी कोकम आणि नारळाचे दूध' },
+  'story.p3Desc': {
+    en: 'Natural souring through wild red kokum agal and fresh coconut milk pressed in-house every morning.',
+    hi: 'लाल कोकम आगळ की प्राकृतिक खटास और रोज़ सुबह रसोई में निकाला गया नारियल का दूध।',
+    mr: 'रानटी लाल कोकम आगळ आणि स्वयंपाकघरात दररोज सकाळी ताजे काढलेले नारळाचे दूध.'
+  },
+  'story.p3Badge': { en: 'Zero Artificial Preservatives', hi: 'कोई कृत्रिम रसायन नहीं', mr: 'कोणतीही कृत्रिम रसायने नाहीत' },
+  'story.scratch': { en: 'Made from Scratch', hi: 'घर जैसा ताज़ा', mr: 'ताजे तयार' },
 
-  // ─── MENU ───
-  'menu.kicker': { en: 'Fresh from the net', hi: 'ताज़ा मछली बाज़ार से', mr: 'ताजे जाळ्यातून' },
-  'menu.title': { en: 'THE COASTAL MENU', hi: 'तटीय मेनू', mr: 'किनारपट्टी मेनू' },
-  'menu.all': { en: 'ALL', hi: 'सभी', mr: 'सर्व' },
-  'menu.chefSpecial': { en: "CHEF'S SPECIAL", hi: 'शेफ स्पेशल', mr: 'शेफ स्पेशल' },
-  'menu.mainCourse': { en: 'MAIN COURSE', hi: 'मुख्य कोर्स', mr: 'मुख्य कोर्स' },
-  'menu.drinks': { en: 'DRINKS', hi: 'पेय', mr: 'पेये' },
-  'menu.prices': { en: 'Prices include fresh catch · Prepared only to order', hi: 'कीमत में ताज़ी मछली शामिल · सिर्फ ऑर्डर पर बनाया जाता है', mr: 'किमतीमध्ये ताजा मासा समाविष्ट · केवळ ऑर्डरवर तयार' },
+  // ─── ARCHED BANNER ───
+  'arch.title': { en: 'ONLY THE BEST', hi: 'सिर्फ सर्वोत्तम', mr: 'फक्त सर्वोत्तम' },
+  'arch.badge': { en: 'WITHOUT THE COMPROMISE', hi: 'बिना किसी समझौते के', mr: 'कोणतीही तडजोड नाही' },
+  'arch.desc': {
+    en: 'A gentle wave of pure coastal flavor. Sourced daily from local Mumbai docks at dawn, hand-marinated in stone-ground Malvani spices and crisp golden semolina rava. Zero preservatives, zero shortcuts.',
+    hi: 'शुद्ध तटीय स्वाद की एक सुंदर लहर। सुबह-सुबह मुंबई डॉक्स से ताज़ी मछली, सिलबट्टे के मालवणी मसाले और कुरकुरा सूजी रवा। कोई रसायन नहीं, कोई शॉर्टकट नहीं।',
+    mr: 'अस्सल किनारपट्टी चवीची एक सुंदर लाट. पहाटे मुंबई बंदरावरून ताजी आणलेली मासळी, दगडी पाट्यावरील मालवणी मसाले आणि कुरकुरीत सुवर्ण रवा. कोणतीही रसायने नाहीत, कोणताही शॉर्टकट नाही.'
+  },
 
-  // ─── MENU CARD ───
-  'card.addToPlate': { en: 'Add to Plate', hi: 'प्लेट में जोड़ें', mr: 'प्लेटमध्ये जोडा' },
+  // ─── MENU SECTION ───
+  'menu.kicker': {
+    en: 'DISCOVER THE FULL SPREAD · PREPPED DAILY',
+    hi: 'पूरा मेनू देखें · रोज़ ताज़ा तैयार',
+    mr: 'संपूर्ण मेनू पहा · दररोज ताजे तयार'
+  },
+  'menu.title': { en: 'Our Coastal Menu', hi: 'हमारा तटीय मेनू', mr: 'आमचा किनारपट्टी मेनू' },
+  'menu.desc': {
+    en: 'Whole wild catch pan-seared in golden rava, slow-cooked coconut broths, and cooling kokum infusions.',
+    hi: 'तवे पर कुरकुरी भुनी मछली, धीमी आंच पर पकी नारियल करी और ताज़ा कोकम शरबत।',
+    mr: 'तव्यावर कुरकुरीत भाजलेली ताजी मासळी, मंद आचेवर शिजवलेली नारळाची करी आणि थंडगार कोकम सरबत.'
+  },
+  'menu.searchPlaceholder': {
+    en: 'Search dish, fish, curry...',
+    hi: 'डिश, मछली, करी खोजें...',
+    mr: 'डिश, मासा, करी शोधा...'
+  },
+  'menu.clear': { en: 'Clear', hi: 'हटाएं', mr: 'साफ करा' },
+  'menu.all': { en: 'All Items', hi: 'सभी व्यंजन', mr: 'सर्व पदार्थ' },
+  'menu.chefSpecials': { en: "Chef's Specials", hi: 'शेफ स्पेशल', mr: 'शेफ स्पेशल' },
+  'menu.coastalCurries': { en: 'Coastal Curries', hi: 'तटीय करी', mr: 'किनारपट्टी करी' },
+  'menu.feastBoxes': { en: 'Feast Boxes', hi: 'थाली बॉक्स', mr: 'थाळी बॉक्स' },
+  'menu.drinks': { en: 'Digestives & Drinks', hi: 'पाचक पेय', mr: 'पाचक पेये' },
+  'menu.bestseller': { en: 'Bestseller', hi: 'लोकप्रिय', mr: 'लोकप्रिय' },
+  'menu.price': { en: 'Price', hi: 'कीमत', mr: 'किंमत' },
+  'menu.add': { en: 'Add', hi: 'जोड़ें', mr: 'जोडा' },
+  'menu.added': { en: 'Added', hi: 'जोड़ दिया', mr: 'जोडले' },
+  'menu.noResults': { en: 'No dishes match', hi: 'कोई व्यंजन नहीं मिला', mr: 'कोणतेही पदार्थ सापडले नाहीत' },
+  'menu.resetFilters': { en: 'Reset Filters', hi: 'फ़िल्टर रीसेट करें', mr: 'फिल्टर रीसेट करा' },
 
-  // ─── BUILD YOUR PLATE ───
-  'plate.kicker': { en: 'Seafood, your way', hi: 'समुद्री भोजन, आपके अंदाज़ में', mr: 'सागरी अन्न, तुमच्या स्वैर' },
-  'plate.title': { en: 'BUILD YOUR COASTAL PLATE', hi: 'अपनी तटीय प्लेट बनाएं', mr: 'तुमची किनारपट्टी प्लेट तयार करा' },
-  'plate.seafood': { en: 'SEAFOOD', hi: 'समुद्री भोजन', mr: 'सागरी अन्न' },
-  'plate.style': { en: 'STYLE', hi: 'स्टाइल', mr: 'शैली' },
-  'plate.drink': { en: 'DRINK', hi: 'पेय', mr: 'पेय' },
-  'plate.your': { en: 'Your coastal plate', hi: 'आपकी तटीय प्लेट', mr: 'तुमची किनारपट्टी प्लेट' },
-  'plate.add': { en: 'ADD TO ORDER', hi: 'ऑर्डर में जोड़ें', mr: 'ऑर्डरमध्ये जोडा' },
-  'plate.desc': { en: 'prepared', hi: 'तैयार', mr: 'तयार' },
-  'plate.fresh': { en: 'Fresh from our kitchen.', hi: 'हमारी रसोई से ताज़ा।', mr: 'आमच्या स्वयंपाकघरातून ताजे.' },
-  'plate.hint': { en: 'Tap to build · slowly turning', hi: 'बनाने के लिए टैप करें', mr: 'तयार करण्यासाठी टॅप करा' },
-
-  // ─── KITCHEN ───
-  'kitchen.kicker': { en: 'Warm, personal, real', hi: 'गर्म, निजी, सच्चा', mr: 'उबदार, वैयक्तिक, खरे' },
-  'kitchen.title': { en: 'FROM OUR KITCHEN', hi: 'हमारी रसोई से', mr: 'आमच्या स्वयंपाकघरातून' },
-  'kitchen.desc': { en: 'A miniature of where the magic happens. Explore the hotspots.', hi: 'जहाँ जादू होती है उसका एक नज़ारा। हॉटस्पॉट एक्सप्लोर करें।', mr: 'जिथे जादू घडते त्याचे एक प्रतिमान. हॉटस्पॉट एक्सप्लोर करा.' },
-
-  // ─── KITCHEN HOTSPOTS ───
-  'hotspot.ingredients': { en: 'FRESH INGREDIENTS', hi: 'ताज़ी सामग्री', mr: 'ताजी सामग्री' },
-  'hotspot.ingredients.body': { en: 'Lime, chillies, coriander and coconut — picked fresh every morning before the fry begins.', hi: 'नींबू, मिर्च, धनिया और नारियल — हर सुबह ताज़ा तोड़े जाते हैं।', mr: 'लिंबू, मिरची, कोथिंबीर आणि नारळ — दररोज सकाळी ताजे तोडले जातात.' },
-  'hotspot.spices': { en: 'TRADITIONAL SPICES', hi: 'पारंपरिक मसाले', mr: 'पारंपरिक मसाले' },
-  'hotspot.spices.body': { en: 'Roasted konkani spices ground the old way, in a mortar and pestle.', hi: 'कोंकणी मसाले पुराने तरीके से, हाथ की चक्की में पीसे जाते हैं।', mr: 'कोंकणी मसाले जुन्या पद्धतीने, खलबत्यात कुटले जातात.' },
-  'hotspot.cooking': { en: 'HOME COOKING', hi: 'घर का खाना', mr: 'घरगुती स्वयंपाक' },
-  'hotspot.cooking.body': { en: 'Every curry is cooked to order in a copper handi, the way it is at home.', hi: 'हर करी ऑर्डर पर तांबे के हांडी में बनाई जाती है, जैसे घर पर बनती है।', mr: 'प्रत्येक करी ऑर्डरवर तांब्याच्या हांड्यात तयार केली जाते, जसे घरी तयार केली जाते.' },
-  'hotspot.masala': { en: 'MALVANI MASALA', hi: 'मालवणी मसाला', mr: 'मालवणी मसाला' },
-  'hotspot.masala.body': { en: 'Our family blend of red chillies, tamarind and coconut — the secret behind the heat.', hi: 'लाल मिर्च, इमली और नारियल का हमारा पारिवारिक मिश्रण — तीखेपन का रहस्य।', mr: 'लाल मिरची, आंबा आणि नारळाचे आमचे कौटुंबिक मिश्रण — तिखटपणाचे रहस्य.' },
-  'hotspot.seafood': { en: 'FRESH SEAFOOD', hi: 'ताज़ा समुद्री भोजन', mr: 'ताजे सागरी अन्न' },
-  'hotspot.seafood.body': { en: 'Cleaned, spiced and ready for the tawa on the same day it leaves the sea.', hi: 'समुद्र से निकलने के उसी दिन साफ़, मसालेदार और तवे के लिए तैयार।', mr: 'सागरातून काढल्याच्या त्याच दिवशी स्वच्छ, मसालेदार आणि तव्यासाठी तयार.' },
-
-  // ─── JOURNEY ───
-  'journey.kicker': { en: 'From net to table', hi: 'जाल से थाली तक', mr: 'जाळ्यापासून थाळीपर्यंत' },
-  'journey.title': { en: 'THE JOURNEY OF A DISH', hi: 'एक डिश की यात्रा', mr: 'एका डिशचा प्रवास' },
-  'journey.01.title': { en: 'FRESH CATCH', hi: 'ताज़ी मछली', mr: 'ताजा मासा' },
-  'journey.01.body': { en: 'Seafood inspired by the coast.', hi: 'तट से प्रेरित समुद्री भोजन।', mr: 'किनाऱ्याने प्रेरित सागरी अन्न.' },
-  'journey.02.title': { en: 'CLEANED & PREPARED', hi: 'साफ़ और तैयार', mr: 'स्वच्छ आणि तयार' },
-  'journey.02.body': { en: 'Carefully prepared in our kitchen.', hi: 'हमारी रसोई में सावधानी से तैयार।', mr: 'आमच्या स्वयंपाकघरात काळजीपूर्वक तयार.' },
-  'journey.03.title': { en: 'MALVANI FLAVOUR', hi: 'मालवणी स्वाद', mr: 'मालवणी चव' },
-  'journey.03.body': { en: 'Traditional coastal spices and techniques.', hi: 'पारंपरिक तटीय मसाले और तकनीकें।', mr: 'पारंपरिक किनारपट्टी मसाले आणि तंत्रे.' },
-  'journey.04.title': { en: 'HOME COOKED', hi: 'घर का बना', mr: 'घरगुती बनवलेले' },
-  'journey.04.body': { en: 'Freshly cooked to order.', hi: 'ऑर्डर पर ताज़ा पकाया जाता है।', mr: 'ऑर्डरवर ताजे शिजवले जाते.' },
-  'journey.05.title': { en: 'READY TO SERVE', hi: 'परोसने के लिए तैयार', mr: 'सेव्यासाठी तयार' },
-  'journey.05.body': { en: 'Packed and delivered to you.', hi: 'पैक और आप तक पहुंचाया जाता है।', mr: 'पॅक करून तुमच्यापर्यंत पोहोचवले जाते.' },
-
-  // ─── GALLERY ───
-  'gallery.kicker': { en: 'A glimpse of the kitchen', hi: 'रसोई की एक झलक', mr: 'स्वयंपाकघराची एक झलक' },
-  'gallery.title': { en: 'THE GALLERY', hi: 'गैलरी', mr: 'गॅलरी' },
-  'gallery.desc': { en: 'Scroll, drag or swipe — every dish tells the same story.', hi: 'स्क्रॉल करें, खींचें या स्वाइप करें — हर डिश एक ही कहानी बताती है।', mr: 'स्क्रोल करा, ओढा किंवा स्वाइप करा — प्रत्येक डिश एकच कथा सांगते.' },
-  'gallery.fresh': { en: 'Fresh from the morning catch', hi: 'सुबह की ताज़ी मछली', mr: 'सकाळच्या ताज्या मासातून' },
-  'gallery.drag': { en: 'Drag / scroll →', hi: 'खींचें / स्क्रॉल करें →', mr: 'ओढा / स्क्रोल करा →' },
-
-  // ─── ORDER ───
-  'order.kicker': { en: 'Ready for a craving?', hi: 'तैयार हैं चखने के लिए?', mr: 'चव घेण्यासाठी तयार?' },
-  'order.title1': { en: 'READY FOR A', hi: 'तैयार हैं एक', mr: 'तयार आहोत एका' },
-  'order.title2': { en: 'COASTAL CRAVING?', hi: 'तटीय चाहत के लिए?', mr: 'किनारपट्टी चवसाठी?' },
-  'order.desc': { en: 'Fresh seafood. Bold Malvani flavours. Straight from our kitchen.', hi: 'ताज़ा समुद्री भोजन। बोल्ड मालवणी स्वाद। सीधे हमारी रसोई से।', mr: 'ताजे सागरी अन्न. बोल्ड मालवणी चव. थेट आमच्या स्वयंपाकघरातून.' },
-  'order.callUs': { en: 'CALL US', hi: 'हमें कॉल करें', mr: 'आम्हाला कॉल करा' },
-  'order.orderNow': { en: 'ORDER NOW', hi: 'अभी ऑर्डर करें', mr: 'आता ऑर्डर करा' },
-  'order.whatsappUs': { en: 'WHATSAPP US', hi: 'व्हॉट्सएप करें', mr: 'व्हॉट्सएप करा' },
-  'order.zomato': { en: 'AVAILABLE ON ZOMATO', hi: 'ZOMATO पर उपलब्ध', mr: 'ZOMATO वर उपलब्ध' },
-  'order.zomatoSub': { en: 'Order QUICK CRAVE straight to your door', hi: 'QUICK CRAVE सीधे अपने दरवाज़े तक मंगवाएं', mr: 'QUICK CRAVE थेट तुमच्या दारापर्यंत मंगवा' },
+  // ─── ZOMATO ORDER BANNER ───
+  'order.badge': {
+    en: 'DIRECT ORDERING & EXPRESS DELIVERY',
+    hi: 'सीधा ऑर्डर एवं एक्सप्रेस डिलीवरी',
+    mr: 'थेट ऑर्डर आणि जलद वितरण'
+  },
+  'order.title': {
+    en: 'Hot, fresh coastal seafood delivered to your table.',
+    hi: 'गरमागरम, ताज़ा समुद्री भोजन सीधे आपकी मेज़ तक।',
+    mr: 'गरमागरम, ताजे सागरी अन्न थेट तुमच्या दारापर्यंत.'
+  },
+  'order.desc': {
+    en: 'Available daily on Zomato with sealed thermal packaging. Or call our kitchen hotline directly for custom spice levels, bulk thalis, or self-pickup.',
+    hi: 'ज़ोमैटो पर सुरक्षित थर्मल पैकिंग में रोज़ उपलब्ध। या खास तीखेपन, बड़ी थाली और पिकअप के लिए सीधे रसोई पर कॉल करें।',
+    mr: 'झोमॅटोवर सुरक्षित सीलबंद पॅकिंगमध्ये दररोज उपलब्ध. किंवा तिखटपणा ठरवण्यासाठी, थाळी आणि सेल्फ-पिकअपसाठी थेट किचनशी संपर्क साधा.'
+  },
+  'order.zomatoBtn': { en: 'Order on Zomato', hi: 'ज़ोमैटो पर ऑर्डर करें', mr: 'झोमॅटो वरून ऑर्डर करा' },
+  'order.whatsappBtn': { en: 'WhatsApp Kitchen', hi: 'व्हाट्सएप रसोई', mr: 'व्हॉट्सॲप किचन' },
+  'order.hotline': { en: 'Cloud Kitchen Hotline', hi: 'क्लाउड किचन हेल्पलाइन', mr: 'क्लाउड किचन हेल्पलाइन' },
+  'order.openDaily': { en: 'Open Daily', hi: 'रोज़ाना खुला', mr: 'दररोज सुरू' },
+  'order.mobileDirect': { en: 'Mobile Direct', hi: 'मोबाइल डायरेक्ट', mr: 'थेट मोबाईल' },
+  'order.landline': { en: 'Landline', hi: 'लैंडलाइन', mr: 'लँडलाईन' },
+  'order.call': { en: 'Call →', hi: 'कॉल करें →', mr: 'कॉल करा →' },
+  'order.timings': {
+    en: '11:30 AM – 4:00 PM & 6:30 PM – 11:30 PM Daily',
+    hi: 'दोपहर 11:30 – 4:00 एवं शाम 6:30 – 11:30 रोज़ाना',
+    mr: 'दररोज दु. ११:३० ते ४:०० व सायं. ६:३० ते ११:३०'
+  },
+  'order.kitchenNote': {
+    en: 'Fresh dockside fish prepped in cloud kitchen',
+    hi: 'बंदरगाह से ताज़ी मछली क्लाउड किचन में तैयार',
+    mr: 'बंदरावरील ताजी मासळी किचनमध्ये स्वच्छ तयार केली जाते'
+  },
 
   // ─── FOOTER ───
-  'footer.from': { en: 'From the ocean to your home.', hi: 'समुद्र से आपके घर तक।', mr: 'सागरापासून तुमच्या घरपर्यंत.' },
-  'footer.menu': { en: 'Menu', hi: 'मेनू', mr: 'मेनू' },
-  'footer.order': { en: 'Order', hi: 'ऑर्डर', mr: 'ऑर्डर' },
-  'footer.contact': { en: 'Contact', hi: 'संपर्क', mr: 'संपर्क' },
-  'footer.gallery': { en: 'Gallery', hi: 'गैलरी', mr: 'गॅलरी' },
-  'footer.kitchen': { en: 'Our Kitchen', hi: 'हमारी रसोई', mr: 'आमचे स्वयंपाकघर' },
-  'footer.find': { en: 'Find Us', hi: 'हमें ढूंढें', mr: 'आम्हाला शोधा' },
-  'footer.tagline': { en: 'Coastal flavours, home-cooked perfection.', hi: 'तटीय स्वाद, घर का बना परफेक्शन।', mr: 'किनारपट्टी चव, घरगुती परिपूर्णता.' },
-  'footer.catch': { en: 'Fresh catch · Made to order', hi: 'ताज़ी मछली · ऑर्डर पर बनाया', mr: 'ताजा मासा · ऑर्डरवर बनवलेला' },
+  'footer.desc': {
+    en: 'Authentic Malvani coastal seafood. Whole wild catch, stone-ground Konkan masalas, and freshly pressed coconut milk prepared fresh daily.',
+    hi: 'प्रामाणिक मालवणी समुद्री भोजन। ताज़ी मछली, सिलबट्टा मसाले और रोज़ सुबह ताज़ा निकाला गया नारियल दूध।',
+    mr: 'अस्सल मालवणी सागरी अन्न. ताजी मासळी, दगडी पाटा मसाले आणि दररोज सकाळी ताजे काढलेले नारळाचे दूध.'
+  },
+  'footer.orderZomato': { en: 'Order on Zomato', hi: 'ज़ोमैटो पर ऑर्डर करें', mr: 'झोमॅटोवर ऑर्डर करा' },
+  'footer.whatsappKitchen': { en: 'WhatsApp Kitchen', hi: 'व्हाट्सएप रसोई', mr: 'व्हॉट्सॲप किचन' },
+  'footer.menuTitle': { en: 'Coastal Menu', hi: 'तटीय मेनू', mr: 'किनारपट्टी मेनू' },
+  'footer.hotlineTitle': { en: 'Kitchen Hotline & Delivery', hi: 'रसोई हेल्पलाइन एवं डिलीवरी', mr: 'किचन हेल्पलाइन आणि डिलिव्हरी' },
+  'footer.lunchDinner': {
+    en: 'Daily Lunch: 11:30 AM – 4:00 PM\nDaily Dinner: 6:30 PM – 11:30 PM',
+    hi: 'दुपहर लंच: 11:30 AM – 4:00 PM\nरात का डिनर: 6:30 PM – 11:30 PM',
+    mr: 'दुपारचे जेवण: ११:३० ते ४:००\nरात्रीचे जेवण: ६:३० ते ११:३०'
+  },
+  'footer.deliveryNote': {
+    en: 'Sealed express delivery across Mumbai via Zomato.',
+    hi: 'ज़ोमैटो द्वारा पूरे मुंबई में सुरक्षित एक्सप्रेस डिलीवरी।',
+    mr: 'झोमॅटो द्वारे संपूर्ण मुंबईमध्ये सुरक्षित जलद वितरण.'
+  },
+  'footer.tagWild': { en: 'Wild Catch', hi: 'ताज़ी मछली', mr: 'ताजी मासळी' },
+  'footer.tagStone': { en: 'Stone Ground', hi: 'सिलबट्टा मसाला', mr: 'दगडी पाटा मसाला' },
+  'footer.tagZero': { en: 'Zero Preservatives', hi: 'शून्य रसायन', mr: 'कोणतीही रसायने नाहीत' },
 
-  // ─── CART ───
-  'cart.title': { en: 'YOUR CATCH', hi: 'आपकी मछली', mr: 'तुमचा मासा' },
-  'cart.empty': { en: 'Your plate is empty.', hi: 'आपकी प्लेट खाली है।', mr: 'तुमची प्लेट रिकामी आहे.' },
-  'cart.emptySub': { en: 'Dive into the menu to add something coastal.', hi: 'मेनू में जाकर कुछ तटीय जोड़ें।', mr: 'मेनूमध्ये जाऊन काहीतरी किनारपट्टी जोडा.' },
-  'cart.send': { en: 'SEND ORDER ON WHATSAPP', hi: 'व्हॉट्सएप पर ऑर्डर भेजें', mr: 'व्हॉट्सएपवर ऑर्डर पाठवा' },
-  'cart.callUs': { en: 'OR CALL US', hi: 'या कॉल करें', mr: 'किंवा कॉल करा' },
+  // ─── CART DRAWER ───
+  'cart.orderTitle': { en: 'Your Order', hi: 'आपकी थाली', mr: 'तुमची ऑर्डर' },
+  'cart.itemsCount': { en: 'items', hi: 'आइटम', mr: 'पदार्थ' },
+  'cart.emptyBag': { en: 'Your bag is empty', hi: 'आपकी थाली खाली है', mr: 'तुमची पिशवी रिकामी आहे' },
+  'cart.emptyDesc': {
+    en: "Explore our Chef's Specials and Malvani Curries to build your coastal meal!",
+    hi: 'अपना तटीय भोजन तैयार करने के लिए हमारे शेफ स्पेशल और मालवणी करी देखें!',
+    mr: 'तुमचे अस्सल जेवण तयार करण्यासाठी आमचे शेफ स्पेशल आणि मालवणी करी पहा!'
+  },
+  'cart.subtotal': { en: 'Estimated Subtotal', hi: 'अनुमानित कुल', mr: 'अंदाजे एकूण रक्कम' },
+  'cart.sendWhatsApp': { en: 'Send Order via WhatsApp', hi: 'व्हाट्सएप पर ऑर्डर भेजें', mr: 'व्हॉट्सॲप वर ऑर्डर पाठवा' },
+  'cart.orderZomatoDirect': { en: 'Or Order Directly on Zomato', hi: 'या सीधे ज़ोमैटो पर ऑर्डर करें', mr: 'किंवा झोमॅटो वरून थेट ऑर्डर करा' },
+  'cart.kitchenSupport': { en: 'Direct kitchen support:', hi: 'सीधा रसोई संपर्क:', mr: 'थेट किचन संपर्क:' },
 
-  // ─── CURSOR ───
-  'cursor.explore': { en: 'EXPLORE', hi: 'एक्सप्लोर', mr: 'एक्सप्लोर' },
-  'cursor.taste': { en: 'TASTE', hi: 'चखें', mr: 'चव घ्या' },
-  'cursor.open': { en: 'OPEN', hi: 'खोलें', mr: 'उघडा' },
-
-  // ─── SPECIES ───
-  'species.surmai.tagline': { en: 'King of the Coast', hi: 'तट का राजा', mr: 'किनाऱ्याचा राजा' },
-  'species.pomfret.tagline': { en: 'A coastal classic', hi: 'तटीय क्लासिक', mr: 'किनारपट्टी क्लासिक' },
-  'species.bangda.tagline': { en: 'Bold. Local. Authentic.', hi: 'बोल्ड। स्थानीय। प्रामाणिक।', mr: 'बोल्ड. स्थानिक. खरे.' },
-  'species.prawns.tagline': { en: 'Small catch. Big flavour.', hi: 'छोटी मछली। बड़ा स्वाद।', mr: 'लहान मासा. मोठी चव.' },
-  'species.crab.tagline': { en: 'Rich coastal indulgence', hi: 'समृद्ध तटीय आनंद', mr: 'समृद्ध किनारपट्टी आनंद' },
-
-  // ─── FISH OVERLAY ───
-  'fish.title': { en: 'LIVE FROM THE COAST', hi: 'तट से लाइव', mr: 'किनाऱ्यापासून लाइव्ह' },
-  'fish.subtitle': { en: 'Click a fish to learn more', hi: 'मछली पर क्लिक करें', mr: 'मासावर क्लिक करा' },
+  // ─── PRODUCT PAGE ───
+  'prod.back': {
+    en: 'Back to All Flavors & Menu',
+    hi: 'सभी व्यंजन एवं मेनू पर वापस जाएं',
+    mr: 'सर्व पदार्थ आणि मेनूवर परत जा'
+  },
+  'prod.heritageKicker': {
+    en: 'Malvan Sourcing Heritage',
+    hi: 'मालवणी परंपरा और धरोहर',
+    mr: 'मालवणी परंपरेचा ठेवा'
+  },
+  'prod.heritageDesc': {
+    en: 'Dockside catch inspected at 5:30 AM. Prepared to order with cold-pressed coconut oil.',
+    hi: 'सुबह 5:30 बजे चुनी गई ताज़ी मछली। कोल्ड-प्रेस्ड नारियल तेल में ताज़ा तैयार।',
+    mr: 'पहाटे ५:३० ची निवडक ताजी मासळी. अस्सल नारळाच्या तेलात आणि मसाल्यात खास तयार.'
+  }
 };

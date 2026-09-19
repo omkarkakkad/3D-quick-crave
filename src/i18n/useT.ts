@@ -4,13 +4,17 @@ import { t, type Lang } from './translations';
 export function useT() {
   const lang = useStore((s) => s.lang);
   const setLang = useStore((s) => s.setLang);
+  const isMr = lang === 'mr';
+
   return {
     lang,
+    isMr,
     setLang,
-    tr: (key: string): string => {
+    toggleLang: () => setLang(lang === 'en' ? 'mr' : 'en'),
+    tr: (key: string, fallback?: string): string => {
       const entry = t[key];
-      if (!entry) return key;
-      return entry[lang as Lang] ?? entry.en;
+      if (!entry) return fallback ?? key;
+      return entry[lang as Lang] ?? entry.en ?? fallback ?? key;
     }
   };
 }
