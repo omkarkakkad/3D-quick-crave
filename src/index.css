@@ -22,35 +22,27 @@ html {
 }
 
 body {
-  background: #020b1a;
-  color: #f7f1e4;
-  font-family: 'Manrope', 'Noto Sans Devanagari', system-ui, sans-serif;
+  background: #FAF8F5;
+  color: #1C2520;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
 body::selection {
-  background: rgba(53, 214, 196, 0.3);
-  color: #fff;
+  background: #12382c;
+  color: #FAF8F5;
 }
 
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #010512;
+  background: #FAF8F5;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(53, 214, 196, 0.35);
+  background: #D8D3C8;
   border-radius: 8px;
-}
-
-/* Custom cursor: hide native on precise pointers */
-@media (pointer: fine) {
-  body.has-cursor,
-  body.has-cursor * {
-    cursor: none !important;
-  }
 }
 
 canvas {
@@ -58,8 +50,14 @@ canvas {
   outline: none;
 }
 
-.font-display {
-  font-family: 'Fraunces', 'Noto Sans Devanagari', Georgia, serif;
+.font-bubble {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.font-display,
+.font-serif {
+  font-family: 'Fraunces', Georgia, serif;
 }
 
 .glass {
