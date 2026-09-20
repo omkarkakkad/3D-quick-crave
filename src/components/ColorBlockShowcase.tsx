@@ -297,7 +297,7 @@ export function ColorBlockShowcase() {
     <section id="showcase" className="relative w-full overflow-hidden select-none">
       {/* ── MOBILE & TABLET VIEW (< 1024px): MANA-Style Interactive Card Carousel with Visible Controls ── */}
       <div
-        className="lg:hidden relative w-full overflow-hidden transition-colors duration-500 py-10 sm:py-14 px-4 sm:px-8 flex flex-col items-center justify-between min-h-[500px] sm:min-h-[580px]"
+        className="lg:hidden relative w-full overflow-hidden transition-colors duration-500 pt-8 sm:pt-12 pb-24 sm:pb-28 px-4 sm:px-8 flex flex-col items-center justify-between min-h-[580px] sm:min-h-[640px]"
         style={{ backgroundColor: activeItem.bgHex }}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -324,7 +324,7 @@ export function ColorBlockShowcase() {
         {/* Centered Food Image */}
         <div
           onClick={() => handleSelectFlavor(activeItem.flavorIndex, activeItem.id)}
-          className="relative my-6 sm:my-8 w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center z-10 cursor-pointer active:scale-95 transition-transform"
+          className="relative my-5 sm:my-7 w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center z-10 cursor-pointer active:scale-95 transition-transform"
         >
           <img
             src={activeItem.image}
@@ -333,8 +333,8 @@ export function ColorBlockShowcase() {
           />
         </div>
 
-        {/* MANA White Pill CTA Button + Indicator Dots */}
-        <div className="w-full flex flex-col items-center gap-3.5 z-10 px-8">
+        {/* MANA White Pill CTA Button + Indicator Dots — elevated with safe bottom clearance */}
+        <div className="w-full flex flex-col items-center gap-3.5 z-10 px-8 pb-3">
           <button
             onClick={() => handleSelectFlavor(activeItem.flavorIndex, activeItem.id)}
             className="w-full max-w-xs py-3 sm:py-3.5 px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold font-sans shadow-xl hover:bg-gray-50 flex items-center justify-center gap-2 active:scale-95 transition-all duration-200 border border-black/5 truncate"

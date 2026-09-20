@@ -254,11 +254,11 @@ function BarramundiCatchModel({ dishImage, flavorKey }: { dishImage: string; fla
       {/* Sizzling Embers */}
       <SizzleParticles />
 
-      {/* Hero 3D Fish Catch — Balanced, elegant, perfectly framed */}
+      {/* Hero 3D Fish Catch — Balanced, elegant, perfectly framed inside the platter */}
       <Center position={[0, 0.04, 0]}>
         <primitive
           object={cloned}
-          scale={3.3}
+          scale={2.2}
           rotation={[0.16, Math.PI / 3.4, 0.06]}
           castShadow
           receiveShadow
@@ -593,22 +593,31 @@ function Scene3D({
 }) {
   const groupRef = useRef<THREE.Group>(null);
   const controlsRef = useRef<any>(null);
+  const { size } = useThree();
 
   const isDrink = flavor.id === 'sol-kadi' || flavor.id === 'kokum-sarbat';
+
+  const isMobile = size.width < 500;
+  const isTablet = size.width >= 500 && size.width < 768;
+  const targetScale = isDrink
+    ? (isMobile ? 0.74 : isTablet ? 0.84 : 0.95)
+    : (isMobile ? 0.62 : isTablet ? 0.76 : 0.92);
+
+  const targetPosY = isDrink ? 0.04 : (isMobile ? -0.1 : -0.04);
 
   // Entry animation on flavor change
   useEffect(() => {
     if (groupRef.current) {
       gsap.fromTo(groupRef.current.scale,
         { x: 0.01, y: 0.01, z: 0.01 },
-        { x: 1, y: 1, z: 1, duration: 0.7, ease: 'back.out(1.4)' }
+        { x: targetScale, y: targetScale, z: targetScale, duration: 0.7, ease: 'back.out(1.4)' }
       );
     }
     // Reset controls to default position
     if (controlsRef.current) {
       controlsRef.current.reset();
     }
-  }, [flavor.id]);
+  }, [flavor.id, targetScale]);
 
   return (
     <>
@@ -639,7 +648,7 @@ function Scene3D({
         target={[0, 0, 0]}
       />
 
-      <group ref={groupRef} position={[0, 0, 0]}>
+      <group ref={groupRef} position={[0, targetPosY, 0]} scale={[targetScale, targetScale, targetScale]}>
         {isDrink ? (
           <ManaGlassModel
             flavorName={isMr ? flavor.nameMr : flavor.name}
