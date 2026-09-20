@@ -29,12 +29,62 @@ export default {
           deep: '#e0582f',
           dark: '#a83e1f'
         },
+        forest: {
+          DEFAULT: '#12382c',
+          dark: '#0a231b',
+          light: '#1e4d3d',
+          hover: '#184234'
+        },
+        sage: {
+          DEFAULT: '#e9f0eb',
+          muted: '#d8e4dc',
+          dark: '#3c664d',
+          tag: '#e2ede5'
+        },
+        cream: {
+          DEFAULT: '#FAF8F5',
+          light: '#FFFDF9',
+          card: '#F4F0E8',
+          border: '#E8E3D8'
+        },
+        charcoal: {
+          DEFAULT: '#1C2520',
+          muted: '#4A5568',
+          subtle: '#718096'
+        },
+        royal: {
+          DEFAULT: '#1d4ed8',
+          hover: '#1e40af',
+          light: '#3b82f6',
+          dark: '#172554'
+        },
+        cobalt: '#2563eb',
+        navyDeep: '#060d24',
+        zomato: {
+          DEFAULT: '#e23744',
+          dark: '#cb202d',
+          hover: '#f03d4b'
+        },
         coral: '#ff5e5b',
-        coconut: '#fffdf7'
+        coconut: '#fffdf7',
+        mana: {
+          green: '#9BC57D',
+          greenDark: '#224B27',
+          yellow: '#F9D36A',
+          yellowDark: '#78350F',
+          blue: '#82BCF5',
+          blueDark: '#1E3A8A',
+          coral: '#FF7F66',
+          coralDark: '#7F1D1D',
+          cream: '#FDF9F3',
+          navy: '#1E2B58'
+        }
       },
       fontFamily: {
-        display: ['Fraunces', 'Georgia', 'serif'],
-        sans: ['Manrope', 'system-ui', 'sans-serif']
+        bubble: ['Fredoka', 'system-ui', 'sans-serif'],
+        display: ['Fredoka', 'Fraunces', 'sans-serif'],
+        serif: ['Fraunces', 'Georgia', 'serif'],
+        sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
       },
       boxShadow: {
         glow: '0 0 40px rgba(53,214,196,0.25)',

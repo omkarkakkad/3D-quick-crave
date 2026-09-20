@@ -1,92 +1,116 @@
-import { Instagram, MessageCircle } from 'lucide-react';
-import { PHONE_1, whatsappUrl, zomatoUrl } from '../data/menu';
-import { useStore } from '../store/useStore';
-import { t } from '../i18n/translations';
+import { Phone, ArrowUpRight } from 'lucide-react';
+import { PHONE_1, PHONE_2, zomatoUrl, whatsappUrl } from '../data/menu';
+import { useT } from '../i18n/useT';
 
 export function Footer() {
-  const lang = useStore((s) => s.lang);
-  const links = [
-    { labelKey: 'footer.menu', href: '#menu' },
-    { labelKey: 'footer.order', href: '#order' },
-    { labelKey: 'footer.contact', href: `tel:+91${PHONE_1}` },
-    { labelKey: 'footer.gallery', href: '#gallery' },
-    { labelKey: 'footer.kitchen', href: '#kitchen' },
-    { labelKey: 'footer.find', href: '#order' }
-  ];
+  const { tr, isMr } = useT();
 
   return (
-    <footer className="relative pt-16 pb-10 border-t border-white/5 overflow-hidden">
-      <div className="absolute inset-0 section-bg" style={{ background: 'linear-gradient(180deg, #010512, #020b1a)' }} />
-      <div className="absolute inset-0 opacity-30" style={{ background: 'radial-gradient(ellipse at 50% 130%, rgba(53,214,196,0.08), transparent 60%)' }} />
-
-      <div className="relative max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 pb-12 border-b border-white/5">
-          <div>
-            <a href="#top" className="flex items-center gap-3 group">
-              <span className="w-10 h-10 rounded-full border border-aqua/40 flex items-center justify-center group-hover:shadow-glow group-hover:border-aqua/60 transition-all duration-300">
-                <svg viewBox="0 0 32 32" className="w-6 h-6">
-                  <path d="M6 16 Q16 8 26 16 Q16 24 6 16Z" fill="#35d6c4" />
-                  <path d="M22 16 L28 12 L28 20 Z" fill="#7fe8dc" />
-                </svg>
+    <footer className="bg-[#1E2B58] text-white pt-20 pb-12 select-none">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 pb-16 border-b border-white/15">
+          {/* Brand Column */}
+          <div className="md:col-span-5">
+            <div className="flex items-center gap-3 mb-5">
+              <span className="font-bubble text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
+                QUICK<span className="ml-1 text-[#F9D36A]">CRAVE</span>
               </span>
-              <span className="font-display text-2xl tracking-[0.2em] text-cream group-hover:text-aqua-soft transition-colors duration-300">
-                QUICK <span className="text-gradient-aqua">CRAVE</span>
-              </span>
-            </a>
-            <p className="mt-3 text-[10px] tracking-[0.4em] uppercase text-seafoam/50">
-              {t['footer.from'][lang]}
+            </div>
+            <p className="text-sm sm:text-base text-gray-300 max-w-sm leading-relaxed mb-6 font-normal">
+              {tr('footer.desc')}
             </p>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-10 gap-y-3 text-sm">
-            {links.map((l) => (
-              <a key={l.labelKey} href={l.href} className="relative text-cream/70 hover:text-aqua-soft transition-colors py-1 group/link">
-                {t[l.labelKey][lang]}
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-aqua group-hover/link:w-full transition-all duration-300" />
+            <div className="flex items-center gap-3 flex-wrap">
+              <a
+                href={zomatoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-5 py-2.5 rounded-full bg-white text-[#1E2B58] text-xs font-bold uppercase tracking-wider hover:bg-gray-100 transition-colors inline-flex items-center gap-1.5 shadow-sm active:scale-95"
+              >
+                <span>{tr('footer.orderZomato')}</span>
+                <ArrowUpRight size={13} />
               </a>
-            ))}
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-5 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-bold uppercase tracking-wider transition-colors active:scale-95"
+              >
+                {tr('footer.whatsappKitchen')}
+              </a>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <a
-              href={zomatoUrl}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Zomato"
-              className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-sm font-black text-cream/80 hover:border-[#e23744]/60 hover:text-white hover:bg-[#e23744]/10 hover:scale-110 active:scale-95 transition-all duration-300"
-            >
-              Z
-            </a>
-            <a
-              href="#"
-              aria-label="Instagram"
-              className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-cream/80 hover:border-aqua/50 hover:text-aqua-soft hover:bg-aqua/5 hover:scale-110 active:scale-95 transition-all duration-300"
-            >
-              <Instagram size={16} />
-            </a>
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="WhatsApp"
-              className="w-11 h-11 rounded-full border border-white/10 flex items-center justify-center text-cream/80 hover:border-ember/50 hover:text-ember hover:bg-ember/5 hover:scale-110 active:scale-95 transition-all duration-300"
-            >
-              <MessageCircle size={16} />
-            </a>
+          {/* Quick Menu Links */}
+          <div className="md:col-span-3">
+            <h4 className="text-xs font-black uppercase tracking-widest text-[#F9D36A] mb-4">
+              {tr('footer.menuTitle')}
+            </h4>
+            <ul className="space-y-3 text-sm text-gray-300 font-medium">
+              <li>
+                <a href="#menu" className="hover:text-white transition-colors">
+                  {isMr ? 'सुरमई आणि पापलेट फ्राय' : 'Surmai & Pomfret Fry'}
+                </a>
+              </li>
+              <li>
+                <a href="#menu" className="hover:text-white transition-colors">
+                  {isMr ? 'मालवणी खोबरे करी' : 'Malvani Coconut Curries'}
+                </a>
+              </li>
+              <li>
+                <a href="#details" className="hover:text-white transition-colors">
+                  {isMr ? 'पोषण व ताजेपणा तथ्य' : 'Nutrition & Freshness Facts'}
+                </a>
+              </li>
+              <li>
+                <a href="#showcase" className="hover:text-white transition-colors">
+                  {isMr ? 'किनारपट्टी थाळी बॉक्स' : 'The Coastal Feast Box'}
+                </a>
+              </li>
+              <li>
+                <a href="#menu" className="hover:text-white transition-colors">
+                  {isMr ? 'सोलकढी आणि कोकम सरबत' : 'Sol Kadi & Kokum Sarbat'}
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Kitchen Hotline & Timings */}
+          <div className="md:col-span-4">
+            <h4 className="text-xs font-black uppercase tracking-widest text-[#F9D36A] mb-4">
+              {tr('footer.hotlineTitle')}
+            </h4>
+            <div className="space-y-3 text-sm text-gray-300 font-medium">
+              <p className="flex items-center gap-2">
+                <Phone size={14} className="text-[#F9D36A]" />
+                <span className="text-white font-mono font-bold">+91 {PHONE_1}</span>
+              </p>
+              <p className="flex items-center gap-2">
+                <Phone size={14} className="text-[#F9D36A]" />
+                <span className="text-white font-mono font-bold">022 {PHONE_2}</span>
+              </p>
+              <p className="text-xs text-gray-300 pt-2 leading-relaxed">
+                {isMr ? 'दररोज दुपारचे जेवण: ११:३० ते ४:००' : 'Daily Lunch: 11:30 AM – 4:00 PM'} <br />
+                {isMr ? 'दररोज रात्रीचे जेवण: ६:३० ते ११:३०' : 'Daily Dinner: 6:30 PM – 11:30 PM'}
+              </p>
+              <p className="text-xs text-gray-300">
+                {tr('footer.deliveryNote')}
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-cream/35">
-          <span>© {new Date().getFullYear()} QUICK CRAVE · {t['footer.tagline'][lang]}</span>
-          <span className="flex items-center gap-1.5">
-            <span className="w-1.5 h-1.5 rounded-full bg-aqua/60" />
-            {t['footer.catch'][lang]}
-            <span className="w-1.5 h-1.5 rounded-full bg-ember/60" />
-          </span>
+        {/* Bottom Sub-footer */}
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+          <p>© {new Date().getFullYear()} QUICK CRAVE. Inspired by MANA Yerba Maté aesthetic & Konkan coastal culinary craft.</p>
+          <div className="flex items-center gap-5">
+            <span>{tr('footer.tagWild')}</span>
+            <span>•</span>
+            <span>{tr('footer.tagStone')}</span>
+            <span>•</span>
+            <span>{tr('footer.tagZero')}</span>
+          </div>
         </div>
       </div>
     </footer>
   );
 }
-
-export default Footer;
