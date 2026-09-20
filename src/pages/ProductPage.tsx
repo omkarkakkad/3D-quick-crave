@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ChevronDown, Plus, Minus, Check, ShoppingBag, ArrowUpRight, ArrowLeft } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ChevronDown, Plus, Minus, Check, ShoppingBag, ArrowUpRight, ArrowLeft, MessageCircle, Phone } from 'lucide-react';
 import { menu, type MenuItem, zomatoUrl, PHONE_1 } from '../data/menu';
 import { useStore, SIGNATURE_FLAVORS } from '../store/useStore';
 import { Navbar } from '../components/Navbar';
@@ -221,6 +221,31 @@ export function ProductPage() {
               >
                 <span>{tr('order.zomatoBtn')}</span>
                 <ArrowUpRight size={16} />
+              </a>
+            </div>
+
+            {/* Mobile Direct WhatsApp & Quick Dial Order Bar */}
+            <div className="flex sm:hidden items-center gap-2 -mt-6 mb-8">
+              <a
+                href={`https://wa.me/91${PHONE_1}?text=${encodeURIComponent(
+                  isMr
+                    ? `नमस्कार QUICK CRAVE! मला ${displayName} ची ऑर्डर द्यायची आहे (प्रमाण: ${qty}, प्रकार: ${portion})`
+                    : `Hi QUICK CRAVE! I'd like to order ${displayName} (Qty: ${qty}, Portion: ${portion})`
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex-1 py-3 px-4 rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm"
+              >
+                <MessageCircle size={15} className="text-[#25D366] fill-[#25D366]" />
+                <span>{tr('mobile.orderWhatsApp')}</span>
+              </a>
+
+              <a
+                href={`tel:+91${PHONE_1}`}
+                className="py-3 px-4 rounded-full bg-[#F0FDF4] border border-[#BBF7D0] text-[#166534] text-xs font-bold flex items-center justify-center gap-1.5 active:scale-95 transition-all shadow-sm"
+              >
+                <Phone size={14} className="fill-current text-[#16A34A]" />
+                <span>{tr('mobile.call')}</span>
               </a>
             </div>
 

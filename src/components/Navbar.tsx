@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingBag, Phone, ChevronDown, User, X, Menu, ArrowUpRight, Globe } from 'lucide-react';
+import { ShoppingBag, Phone, ChevronDown, User, X, Menu, ArrowUpRight, Globe, MessageCircle } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { PHONE_1, zomatoUrl } from '../data/menu';
 import { useT } from '../i18n/useT';
@@ -15,7 +15,12 @@ export function Navbar() {
   const setCursor = useStore((s) => s.setCursor);
   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
 
-  const { tr, lang, setLang } = useT();
+  const { tr, lang, setLang, isMr } = useT();
+
+  const whatsappMessage = isMr
+    ? encodeURIComponent('नमस्कार QUICK CRAVE! मला अस्सल मालवणी जेवणाची ऑर्डर करायची आहे.')
+    : encodeURIComponent("Hi QUICK CRAVE! I'd like to place an order for fresh coastal food.");
+  const whatsappUrl = `https://wa.me/91${PHONE_1}?text=${whatsappMessage}`;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -249,14 +254,66 @@ export function Navbar() {
             >
               {tr('nav.feastBoxes')}
             </Link>
-            <a
-              href={zomatoUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="mt-2 py-3 rounded-full bg-[#E23744] text-white text-center text-sm uppercase tracking-wider font-bold"
-            >
-              {tr('order.zomatoBtn')}
-            </a>
+            {/* Mobile Quick Action Buttons: Quick Dial & WhatsApp */}
+            <div className="pt-2 flex flex-col gap-2.5 border-t border-gray-100">
+              {/* Quick Dial Card */}
+              <a
+                href={`tel:+91${PHONE_1}`}
+                className="flex items-center justify-between p-3 rounded-2xl bg-[#F0FDF4] border border-[#BBF7D0] text-[#166534] active:scale-98 transition-all"
+                aria-label={tr('mobile.quickDial')}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="w-8 h-8 rounded-full bg-[#16A34A] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <Phone size={14} className="fill-current" />
+                  </span>
+                  <div className="text-left">
+                    <div className="text-xs font-black">{tr('mobile.quickDial')}</div>
+                    <div className="text-[11px] font-semibold text-gray-500 font-mono">+91 {PHONE_1}</div>
+                  </div>
+                </div>
+                <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-[#16A34A] text-white tracking-wide uppercase">
+                  {tr('mobile.call')}
+                </span>
+              </a>
+
+              {/* WhatsApp Direct Chat Card */}
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-between p-3 rounded-2xl bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] active:scale-98 transition-all"
+                aria-label={tr('mobile.chatWhatsApp')}
+              >
+                <div className="flex items-center gap-2.5">
+                  <span className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <MessageCircle size={15} className="fill-current" />
+                  </span>
+                  <div className="text-left">
+                    <div className="text-xs font-black">{tr('mobile.chatWhatsApp')}</div>
+                    <div className="text-[11px] font-medium text-gray-500">
+                      {isMr ? 'थेट व्हॉट्सॲपवर ऑर्डर द्या' : 'Instant orders & kitchen queries'}
+                    </div>
+                  </div>
+                </div>
+                <ArrowUpRight size={16} className="text-[#059669]" />
+              </a>
+
+              {/* Zomato Delivery Button */}
+              <a
+                href={zomatoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="py-3 px-4 rounded-2xl bg-[#E23744] text-white flex items-center justify-center gap-2 text-xs uppercase tracking-wider font-extrabold active:scale-98 transition-all shadow-md"
+              >
+                <span>{tr('order.zomatoBtn')}</span>
+                <ArrowUpRight size={14} />
+              </a>
+
+              {/* Kitchen info note */}
+              <div className="pt-1 text-center text-[10px] text-gray-400 font-medium leading-relaxed">
+                {tr('mobile.kitchenHours')} · {tr('mobile.freshDockCatch')}
+              </div>
+            </div>
           </div>
         </div>
       )}

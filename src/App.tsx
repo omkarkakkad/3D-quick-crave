@@ -7,6 +7,7 @@ import { Navbar } from './components/Navbar';
 import { CartDrawer } from './components/CartDrawer';
 import { GsapLoader } from './components/GsapLoader';
 import { CustomCursor } from './components/CustomCursor';
+import { MobileActionDock } from './components/MobileActionDock';
 import { HomePage } from './pages/HomePage';
 import { ProductPage } from './pages/ProductPage';
 import { PHONE_1, zomatoUrl } from './data/menu';
@@ -69,6 +70,7 @@ export default function App() {
 
         <Navbar />
         <CartDrawer />
+        <MobileActionDock />
 
         <Routes>
           {/* Home Route */}
@@ -81,10 +83,10 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
 
-        {/* Floating Sticky Quick Order Pill (GSAP Animated) */}
+        {/* Floating Sticky Quick Order Pill for Desktop (GSAP Animated) */}
         <div
           ref={pillRef}
-          className="fixed bottom-4 sm:bottom-6 right-3 sm:right-8 z-40 flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 rounded-full bg-white/95 backdrop-blur-md border border-gray-200 shadow-2xl opacity-0 translate-y-10 pointer-events-auto"
+          className="hidden md:flex fixed bottom-4 sm:bottom-6 right-3 sm:right-8 z-40 items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 rounded-full bg-white/95 backdrop-blur-md border border-gray-200 shadow-2xl opacity-0 translate-y-10 pointer-events-auto"
         >
           <a
             href={zomatoUrl}

@@ -40,6 +40,11 @@ export const t: Translations = {
     hi: '100% ताज़ी मछली · सिलबट्टा मसाला',
     mr: '१००% ताजी मासळी · दगडी पाटा मसाला'
   },
+  'hero.scrollForMenu': {
+    en: 'Scroll for Menu & Ordering',
+    hi: 'मेनू और ऑर्डर के लिए नीचे स्क्रॉल करें',
+    mr: 'संपूर्ण मेनू व ऑर्डर खाली पहा'
+  },
 
   // ─── PRODUCT DETAILS SECTION ───
   'details.standardPortion': {
@@ -96,6 +101,7 @@ export const t: Translations = {
   'showcase.drinkTag': { en: 'COASTAL DRINK', hi: 'तटीय पेय', mr: 'किनारपट्टी पेय' },
   'showcase.chefsSpecialTag': { en: "CHEF'S SPECIAL · ₹399", hi: 'शेफ स्पेशल · ₹399', mr: 'शेफ स्पेशल · ₹३९९' },
   'showcase.viewDishOrder': { en: 'View Dish & Order', hi: 'डिश देखें और ऑर्डर करें', mr: 'डिश पहा आणि ऑर्डर करा' },
+  'showcase.discoverProduct': { en: 'Discover this product', hi: 'डिश एक्सप्लोर करें', mr: 'डीश पहा आणि मागवा' },
 
   // ─── COMBOS HIGHLIGHT ───
   'combos.kicker': { en: 'Complete Meal Boxes', hi: 'संपूर्ण थाली बॉक्स', mr: 'संपूर्ण थाळी बॉक्स' },
@@ -283,5 +289,16 @@ export const t: Translations = {
     en: 'Family Box',
     hi: 'फ़ैमिली बॉक्स',
     mr: 'कुटुंब बॉक्स'
-  }
+  },
+
+  // ─── MOBILE ACTIONS & DOCK ───
+  'mobile.call': { en: 'Call', hi: 'कॉल', mr: 'कॉल करा' },
+  'mobile.whatsapp': { en: 'WhatsApp', hi: 'व्हाट्सएप', mr: 'व्हॉट्सॲप' },
+  'mobile.cart': { en: 'Cart', hi: 'कार्ट', mr: 'कार्ट' },
+  'mobile.menu': { en: 'Menu', hi: 'मेनू', mr: 'मेनू' },
+  'mobile.quickDial': { en: 'Quick Dial Kitchen', hi: 'रसोई को तुरंत कॉल करें', mr: 'किचनला थेट कॉल करा' },
+  'mobile.chatWhatsApp': { en: 'Chat on WhatsApp', hi: 'व्हाट्सएप पर चैट करें', mr: 'व्हॉट्सॲपवर चॅट करा' },
+  'mobile.orderWhatsApp': { en: 'Order via WhatsApp', hi: 'व्हाट्सएप से ऑर्डर करें', mr: 'व्हॉट्सॲपवर ऑर्डर करा' },
+  'mobile.kitchenHours': { en: 'Open Daily: 11:30 AM – 11:00 PM', hi: 'रोज़ खुला: 11:30 AM – 11:00 PM', mr: 'दररोज उघडे: स. ११:३० ते रा. ११:००' },
+  'mobile.freshDockCatch': { en: 'Fresh Morning Catch · Mumbai Docks', hi: 'सुबह की ताज़ी मछली · मुंबई डॉक्स', mr: 'दररोज सकाळची ताजी मासळी · मुंबई बंदर' }
 };

@@ -1,8 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
-import { useStore, SIGNATURE_FLAVORS } from '../store/useStore';
+import { useStore } from '../store/useStore';
 import {
   BlueDancerDoodle,
   RedMonsterDoodle,
@@ -11,18 +11,147 @@ import {
   HibiscusDoodle,
   ArchCloudWindow,
   BlackberryDoodle,
-  RocketShipDoodle,
   SparkleStar,
   BubbleRing,
 } from './ManaDoodles';
 import { useT } from '../i18n/useT';
 
+interface ShowcaseItem {
+  id: string;
+  name: string;
+  nameMr: string;
+  tag: string;
+  tagMr: string;
+  price: number;
+  bgHex: string;
+  darkHex: string;
+  image: string;
+  flavorIndex: number;
+  doodles: React.ReactNode;
+}
+
+const SHOWCASE_ITEMS: ShowcaseItem[] = [
+  {
+    id: 'surmai-fry',
+    name: 'SURMAI FRY',
+    nameMr: 'सुरमई फ्राय',
+    tag: "CHEF'S SPECIAL",
+    tagMr: 'शेफ्स स्पेशल',
+    price: 399,
+    bgHex: '#FBC743',
+    darkHex: '#78350F',
+    image: '/images/surmai.jpg',
+    flavorIndex: 0,
+    doodles: (
+      <>
+        <div data-doodle className="absolute -left-6 bottom-10 w-36 sm:w-56 opacity-80">
+          <BlueDancerDoodle className="w-full" />
+        </div>
+        <div data-doodle className="absolute right-2 bottom-14 w-20 sm:w-28 rotate-12 opacity-80">
+          <SliceCitrusDoodle className="w-full" />
+        </div>
+        <div data-doodle className="absolute right-1 top-16 w-24 sm:w-36 opacity-70">
+          <RedMonsterDoodle className="w-full scale-75 rotate-180" />
+        </div>
+        <div data-doodle className="absolute left-1/2 -top-2 w-6 h-6">
+          <SparkleStar className="w-full" />
+        </div>
+      </>
+    ),
+  },
+  {
+    id: 'pomfret-fry',
+    name: 'POMFRET FRY',
+    nameMr: 'पापलेट फ्राय',
+    tag: "CHEF'S SPECIAL",
+    tagMr: 'शेफ्स स्पेशल',
+    price: 399,
+    bgHex: '#5E9CE4',
+    darkHex: '#1E3A8A',
+    image: '/images/pomfret-fry.jpg',
+    flavorIndex: 1,
+    doodles: (
+      <>
+        <div data-doodle className="absolute -right-4 bottom-8 w-36 sm:w-52 opacity-80">
+          <BlackberryDoodle className="w-full" />
+        </div>
+        <div data-doodle className="absolute left-2 top-20 w-28 sm:w-48 opacity-70 -rotate-12">
+          <HibiscusDoodle className="w-full" />
+        </div>
+        <div data-doodle className="absolute left-1/3 -bottom-4 w-24 sm:w-32 opacity-75">
+          <BotanicalLeavesFlower className="w-full rotate-45" />
+        </div>
+        <div data-doodle className="absolute right-1/4 top-12 w-5 h-5">
+          <SparkleStar className="w-full" />
+        </div>
+      </>
+    ),
+  },
+  {
+    id: 'sol-kadi',
+    name: 'SOL KADI',
+    nameMr: 'सोलकढी',
+    tag: 'COASTAL DRINK',
+    tagMr: 'किनारपट्टी पेय',
+    price: 99,
+    bgHex: '#86EFAC',
+    darkHex: '#166534',
+    image: '/images/solkadi.jpg',
+    flavorIndex: 2,
+    doodles: (
+      <>
+        <div data-doodle className="absolute -left-4 bottom-12 w-32 sm:w-48 opacity-75">
+          <RedMonsterDoodle className="w-full" />
+        </div>
+        <div data-doodle className="absolute right-1 bottom-6 w-24 sm:w-36 opacity-80">
+          <SliceCitrusDoodle className="w-full" />
+        </div>
+        <div data-doodle className="absolute left-1/4 top-16 w-8 h-8 opacity-50">
+          <BubbleRing className="w-full" />
+        </div>
+        <div data-doodle className="absolute right-1/3 top-10 w-6 h-6">
+          <SparkleStar className="w-full" />
+        </div>
+      </>
+    ),
+  },
+  {
+    id: 'kokum-sarbat',
+    name: 'KOKUM SARBAT',
+    nameMr: 'कोकम शर्बत',
+    tag: 'REFRESHING DRINK',
+    tagMr: 'रिफ्रेशिंग पेय',
+    price: 79,
+    bgHex: '#F472B6',
+    darkHex: '#9D174D',
+    image: '/images/kokum-drink.jpg',
+    flavorIndex: 3,
+    doodles: (
+      <>
+        <div data-doodle className="absolute -left-4 bottom-10 w-28 sm:w-44 opacity-80">
+          <HibiscusDoodle className="w-full" />
+        </div>
+        <div data-doodle className="absolute right-2 top-20 w-24 sm:w-40 opacity-75">
+          <ArchCloudWindow className="w-full" />
+        </div>
+        <div data-doodle className="absolute right-1 bottom-8 w-20 sm:w-32 rotate-[-15deg] opacity-80">
+          <SliceCitrusDoodle className="w-full" />
+        </div>
+        <div data-doodle className="absolute left-1/3 top-14 w-8 h-8 opacity-50">
+          <BubbleRing className="w-full" />
+        </div>
+        <div data-doodle className="absolute right-1/4 bottom-20 w-5 h-5">
+          <SparkleStar className="w-full" />
+        </div>
+      </>
+    ),
+  },
+];
+
 function ShowcaseColumn({
   index,
-  productId,
   children,
   doodles,
-  bgClassName,
   bgColor,
   borderClass,
   onClick,
@@ -33,7 +162,6 @@ function ShowcaseColumn({
   productId: string;
   children: React.ReactNode;
   doodles: React.ReactNode;
-  bgClassName?: string;
   bgColor?: string;
   borderClass?: string;
   onClick: () => void;
@@ -51,7 +179,6 @@ function ShowcaseColumn({
     const doodleEls = doodleContainer.querySelectorAll<HTMLElement>('[data-doodle]');
     if (doodleEls.length === 0) return;
 
-    // Set initial state
     gsap.set(doodleEls, { opacity: 0, scale: 0.6, y: 30 });
 
     const observer = new IntersectionObserver(
@@ -67,7 +194,6 @@ function ShowcaseColumn({
             stagger: 0.12,
             delay: index * 0.08,
           });
-          // Continuous gentle float after entrance
           doodleEls.forEach((d, i) => {
             gsap.to(d, {
               y: `+=${6 + i * 3}`,
@@ -93,14 +219,12 @@ function ShowcaseColumn({
       onClick={onClick}
       onPointerEnter={onHover}
       onPointerLeave={onLeave}
-      className={`relative p-6 sm:p-8 md:p-10 flex flex-col items-center justify-between cursor-pointer group overflow-hidden transition-transform duration-300 min-h-[460px] sm:min-h-[560px] lg:min-h-[750px] ${bgClassName || ''} ${borderClass || ''}`}
+      className={`relative p-6 sm:p-8 lg:p-10 flex flex-col items-center justify-between cursor-pointer group overflow-hidden transition-transform duration-300 min-h-[460px] sm:min-h-[560px] lg:min-h-[750px] ${borderClass || ''}`}
       style={bgColor ? { backgroundColor: bgColor } : undefined}
     >
-      {/* GSAP-animated doodle overlay */}
       <div ref={doodleRefs} className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
         {doodles}
       </div>
-
       {children}
     </div>
   );
@@ -108,251 +232,236 @@ function ShowcaseColumn({
 
 export function ColorBlockShowcase() {
   const navigate = useNavigate();
-  const activeIndex = useStore((s) => s.activeFlavorIndex);
+  const activeFlavorIndex = useStore((s) => s.activeFlavorIndex);
   const setActiveFlavorIndex = useStore((s) => s.setActiveFlavorIndex);
 
   const { tr, isMr } = useT();
   const setCursor = useStore((s) => s.setCursor);
 
-  const SHOWCASE_PRODUCTS = ['surmai-fry', 'pomfret-fry', 'sol-kadi', 'kokum-sarbat'];
-  const SHOWCASE_INDICES = [0, 1, 2, 3];
+  // Map activeFlavorIndex to showcase index (0 to 3)
+  const [selectedIdx, setSelectedIdx] = useState(() => {
+    const idx = SHOWCASE_ITEMS.findIndex((it) => it.flavorIndex === activeFlavorIndex);
+    return idx >= 0 ? idx : 0;
+  });
 
-  const currentShowcaseIdx = SHOWCASE_INDICES.indexOf(activeIndex) >= 0 ? SHOWCASE_INDICES.indexOf(activeIndex) : 0;
+  // Keep selectedIdx in sync when store changes
+  useEffect(() => {
+    const idx = SHOWCASE_ITEMS.findIndex((it) => it.flavorIndex === activeFlavorIndex);
+    if (idx >= 0 && idx !== selectedIdx) {
+      setSelectedIdx(idx);
+    }
+  }, [activeFlavorIndex]);
+
+  const activeItem = SHOWCASE_ITEMS[selectedIdx];
 
   const handleNavigate = (direction: 'prev' | 'next') => {
-    const newIdx = direction === 'next'
-      ? (currentShowcaseIdx + 1) % SHOWCASE_PRODUCTS.length
-      : (currentShowcaseIdx - 1 + SHOWCASE_PRODUCTS.length) % SHOWCASE_PRODUCTS.length;
-    const flavorIdx = SHOWCASE_INDICES[newIdx];
-    const productId = SHOWCASE_PRODUCTS[newIdx];
+    const nextIndex =
+      direction === 'next'
+        ? (selectedIdx + 1) % SHOWCASE_ITEMS.length
+        : (selectedIdx - 1 + SHOWCASE_ITEMS.length) % SHOWCASE_ITEMS.length;
+
+    setSelectedIdx(nextIndex);
+    setActiveFlavorIndex(SHOWCASE_ITEMS[nextIndex].flavorIndex);
+  };
+
+  const handleSelectFlavor = (flavorIdx: number, productId: string) => {
     setActiveFlavorIndex(flavorIdx);
     navigate(`/products/${productId}`);
   };
 
-  const handleSelectFlavor = (index: number, productId: string) => {
-    setActiveFlavorIndex(index);
-    navigate(`/products/${productId}`);
+  // Touch swipe support for mobile
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
   };
 
-  const solKadi = SIGNATURE_FLAVORS[2];
-  const kokum = SIGNATURE_FLAVORS[3];
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX.current === null || touchEndX.current === null) return;
+    const deltaX = touchStartX.current - touchEndX.current;
+    if (deltaX > 40) {
+      handleNavigate('next');
+    } else if (deltaX < -40) {
+      handleNavigate('prev');
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
 
   return (
     <section id="showcase" className="relative w-full overflow-hidden select-none">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 min-h-[500px] lg:min-h-[750px] w-full">
-        {/* ── COLUMN 1: Surmai Fry (Yellow) ── */}
-        <ShowcaseColumn
-          index={0}
-          productId="surmai-fry"
-          bgClassName="bg-[#FBC743]"
-          borderClass="border-b sm:border-b-0 sm:border-r border-black/5"
-          onClick={() => handleSelectFlavor(0, 'surmai-fry')}
-          onHover={() => setCursor('explore', isMr ? 'सुरमई फ्राय' : 'SURMAI FRY')}
-          onLeave={() => setCursor('default', null)}
-          doodles={
-            <>
-              <div data-doodle className="absolute -left-6 bottom-10 w-36 sm:w-56 opacity-80">
-                <BlueDancerDoodle className="w-full" />
-              </div>
-              <div data-doodle className="absolute right-2 bottom-14 w-20 sm:w-28 rotate-12 opacity-80">
-                <SliceCitrusDoodle className="w-full" />
-              </div>
-              <div data-doodle className="absolute right-1 top-16 w-24 sm:w-36 opacity-70">
-                <RedMonsterDoodle className="w-full scale-75 rotate-180" />
-              </div>
-              <div data-doodle className="absolute left-1/2 -top-2 w-6 h-6">
-                <SparkleStar className="w-full" />
-              </div>
-            </>
-          }
-        >
-          <div className="text-center z-10">
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-[#78350F] block mb-1">
-              {tr('showcase.chefsSpecialTag')}
-            </span>
-            <h3 className="font-bubble text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-[#111827] leading-tight">
-              {isMr ? 'सुरमई फ्राय' : 'SURMAI FRY'}
-            </h3>
-          </div>
-          <div className="relative my-5 sm:my-6 w-40 sm:w-56 h-48 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
-            <img src="/images/surmai.jpg" alt="Surmai Fry" className="w-full h-full object-cover rounded-2xl shadow-2xl drop-shadow-2xl" />
-          </div>
-          <button
-            onClick={(e) => { e.stopPropagation(); handleSelectFlavor(0, 'surmai-fry'); }}
-            onPointerEnter={() => setCursor('open', `${tr('showcase.viewDishOrder')} · ${isMr ? 'सुरमई फ्राय' : 'SURMAI FRY'}`)}
-            onPointerLeave={() => setCursor('explore', isMr ? 'सुरमई फ्राय' : 'SURMAI FRY')}
-            className="z-10 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center justify-center gap-2 group-hover:scale-105 transition-all max-w-[90%] truncate"
-          >
-            <span className="truncate">{tr('showcase.viewDishOrder')} · ₹399</span>
-            <Plus size={14} className="shrink-0" />
-          </button>
-        </ShowcaseColumn>
+      {/* ── MOBILE & TABLET VIEW (< 1024px): MANA-Style Interactive Card Carousel with Visible Controls ── */}
+      <div
+        className="lg:hidden relative w-full overflow-hidden transition-colors duration-500 py-10 sm:py-14 px-4 sm:px-8 flex flex-col items-center justify-between min-h-[500px] sm:min-h-[580px]"
+        style={{ backgroundColor: activeItem.bgHex }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Background Animated Doodles */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+          {activeItem.doodles}
+        </div>
 
-        {/* ── COLUMN 2: Pomfret Fry (Blue) ── */}
-        <ShowcaseColumn
-          index={1}
-          productId="pomfret-fry"
-          bgClassName="bg-[#5E9CE4]"
-          borderClass="border-b sm:border-b-0 lg:border-r border-black/5"
-          onClick={() => handleSelectFlavor(1, 'pomfret-fry')}
-          onHover={() => setCursor('explore', isMr ? 'पापलेट फ्राय' : 'POMFRET FRY')}
-          onLeave={() => setCursor('default', null)}
-          doodles={
-            <>
-              <div data-doodle className="absolute -right-4 bottom-8 w-36 sm:w-52 opacity-80">
-                <BlackberryDoodle className="w-full" />
-              </div>
-              <div data-doodle className="absolute left-2 top-20 w-28 sm:w-48 opacity-70 -rotate-12">
-                <HibiscusDoodle className="w-full" />
-              </div>
-              <div data-doodle className="absolute left-1/3 -bottom-4 w-24 sm:w-32 opacity-75">
-                <BotanicalLeavesFlower className="w-full rotate-45" />
-              </div>
-              <div data-doodle className="absolute right-1/4 top-12 w-5 h-5">
-                <SparkleStar className="w-full" />
-              </div>
-            </>
-          }
-        >
-          <div className="text-center z-10">
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-[#1E3A8A] block mb-1">
-              {tr('showcase.chefsSpecialTag')}
-            </span>
-            <h3 className="font-bubble text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-[#111827] leading-tight">
-              {isMr ? 'पापलेट फ्राय' : 'POMFRET FRY'}
-            </h3>
-          </div>
-          <div className="relative my-5 sm:my-6 w-40 sm:w-56 h-48 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
-            <img src="/images/pomfret-fry.jpg" alt="Pomfret Fry" className="w-full h-full object-cover rounded-2xl shadow-2xl drop-shadow-2xl" />
-          </div>
-          <button
-            onClick={(e) => { e.stopPropagation(); handleSelectFlavor(1, 'pomfret-fry'); }}
-            onPointerEnter={() => setCursor('open', `${tr('showcase.viewDishOrder')} · ${isMr ? 'पापलेट फ्राय' : 'POMFRET FRY'}`)}
-            onPointerLeave={() => setCursor('explore', isMr ? 'पापलेट फ्राय' : 'POMFRET FRY')}
-            className="z-10 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center justify-center gap-2 group-hover:scale-105 transition-all max-w-[90%] truncate"
+        {/* Dish Category Tag & Title */}
+        <div className="text-center z-10 px-10">
+          <span
+            className="text-[11px] sm:text-xs font-black uppercase tracking-widest block mb-1 font-sans"
+            style={{ color: activeItem.darkHex }}
           >
-            <span className="truncate">{tr('showcase.viewDishOrder')} · ₹399</span>
-            <Plus size={14} className="shrink-0" />
-          </button>
-        </ShowcaseColumn>
+            {isMr ? activeItem.tagMr : activeItem.tag}
+          </span>
+          <h3 className="font-bubble text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#111827] leading-tight drop-shadow-sm">
+            {isMr ? activeItem.nameMr : activeItem.name}
+          </h3>
+        </div>
 
-        {/* ── COLUMN 3: Sol Kadi (Green) ── */}
-        <ShowcaseColumn
-          index={2}
-          productId="sol-kadi"
-          bgColor={solKadi.bgColor}
-          borderClass="border-b sm:border-b-0 sm:border-r border-black/5"
-          onClick={() => handleSelectFlavor(2, 'sol-kadi')}
-          onHover={() => setCursor('explore', isMr ? 'सोलकढी' : 'SOL KADI')}
-          onLeave={() => setCursor('default', null)}
-          doodles={
-            <>
-              <div data-doodle className="absolute -left-4 bottom-12 w-32 sm:w-48 opacity-75">
-                <RedMonsterDoodle className="w-full" />
-              </div>
-              <div data-doodle className="absolute right-1 bottom-6 w-24 sm:w-36 opacity-80">
-                <SliceCitrusDoodle className="w-full" />
-              </div>
-              <div data-doodle className="absolute left-1/4 top-16 w-8 h-8 opacity-50">
-                <BubbleRing className="w-full" />
-              </div>
-              <div data-doodle className="absolute right-1/3 top-10 w-6 h-6">
-                <SparkleStar className="w-full" />
-              </div>
-            </>
-          }
+        {/* Centered Food Image */}
+        <div
+          onClick={() => handleSelectFlavor(activeItem.flavorIndex, activeItem.id)}
+          className="relative my-6 sm:my-8 w-48 h-48 sm:w-60 sm:h-60 flex items-center justify-center z-10 cursor-pointer active:scale-95 transition-transform"
         >
-          <div className="text-center z-10">
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest block mb-1" style={{ color: solKadi.darkColor }}>
-              {tr('showcase.drinkTag')}
-            </span>
-            <h3 className="font-bubble text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-[#111827] leading-tight">
-              {isMr ? 'सोलकढी' : 'SOL KADI'}
-            </h3>
-          </div>
-          <div className="relative my-5 sm:my-6 w-40 sm:w-56 h-48 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
-            <img src="/images/solkadi.jpg" alt="Sol Kadi" className="w-full h-full object-cover rounded-2xl shadow-2xl drop-shadow-2xl" />
-          </div>
-          <button
-            onClick={(e) => { e.stopPropagation(); handleSelectFlavor(2, 'sol-kadi'); }}
-            onPointerEnter={() => setCursor('open', `${tr('showcase.viewDishOrder')} · ${isMr ? 'सोलकढी' : 'SOL KADI'}`)}
-            onPointerLeave={() => setCursor('explore', isMr ? 'सोलकढी' : 'SOL KADI')}
-            className="z-10 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center justify-center gap-2 group-hover:scale-105 transition-all max-w-[90%] truncate"
-          >
-            <span className="truncate">{tr('showcase.viewDishOrder')} · ₹99</span>
-            <Plus size={14} className="shrink-0" />
-          </button>
-        </ShowcaseColumn>
+          <img
+            src={activeItem.image}
+            alt={isMr ? activeItem.nameMr : activeItem.name}
+            className="w-full h-full object-cover rounded-2xl sm:rounded-3xl shadow-2xl drop-shadow-2xl border-2 border-white/20"
+          />
+        </div>
 
-        {/* ── COLUMN 4: Kokum Sherbet (Pink/Magenta) ── */}
-        <ShowcaseColumn
-          index={3}
-          productId="kokum-sarbat"
-          bgColor={kokum.bgColor}
-          onClick={() => handleSelectFlavor(3, 'kokum-sarbat')}
-          onHover={() => setCursor('explore', isMr ? 'कोकम शर्बत' : 'KOKUM SARBAT')}
-          onLeave={() => setCursor('default', null)}
-          doodles={
-            <>
-              <div data-doodle className="absolute -left-4 bottom-10 w-28 sm:w-44 opacity-80">
-                <HibiscusDoodle className="w-full" />
-              </div>
-              <div data-doodle className="absolute right-2 top-20 w-24 sm:w-40 opacity-75">
-                <ArchCloudWindow className="w-full" />
-              </div>
-              <div data-doodle className="absolute right-1 bottom-8 w-20 sm:w-32 rotate-[-15deg] opacity-80">
-                <SliceCitrusDoodle className="w-full" />
-              </div>
-              <div data-doodle className="absolute left-1/3 top-14 w-8 h-8 opacity-50">
-                <BubbleRing className="w-full" />
-              </div>
-              <div data-doodle className="absolute right-1/4 bottom-20 w-5 h-5">
-                <SparkleStar className="w-full" />
-              </div>
-            </>
-          }
-        >
-          <div className="text-center z-10">
-            <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest block mb-1" style={{ color: kokum.darkColor }}>
-              {tr('showcase.drinkTag')}
-            </span>
-            <h3 className="font-bubble text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-[#111827] leading-tight">
-              {isMr ? 'कोकम शर्बत' : 'KOKUM SARBAT'}
-            </h3>
-          </div>
-          <div className="relative my-5 sm:my-6 w-40 sm:w-56 h-48 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
-            <img src="/images/kokum-drink.jpg" alt="Kokum Sherbet" className="w-full h-full object-cover rounded-2xl shadow-2xl drop-shadow-2xl" />
-          </div>
+        {/* MANA White Pill CTA Button + Indicator Dots */}
+        <div className="w-full flex flex-col items-center gap-3.5 z-10 px-8">
           <button
-            onClick={(e) => { e.stopPropagation(); handleSelectFlavor(3, 'kokum-sarbat'); }}
-            onPointerEnter={() => setCursor('open', `${tr('showcase.viewDishOrder')} · ${isMr ? 'कोकम शर्बत' : 'KOKUM SARBAT'}`)}
-            onPointerLeave={() => setCursor('explore', isMr ? 'कोकम शर्बत' : 'KOKUM SARBAT')}
-            className="z-10 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center justify-center gap-2 group-hover:scale-105 transition-all max-w-[90%] truncate"
+            onClick={() => handleSelectFlavor(activeItem.flavorIndex, activeItem.id)}
+            className="w-full max-w-xs py-3 sm:py-3.5 px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold font-sans shadow-xl hover:bg-gray-50 flex items-center justify-center gap-2 active:scale-95 transition-all duration-200 border border-black/5 truncate"
           >
-            <span className="truncate">{tr('showcase.viewDishOrder')} · ₹79</span>
-            <Plus size={14} className="shrink-0" />
+            <span className="truncate">{tr('showcase.discoverProduct')} · ₹{activeItem.price}</span>
+            <ArrowRight size={15} className="shrink-0" />
           </button>
-        </ShowcaseColumn>
+
+          {/* 4 Interactive Indicator Pills */}
+          <div className="flex items-center gap-2 pt-1">
+            {SHOWCASE_ITEMS.map((item, i) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setSelectedIdx(i);
+                  setActiveFlavorIndex(item.flavorIndex);
+                }}
+                className={`transition-all duration-300 rounded-full ${
+                  i === selectedIdx
+                    ? 'w-7 h-2 bg-[#111827]'
+                    : 'w-2 h-2 bg-black/25 hover:bg-black/40'
+                }`}
+                aria-label={`Select ${item.name}`}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Floating Circular Navigation Arrows - for large screens */}
+      {/* ── DESKTOP VIEW (>= 1024px): 4-Column Spectrum Layout Matching Reference ── */}
+      <div className="hidden lg:grid grid-cols-4 min-h-[720px] w-full">
+        {SHOWCASE_ITEMS.map((item, i) => {
+          const isSelected = selectedIdx === i;
+          return (
+            <ShowcaseColumn
+              key={item.id}
+              index={i}
+              productId={item.id}
+              bgColor={item.bgHex}
+              borderClass={i < SHOWCASE_ITEMS.length - 1 ? 'border-r border-black/5' : ''}
+              onClick={() => {
+                setSelectedIdx(i);
+                setActiveFlavorIndex(item.flavorIndex);
+              }}
+              onHover={() => setCursor('explore', isMr ? item.nameMr : item.name)}
+              onLeave={() => setCursor('default', null)}
+              doodles={item.doodles}
+            >
+              <div className="text-center z-10">
+                <span
+                  className="text-[10px] sm:text-xs font-black uppercase tracking-widest block mb-1"
+                  style={{ color: item.darkHex }}
+                >
+                  {isMr ? item.tagMr : item.tag}
+                </span>
+                <h3 className="font-bubble text-2xl sm:text-3xl lg:text-4xl font-black uppercase tracking-tight text-[#111827] leading-tight">
+                  {isMr ? item.nameMr : item.name}
+                </h3>
+              </div>
+
+              <div className="relative my-5 sm:my-6 w-44 lg:w-56 h-56 lg:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
+                <img
+                  src={item.image}
+                  alt={isMr ? item.nameMr : item.name}
+                  className="w-full h-full object-cover rounded-2xl shadow-2xl drop-shadow-2xl"
+                />
+              </div>
+
+              {/* In MANA reference, focused item has expanded 'Discover this product' pill, others have '+' */}
+              {isSelected ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSelectFlavor(item.flavorIndex, item.id);
+                  }}
+                  onPointerEnter={() => setCursor('open', `${tr('showcase.discoverProduct')} · ${isMr ? item.nameMr : item.name}`)}
+                  onPointerLeave={() => setCursor('explore', isMr ? item.nameMr : item.name)}
+                  className="z-10 py-3 px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-xl hover:bg-gray-50 flex items-center justify-center gap-2 hover:scale-105 transition-all max-w-[90%] truncate border border-black/5"
+                >
+                  <span className="truncate">{tr('showcase.discoverProduct')} · ₹{item.price}</span>
+                  <ArrowRight size={15} className="shrink-0" />
+                </button>
+              ) : (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedIdx(i);
+                    setActiveFlavorIndex(item.flavorIndex);
+                  }}
+                  onPointerEnter={() => setCursor('open', isMr ? item.nameMr : item.name)}
+                  onPointerLeave={() => setCursor('default', null)}
+                  className="z-10 w-11 h-11 rounded-full bg-white text-[#111827] hover:scale-110 active:scale-95 flex items-center justify-center shadow-md hover:bg-gray-50 transition-all border border-black/5"
+                  aria-label={`Select ${item.name}`}
+                >
+                  <Plus size={18} />
+                </button>
+              )}
+            </ShowcaseColumn>
+          );
+        })}
+      </div>
+
+      {/* ── FLOATING CIRCULAR NAVIGATION CONTROL BUTTONS: VISIBLE ON BOTH MOBILE & DESKTOP ── */}
       <button
-        onClick={() => handleNavigate('prev')}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleNavigate('prev');
+        }}
         onPointerEnter={() => setCursor('open', tr('hero.prevDish'))}
         onPointerLeave={() => setCursor('default', null)}
-        className="hidden lg:flex absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white text-[#111827] hover:scale-110 active:scale-95 items-center justify-center shadow-2xl border border-black/10 z-20"
+        className="absolute left-2.5 sm:left-4 lg:left-6 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 lg:w-14 lg:h-14 rounded-full bg-white text-[#111827] hover:scale-110 active:scale-95 flex items-center justify-center shadow-xl lg:shadow-2xl border border-black/10 z-30 transition-transform duration-150 cursor-pointer"
         aria-label={tr('hero.prevDish')}
       >
-        <ChevronLeft size={24} />
+        <ChevronLeft size={22} className="sm:w-6 sm:h-6" strokeWidth={2.4} />
       </button>
+
       <button
-        onClick={() => handleNavigate('next')}
+        onClick={(e) => {
+          e.stopPropagation();
+          handleNavigate('next');
+        }}
         onPointerEnter={() => setCursor('open', tr('hero.nextDish'))}
         onPointerLeave={() => setCursor('default', null)}
-        className="hidden lg:flex absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white text-[#111827] hover:scale-110 active:scale-95 items-center justify-center shadow-2xl border border-black/10 z-20"
+        className="absolute right-2.5 sm:right-4 lg:right-6 top-1/2 -translate-y-1/2 w-11 h-11 sm:w-13 sm:h-13 lg:w-14 lg:h-14 rounded-full bg-white text-[#111827] hover:scale-110 active:scale-95 flex items-center justify-center shadow-xl lg:shadow-2xl border border-black/10 z-30 transition-transform duration-150 cursor-pointer"
         aria-label={tr('hero.nextDish')}
       >
-        <ChevronRight size={24} />
+        <ChevronRight size={22} className="sm:w-6 sm:h-6" strokeWidth={2.4} />
       </button>
     </section>
   );

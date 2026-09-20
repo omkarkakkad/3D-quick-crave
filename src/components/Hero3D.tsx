@@ -4,7 +4,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, Center, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
-import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight, ChevronDown } from 'lucide-react';
 import { useStore, SIGNATURE_FLAVORS } from '../store/useStore';
 import { useT } from '../i18n/useT';
 import {
@@ -552,21 +552,31 @@ function ManaGlassModel({
   );
 }
 
-// Adapt camera distance based on viewport aspect ratio for perfect mobile framing
+// Adapt camera distance based on viewport aspect ratio so models are smaller, sharper, and clearly framed
 function AdaptiveCamera() {
   const { camera, size } = useThree();
 
   useEffect(() => {
     const aspect = size.width / Math.max(size.height, 1);
     let targetZ = 4.4;
-    if (aspect < 0.6) {
+    let targetY = 0;
+    if (aspect < 0.55) {
+      // Tall narrow mobile portrait (e.g. 375x667, 390x844, 400x921)
+      targetZ = 6.8;
+      targetY = 0.12;
+    } else if (aspect < 0.75) {
+      // Standard mobile portrait
       targetZ = 6.2;
-    } else if (aspect < 0.8) {
-      targetZ = 5.6;
-    } else if (aspect < 1.1) {
-      targetZ = 4.9;
+      targetY = 0.1;
+    } else if (aspect < 1.0) {
+      // Tablet portrait / square
+      targetZ = 5.4;
+      targetY = 0.06;
+    } else if (aspect < 1.2) {
+      targetZ = 4.8;
+      targetY = 0.02;
     }
-    camera.position.z = targetZ;
+    camera.position.set(0, targetY, targetZ);
     camera.updateProjectionMatrix();
   }, [camera, size.width, size.height]);
 
@@ -677,12 +687,19 @@ export function Hero3D() {
     }
   };
 
+  const scrollToMenu = () => {
+    const el = document.getElementById('menu');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section
       ref={heroRef}
       id="hero"
       style={{ backgroundColor: currentFlavor.bgColor }}
-      className="relative w-full h-[100dvh] min-h-[580px] max-h-[1100px] flex flex-col items-center justify-between overflow-hidden select-none transition-colors duration-700"
+      className="relative w-full h-[100dvh] min-h-[520px] max-h-[1100px] flex flex-col items-center justify-between overflow-hidden select-none transition-colors duration-700"
     >
       {/* Top Sunburst Rays (Common across all flavors) */}
       <div className="absolute top-0 inset-x-0 flex justify-center pointer-events-none -z-0">
@@ -835,11 +852,11 @@ export function Hero3D() {
       </div>
 
       {/* Top Spacer for fixed navbar */}
-      <div className="pt-20 sm:pt-28" />
+      <div className="h-16 sm:h-24 shrink-0" />
 
-      {/* Centered 3D Canvas Viewport — Perfectly Framed & Proportioned */}
+      {/* Centered 3D Canvas Viewport — Perfectly Framed & Proportioned with min-h-0 */}
       <div
-        className="relative flex-1 w-full max-w-4xl mx-auto flex items-center justify-center z-10"
+        className="relative flex-1 min-h-0 w-full max-w-4xl mx-auto flex items-center justify-center z-10"
         onPointerEnter={() => setCursor('drag', isMr ? 'घसरा करा · फिरवा' : 'DRAG TO EXPLORE')}
         onPointerLeave={() => setCursor('default', null)}
       >
@@ -856,40 +873,52 @@ export function Hero3D() {
         </Canvas>
       </div>
 
-      {/* MANA-style Interactive Bottom Navigation Controls */}
-      <div className="relative z-20 w-full max-w-2xl px-3 sm:px-6 pb-5 sm:pb-10 flex items-center justify-between gap-2 sm:gap-4">
-        {/* Left Floating Circular Arrow Button */}
-        <button
-          onClick={prevFlavor}
-          onPointerEnter={() => setCursor('open', tr('hero.prevDish'))}
-          onPointerLeave={() => setCursor('default', null)}
-          className="w-10 h-10 sm:w-14 sm:h-14 shrink-0 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5"
-          aria-label={tr('hero.prevDish')}
-        >
-          <ChevronLeft size={20} className="sm:w-6 sm:h-6" strokeWidth={2.2} />
-        </button>
+      {/* MANA-style Interactive Bottom Navigation Controls & Scroll Down Cue */}
+      <div className="relative z-20 w-full max-w-2xl mx-auto px-4 sm:px-6 pb-3 sm:pb-6 flex flex-col items-center gap-2.5 sm:gap-3 shrink-0">
+        <div className="w-full flex items-center justify-between gap-2.5 sm:gap-4">
+          {/* Left Floating Circular Arrow Button */}
+          <button
+            onClick={prevFlavor}
+            onPointerEnter={() => setCursor('open', tr('hero.prevDish'))}
+            onPointerLeave={() => setCursor('default', null)}
+            className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5 cursor-pointer"
+            aria-label={tr('hero.prevDish')}
+          >
+            <ChevronLeft size={20} className="sm:w-6 sm:h-6" strokeWidth={2.4} />
+          </button>
 
-        {/* Center Pill Button: Active Flavor Name linking directly to its product page */}
-        <Link
-          to={`/products/${currentFlavor.id}`}
-          style={{ backgroundColor: currentFlavor.buttonBg }}
-          onPointerEnter={() => setCursor('open', isMr ? currentFlavor.nameMr : currentFlavor.name)}
-          onPointerLeave={() => setCursor('default', null)}
-          className="group flex-1 min-w-0 max-w-sm py-3 sm:py-4 px-3 sm:px-8 rounded-full text-white text-xs sm:text-base md:text-lg font-bold font-bubble tracking-wide shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 text-center"
-        >
-          <span className="truncate">{isMr ? currentFlavor.nameMr : currentFlavor.name}</span>
-          <ArrowRight size={15} className="shrink-0 group-hover:translate-x-1 transition-transform" />
-        </Link>
+          {/* Center Pill Button: Active Flavor Name linking directly to its product page */}
+          <Link
+            to={`/products/${currentFlavor.id}`}
+            style={{ backgroundColor: currentFlavor.buttonBg }}
+            onPointerEnter={() => setCursor('open', isMr ? currentFlavor.nameMr : currentFlavor.name)}
+            onPointerLeave={() => setCursor('default', null)}
+            className="group flex-1 min-w-0 max-w-sm py-3 sm:py-4 px-4 sm:px-8 rounded-full text-white text-xs sm:text-base md:text-lg font-bold font-bubble tracking-wide shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 text-center"
+          >
+            <span className="truncate">{isMr ? currentFlavor.nameMr : currentFlavor.name}</span>
+            <ArrowRight size={16} className="shrink-0 group-hover:translate-x-1 transition-transform" />
+          </Link>
 
-        {/* Right Floating Circular Arrow Button */}
+          {/* Right Floating Circular Arrow Button */}
+          <button
+            onClick={nextFlavor}
+            onPointerEnter={() => setCursor('open', tr('hero.nextDish'))}
+            onPointerLeave={() => setCursor('default', null)}
+            className="w-11 h-11 sm:w-14 sm:h-14 shrink-0 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5 cursor-pointer"
+            aria-label={tr('hero.nextDish')}
+          >
+            <ChevronRight size={20} className="sm:w-6 sm:h-6" strokeWidth={2.4} />
+          </button>
+        </div>
+
+        {/* Animated Scroll Down Indication Prompt: Guides customer to the Menu & Order section */}
         <button
-          onClick={nextFlavor}
-          onPointerEnter={() => setCursor('open', tr('hero.nextDish'))}
-          onPointerLeave={() => setCursor('default', null)}
-          className="w-10 h-10 sm:w-14 sm:h-14 shrink-0 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5"
-          aria-label={tr('hero.nextDish')}
+          onClick={scrollToMenu}
+          className="group inline-flex items-center gap-1.5 py-1.5 px-4 rounded-full bg-black/10 hover:bg-black/20 text-[#111827] text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all active:scale-95 cursor-pointer shadow-sm backdrop-blur-sm border border-black/5"
+          aria-label={tr('hero.scrollForMenu')}
         >
-          <ChevronRight size={20} className="sm:w-6 sm:h-6" strokeWidth={2.2} />
+          <span>{tr('hero.scrollForMenu')}</span>
+          <ChevronDown size={14} className="animate-bounce text-[#111827]" />
         </button>
       </div>
     </section>
