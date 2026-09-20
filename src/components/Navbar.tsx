@@ -45,7 +45,7 @@ export function Navbar() {
 
       {/* Main Header Container */}
       <header
-        className={`w-full transition-all duration-300 px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between ${
+        className={`w-full transition-all duration-300 px-3 sm:px-8 py-2.5 sm:py-4 flex items-center justify-between ${
           scrolled
             ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100'
             : 'bg-white/80 backdrop-blur-sm'
@@ -53,16 +53,16 @@ export function Navbar() {
       >
         {/* Left: Playful MANA-style Chunky White/Dark Logo */}
         <Link to="/" className="flex items-center gap-2 group focus:outline-none">
-          <div className="font-bubble font-black text-2xl sm:text-3xl tracking-tight flex items-center drop-shadow-sm">
+          <div className="font-bubble font-black text-xl sm:text-2xl lg:text-3xl tracking-tight flex items-center drop-shadow-sm">
             <span className="text-[#1E2B58]">QUICK</span>
-            <span className="ml-1.5 -rotate-2 text-[#E05A36]">
+            <span className="ml-1 -rotate-2 text-[#E05A36]">
               CRAVE
             </span>
           </div>
         </Link>
 
         {/* Right Navigation: White Pill Buttons (MANA Signature Style) */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-1.5 sm:gap-3">
           {/* Shop / Menu Pill */}
           <div className="relative group hidden md:block">
             <a
@@ -100,6 +100,8 @@ export function Navbar() {
           {/* Phone Call Pill */}
           <a
             href={`tel:+91${PHONE_1}`}
+            onPointerEnter={() => setCursor('open', `Call ${PHONE_1}`)}
+            onPointerLeave={() => setCursor('default', null)}
             className="hidden xl:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 text-xs font-bold shadow-sm border border-black/5 transition-all"
             title={`${tr('nav.callKitchen')}: ${PHONE_1}`}
           >
@@ -110,12 +112,14 @@ export function Navbar() {
           {/* Dual Language Switcher Pill (EN | MR) - Always Accessible */}
           <button
             onClick={() => setLang(lang === 'en' ? 'mr' : 'en')}
-            onPointerEnter={() => setCursor('open', lang === 'en' ? 'मराठी मध्ये बदला' : 'Switch to English')}
+            onPointerEnter={() => setCursor('open', lang === 'en' ? 'Switch to मराठी' : 'Switch to English')}
             onPointerLeave={() => setCursor('default', null)}
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 text-xs font-black tracking-wider shadow-sm border border-black/5 transition-all active:scale-95"
+            className="inline-flex items-center gap-0.5 sm:gap-1 px-2 py-1 sm:px-3 sm:py-2 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 text-[11px] sm:text-xs font-black tracking-wider shadow-sm border border-black/5 transition-all active:scale-95"
+            title={lang === 'en' ? 'मराठी मध्ये बदला (Switch to Marathi)' : 'Switch to English'}
+            aria-label="Toggle language between English and Marathi"
           >
             <span
-              className={`px-2 py-0.5 rounded-full transition-all ${
+              className={`px-1.5 py-0.5 sm:px-2 rounded-full transition-all ${
                 lang === 'en' ? 'bg-[#1E2B58] text-white shadow-xs' : 'text-gray-400 hover:text-gray-700'
               }`}
             >
@@ -123,7 +127,7 @@ export function Navbar() {
             </span>
             <span className="text-gray-300 text-[10px]">/</span>
             <span
-              className={`px-2 py-0.5 rounded-full transition-all ${
+              className={`px-1.5 py-0.5 sm:px-2 rounded-full transition-all ${
                 lang === 'mr' ? 'bg-[#E05A36] text-white shadow-xs' : 'text-gray-400 hover:text-gray-700'
               }`}
             >
@@ -144,10 +148,10 @@ export function Navbar() {
             <ArrowUpRight size={13} />
           </a>
 
-          {/* User Profile Pill Icon */}
+          {/* User Profile Pill Icon - Hidden on small mobile to give room to Logo & Cart */}
           <a
             href="#about"
-            className="w-10 h-10 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 flex items-center justify-center shadow-sm border border-black/5 transition-all active:scale-95"
+            className="hidden sm:flex w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 items-center justify-center shadow-sm border border-black/5 transition-all active:scale-95"
             aria-label="About Quick Crave"
           >
             <User size={16} />
@@ -158,7 +162,7 @@ export function Navbar() {
             onClick={() => setCartOpen(true)}
             onPointerEnter={() => setCursor('open', tr('nav.viewCart'))}
             onPointerLeave={() => setCursor('default', null)}
-            className="relative w-10 h-10 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 flex items-center justify-center shadow-sm border border-black/5 transition-all active:scale-95"
+            className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 flex items-center justify-center shadow-sm border border-black/5 transition-all active:scale-95"
             aria-label={tr('nav.viewCart')}
           >
             <ShoppingBag size={16} />
@@ -172,7 +176,7 @@ export function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden w-10 h-10 rounded-full bg-white text-[#1E293B] flex items-center justify-center shadow-sm border border-black/5 active:scale-95"
+            className="md:hidden w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white text-[#1E293B] flex items-center justify-center shadow-sm border border-black/5 active:scale-95"
             aria-label="Toggle Menu"
           >
             {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}

@@ -84,7 +84,7 @@ export default function App() {
         {/* Floating Sticky Quick Order Pill (GSAP Animated) */}
         <div
           ref={pillRef}
-          className="fixed bottom-6 right-4 sm:right-8 z-40 flex items-center gap-2 p-1.5 rounded-full bg-white/95 backdrop-blur-md border border-gray-200 shadow-2xl opacity-0 translate-y-10 pointer-events-auto"
+          className="fixed bottom-4 sm:bottom-6 right-3 sm:right-8 z-40 flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 rounded-full bg-white/95 backdrop-blur-md border border-gray-200 shadow-2xl opacity-0 translate-y-10 pointer-events-auto"
         >
           <a
             href={zomatoUrl}
@@ -92,17 +92,17 @@ export default function App() {
             rel="noreferrer"
             onPointerEnter={() => setCursor('open', 'Order on Zomato')}
             onPointerLeave={() => setCursor('default', null)}
-            className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md active:scale-95"
+            className="inline-flex items-center gap-1 sm:gap-1.5 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all shadow-md active:scale-95"
           >
             <span>Order on Zomato</span>
-            <ArrowUpRight size={14} />
+            <ArrowUpRight size={13} />
           </a>
 
           <a
             href={`tel:+91${PHONE_1}`}
             onPointerEnter={() => setCursor('open', `Call ${PHONE_1}`)}
             onPointerLeave={() => setCursor('default', null)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-[#1E2B58] hover:bg-gray-100 rounded-full transition-colors"
+            className="inline-flex items-center gap-1 px-2.5 sm:px-3.5 py-2 sm:py-2.5 text-[11px] sm:text-xs font-bold text-[#1E2B58] hover:bg-gray-100 rounded-full transition-colors"
           >
             <Phone size={13} className="text-[#1E2B58]" />
             <span className="hidden sm:inline">{PHONE_1}</span>

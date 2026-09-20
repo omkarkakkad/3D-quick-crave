@@ -1,6 +1,6 @@
 import { useRef, useEffect, Suspense, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useGLTF, Center, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
@@ -552,6 +552,27 @@ function ManaGlassModel({
   );
 }
 
+// Adapt camera distance based on viewport aspect ratio for perfect mobile framing
+function AdaptiveCamera() {
+  const { camera, size } = useThree();
+
+  useEffect(() => {
+    const aspect = size.width / Math.max(size.height, 1);
+    let targetZ = 4.4;
+    if (aspect < 0.6) {
+      targetZ = 6.2;
+    } else if (aspect < 0.8) {
+      targetZ = 5.6;
+    } else if (aspect < 1.1) {
+      targetZ = 4.9;
+    }
+    camera.position.z = targetZ;
+    camera.updateProjectionMatrix();
+  }, [camera, size.width, size.height]);
+
+  return null;
+}
+
 // 3D Scene Controller — uses OrbitControls for smooth drag-to-rotate
 function Scene3D({
   flavor,
@@ -581,6 +602,7 @@ function Scene3D({
 
   return (
     <>
+      <AdaptiveCamera />
       <ambientLight intensity={1.6} color="#FFFFFF" />
       <directionalLight position={[4, 6, 4]} intensity={2.8} color="#FFFFFF" castShadow />
       <directionalLight position={[-4, 3, -2]} intensity={1.2} color="#E0F2FE" />
@@ -660,7 +682,7 @@ export function Hero3D() {
       ref={heroRef}
       id="hero"
       style={{ backgroundColor: currentFlavor.bgColor }}
-      className="relative w-full h-[100vh] min-h-[680px] flex flex-col items-center justify-between overflow-hidden select-none transition-colors duration-700"
+      className="relative w-full h-[100dvh] min-h-[580px] max-h-[1100px] flex flex-col items-center justify-between overflow-hidden select-none transition-colors duration-700"
     >
       {/* Top Sunburst Rays (Common across all flavors) */}
       <div className="absolute top-0 inset-x-0 flex justify-center pointer-events-none -z-0">
@@ -673,30 +695,30 @@ export function Hero3D() {
         {currentFlavor.doodleSet === 'green' && (
           <>
             {/* Left Friendly Red Doodle Creature */}
-            <div className="absolute -left-10 sm:left-4 bottom-16 sm:bottom-24 w-60 sm:w-80 md:w-96 animate-[float_8s_ease-in-out_infinite]">
+            <div className="absolute -left-8 sm:left-4 bottom-14 sm:bottom-24 w-36 sm:w-80 md:w-96 opacity-60 sm:opacity-100 animate-[float_8s_ease-in-out_infinite]">
               <RedMonsterDoodle className="w-full" />
             </div>
 
             {/* Left Tropical Leaves & Orange Blossom Flower */}
-            <div className="absolute left-2 sm:left-12 -bottom-8 w-64 sm:w-80 opacity-95">
+            <div className="absolute left-1 sm:left-12 -bottom-6 w-40 sm:w-80 opacity-60 sm:opacity-95">
               <BotanicalLeavesFlower className="w-full" />
             </div>
 
             {/* Right Citrus Watermelon Slice */}
-            <div className="absolute right-8 sm:right-24 bottom-24 sm:bottom-36 w-44 sm:w-60 animate-[float_6s_ease-in-out_infinite]">
+            <div className="absolute right-4 sm:right-24 bottom-20 sm:bottom-36 w-28 sm:w-60 opacity-70 sm:opacity-100 animate-[float_6s_ease-in-out_infinite]">
               <SliceCitrusDoodle className="w-full" />
             </div>
 
             {/* Right Arch Window with Blue Sky & Clouds */}
-            <div className="absolute -right-6 sm:right-12 top-28 sm:top-36 w-36 sm:w-52 opacity-90">
+            <div className="absolute -right-4 sm:right-12 top-20 sm:top-36 w-24 sm:w-52 opacity-60 sm:opacity-90">
               <ArchCloudWindow className="w-full" />
             </div>
 
             {/* Floating Bubble Rings */}
-            <div className="absolute left-1/4 top-36 w-12 h-12 opacity-40">
+            <div className="absolute left-1/4 top-28 sm:top-36 w-8 sm:w-12 h-8 sm:h-12 opacity-30 sm:opacity-40">
               <BubbleRing className="w-full" />
             </div>
-            <div className="absolute right-1/3 bottom-44 w-8 h-8 opacity-40">
+            <div className="absolute right-1/3 bottom-36 sm:bottom-44 w-6 sm:w-8 h-6 sm:h-8 opacity-30 sm:opacity-40">
               <BubbleRing className="w-full" />
             </div>
           </>
@@ -706,22 +728,22 @@ export function Hero3D() {
         {currentFlavor.doodleSet === 'yellow' && (
           <>
             {/* Left Blue Dancing Cartoon Character */}
-            <div className="absolute -left-6 sm:left-6 bottom-12 sm:bottom-20 w-64 sm:w-84 md:w-[420px] animate-[float_7s_ease-in-out_infinite]">
+            <div className="absolute -left-6 sm:left-6 bottom-12 sm:bottom-20 w-40 sm:w-84 md:w-[420px] opacity-60 sm:opacity-100 animate-[float_7s_ease-in-out_infinite]">
               <BlueDancerDoodle className="w-full" />
             </div>
 
             {/* Kicked Citrus Slice */}
-            <div className="absolute left-40 sm:left-80 bottom-16 w-32 sm:w-44 rotate-12">
+            <div className="absolute left-28 sm:left-80 bottom-14 sm:bottom-16 w-20 sm:w-44 rotate-12 opacity-70 sm:opacity-100">
               <SliceCitrusDoodle className="w-full" />
             </div>
 
             {/* Right Hanging Character Doodles */}
-            <div className="absolute right-4 sm:right-16 top-24 sm:top-28 w-44 sm:w-64 opacity-90 animate-[float_9s_ease-in-out_infinite]">
+            <div className="absolute right-2 sm:right-16 top-20 sm:top-28 w-28 sm:w-64 opacity-60 sm:opacity-90 animate-[float_9s_ease-in-out_infinite]">
               <RedMonsterDoodle className="w-full scale-90 rotate-180" />
             </div>
 
             {/* Right Tropical Foliage */}
-            <div className="absolute -right-10 bottom-4 w-60 sm:w-72">
+            <div className="absolute -right-6 sm:-right-10 bottom-4 w-36 sm:w-72 opacity-60 sm:opacity-100">
               <BotanicalLeavesFlower className="w-full rotate-45" />
             </div>
           </>
@@ -731,25 +753,25 @@ export function Hero3D() {
         {currentFlavor.doodleSet === 'blue' && (
           <>
             {/* Left Giant Pink Hibiscus Flower */}
-            <div className="absolute -left-8 sm:left-12 top-32 sm:top-40 w-52 sm:w-72 md:w-80 animate-[float_6s_ease-in-out_infinite]">
+            <div className="absolute -left-6 sm:left-12 top-24 sm:top-40 w-32 sm:w-72 md:w-80 opacity-60 sm:opacity-100 animate-[float_6s_ease-in-out_infinite]">
               <HibiscusDoodle className="w-full" />
             </div>
 
             {/* Left Smiling Cartoon Blackberry */}
-            <div className="absolute left-4 sm:left-24 bottom-16 sm:bottom-24 w-36 sm:w-52">
+            <div className="absolute left-2 sm:left-24 bottom-14 sm:bottom-24 w-24 sm:w-52 opacity-70 sm:opacity-100">
               <BlackberryDoodle className="w-full" />
             </div>
 
             {/* Right Rocket Ship Blasting Off with Smoke Trails */}
-            <div className="absolute -right-4 sm:right-16 bottom-20 sm:bottom-28 w-60 sm:w-80 md:w-96 animate-[float_8s_ease-in-out_infinite]">
+            <div className="absolute -right-3 sm:right-16 bottom-16 sm:bottom-28 w-36 sm:w-80 md:w-96 opacity-60 sm:opacity-100 animate-[float_8s_ease-in-out_infinite]">
               <RocketShipDoodle className="w-full -rotate-12" />
             </div>
 
             {/* Sparkle Stars */}
-            <div className="absolute left-1/3 top-40 w-10 h-10 animate-pulse">
+            <div className="absolute left-1/3 top-32 sm:top-40 w-6 sm:w-10 h-6 sm:h-10 animate-pulse">
               <SparkleStar className="w-full" />
             </div>
-            <div className="absolute right-1/4 top-52 w-12 h-12 animate-pulse">
+            <div className="absolute right-1/4 top-40 sm:top-52 w-8 sm:w-12 h-8 sm:h-12 animate-pulse">
               <SparkleStar className="w-full" />
             </div>
           </>
@@ -758,13 +780,13 @@ export function Hero3D() {
         {/* FLAVOR 3: CORAL (The Malvani Feast Box) */}
         {currentFlavor.doodleSet === 'coral' && (
           <>
-            <div className="absolute left-8 bottom-24 w-64 sm:w-80">
+            <div className="absolute left-4 sm:left-8 bottom-16 sm:bottom-24 w-40 sm:w-80 opacity-60 sm:opacity-100">
               <BotanicalLeavesFlower className="w-full" />
             </div>
-            <div className="absolute right-8 bottom-24 w-52 sm:w-72">
+            <div className="absolute right-4 sm:right-8 bottom-16 sm:bottom-24 w-32 sm:w-72 opacity-60 sm:opacity-100">
               <SliceCitrusDoodle className="w-full" />
             </div>
-            <div className="absolute left-1/4 top-36 w-10 h-10">
+            <div className="absolute left-1/4 top-28 sm:top-36 w-6 sm:w-10 h-6 sm:h-10">
               <SparkleStar className="w-full" />
             </div>
           </>
@@ -774,38 +796,38 @@ export function Hero3D() {
         {currentFlavor.doodleSet === 'pink' && (
           <>
             {/* Left Hibiscus Flower — large, tropical */}
-            <div className="absolute -left-6 sm:left-8 bottom-20 sm:bottom-28 w-52 sm:w-72 md:w-80 animate-[float_7s_ease-in-out_infinite]">
+            <div className="absolute -left-6 sm:left-8 bottom-14 sm:bottom-28 w-32 sm:w-72 md:w-80 opacity-60 sm:opacity-100 animate-[float_7s_ease-in-out_infinite]">
               <HibiscusDoodle className="w-full" />
             </div>
 
             {/* Left Tropical Botanical Leaves */}
-            <div className="absolute left-0 sm:left-16 -bottom-6 w-56 sm:w-72 opacity-90">
+            <div className="absolute left-0 sm:left-16 -bottom-6 w-36 sm:w-72 opacity-50 sm:opacity-90">
               <BotanicalLeavesFlower className="w-full -rotate-12" />
             </div>
 
             {/* Right Arch Window with Clouds */}
-            <div className="absolute -right-4 sm:right-14 top-24 sm:top-32 w-36 sm:w-52 opacity-90">
+            <div className="absolute -right-3 sm:right-14 top-20 sm:top-32 w-24 sm:w-52 opacity-60 sm:opacity-90">
               <ArchCloudWindow className="w-full" />
             </div>
 
             {/* Right Citrus Slice — kokum garnish feel */}
-            <div className="absolute right-8 sm:right-28 bottom-20 sm:bottom-32 w-36 sm:w-48 animate-[float_6s_ease-in-out_infinite]">
+            <div className="absolute right-4 sm:right-28 bottom-16 sm:bottom-32 w-24 sm:w-48 opacity-60 sm:opacity-100 animate-[float_6s_ease-in-out_infinite]">
               <SliceCitrusDoodle className="w-full rotate-[-15deg]" />
             </div>
 
             {/* Floating Bubble Rings */}
-            <div className="absolute left-1/3 top-32 w-10 h-10 opacity-40">
+            <div className="absolute left-1/3 top-24 sm:top-32 w-6 sm:w-10 h-6 sm:h-10 opacity-30 sm:opacity-40">
               <BubbleRing className="w-full" />
             </div>
-            <div className="absolute right-1/4 bottom-48 w-8 h-8 opacity-40">
+            <div className="absolute right-1/4 bottom-36 sm:bottom-48 w-6 sm:w-8 h-6 sm:h-8 opacity-30 sm:opacity-40">
               <BubbleRing className="w-full" />
             </div>
 
             {/* Sparkle Stars */}
-            <div className="absolute left-[42%] top-28 w-8 h-8 animate-pulse">
+            <div className="absolute left-[42%] top-24 sm:top-28 w-6 sm:w-8 h-6 sm:h-8 animate-pulse">
               <SparkleStar className="w-full" />
             </div>
-            <div className="absolute right-[38%] top-52 w-6 h-6 animate-pulse">
+            <div className="absolute right-[38%] top-44 sm:top-52 w-5 sm:w-6 h-5 sm:h-6 animate-pulse">
               <SparkleStar className="w-full" />
             </div>
           </>
@@ -813,7 +835,7 @@ export function Hero3D() {
       </div>
 
       {/* Top Spacer for fixed navbar */}
-      <div className="pt-24 sm:pt-28" />
+      <div className="pt-20 sm:pt-28" />
 
       {/* Centered 3D Canvas Viewport — Perfectly Framed & Proportioned */}
       <div
@@ -835,16 +857,16 @@ export function Hero3D() {
       </div>
 
       {/* MANA-style Interactive Bottom Navigation Controls */}
-      <div className="relative z-20 w-full max-w-2xl px-6 pb-8 sm:pb-12 flex items-center justify-between gap-4">
+      <div className="relative z-20 w-full max-w-2xl px-3 sm:px-6 pb-5 sm:pb-10 flex items-center justify-between gap-2 sm:gap-4">
         {/* Left Floating Circular Arrow Button */}
         <button
           onClick={prevFlavor}
           onPointerEnter={() => setCursor('open', tr('hero.prevDish'))}
           onPointerLeave={() => setCursor('default', null)}
-          className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5"
+          className="w-10 h-10 sm:w-14 sm:h-14 shrink-0 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5"
           aria-label={tr('hero.prevDish')}
         >
-          <ChevronLeft size={24} strokeWidth={2.2} />
+          <ChevronLeft size={20} className="sm:w-6 sm:h-6" strokeWidth={2.2} />
         </button>
 
         {/* Center Pill Button: Active Flavor Name linking directly to its product page */}
@@ -853,10 +875,10 @@ export function Hero3D() {
           style={{ backgroundColor: currentFlavor.buttonBg }}
           onPointerEnter={() => setCursor('open', isMr ? currentFlavor.nameMr : currentFlavor.name)}
           onPointerLeave={() => setCursor('default', null)}
-          className="group flex-1 max-w-sm py-3.5 sm:py-4 px-6 sm:px-8 rounded-full text-white text-base sm:text-lg font-bold font-bubble tracking-wide shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
+          className="group flex-1 min-w-0 max-w-sm py-3 sm:py-4 px-3 sm:px-8 rounded-full text-white text-xs sm:text-base md:text-lg font-bold font-bubble tracking-wide shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center justify-center gap-1.5 sm:gap-2 text-center"
         >
-          <span>{isMr ? currentFlavor.nameMr : currentFlavor.name}</span>
-          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          <span className="truncate">{isMr ? currentFlavor.nameMr : currentFlavor.name}</span>
+          <ArrowRight size={15} className="shrink-0 group-hover:translate-x-1 transition-transform" />
         </Link>
 
         {/* Right Floating Circular Arrow Button */}
@@ -864,10 +886,10 @@ export function Hero3D() {
           onClick={nextFlavor}
           onPointerEnter={() => setCursor('open', tr('hero.nextDish'))}
           onPointerLeave={() => setCursor('default', null)}
-          className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5"
+          className="w-10 h-10 sm:w-14 sm:h-14 shrink-0 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5"
           aria-label={tr('hero.nextDish')}
         >
-          <ChevronRight size={24} strokeWidth={2.2} />
+          <ChevronRight size={20} className="sm:w-6 sm:h-6" strokeWidth={2.2} />
         </button>
       </div>
     </section>

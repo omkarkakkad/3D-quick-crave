@@ -94,7 +94,7 @@ export function ProductDetailSection() {
             </p>
 
             {/* Combined Portion Dropdown & Stepper Pill (Screenshot 5) */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center rounded-full border border-gray-300 bg-white mb-5 overflow-hidden shadow-sm">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center rounded-2xl sm:rounded-full border border-gray-300 bg-white mb-5 overflow-hidden shadow-sm">
               {/* Portion Dropdown */}
               <div className="relative flex-1 border-b sm:border-b-0 sm:border-r border-gray-300">
                 <select
@@ -139,7 +139,7 @@ export function ProductDetailSection() {
                 onPointerEnter={() => setCursor('open', `${tr('details.addToOrder')} · ${isMr ? currentFlavor.nameMr : currentFlavor.name}`)}
                 onPointerLeave={() => setCursor('default', null)}
                 style={{ backgroundColor: currentFlavor.bgColor }}
-                className="flex-1 py-4 px-8 rounded-full text-[#111827] hover:brightness-95 active:scale-[0.98] font-bold text-base sm:text-lg shadow-md transition-all flex items-center justify-center gap-2"
+                className="flex-1 py-3.5 sm:py-4 px-6 sm:px-8 rounded-full text-[#111827] hover:brightness-95 active:scale-[0.98] font-bold text-sm sm:text-lg shadow-md transition-all flex items-center justify-center gap-2"
               >
                 {added ? (
                   <>
@@ -162,7 +162,7 @@ export function ProductDetailSection() {
                 rel="noreferrer"
                 onPointerEnter={() => setCursor('open', tr('details.zomato'))}
                 onPointerLeave={() => setCursor('default', null)}
-                className="py-4 px-6 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white font-bold text-sm uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
+                className="py-3.5 sm:py-4 px-6 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white font-bold text-xs sm:text-sm uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
               >
                 <span>{tr('details.zomato')}</span>
                 <ArrowUpRight size={16} />
@@ -170,9 +170,9 @@ export function ProductDetailSection() {
             </div>
 
             {/* 4 Line-Art Icon Badges (Screenshot 5) */}
-            <div className="grid grid-cols-4 gap-4 pt-4 border-t border-gray-200">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-gray-200">
               {/* Badge 1: 100% WILD CATCH */}
-              <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col items-center text-center p-2 rounded-xl bg-gray-50/70 sm:bg-transparent">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2">
                   <svg viewBox="0 0 40 40" className="w-9 h-9 stroke-[#111827] fill-none stroke-[2.5]">
                     <path d="M5 25 C15 15 25 15 35 25" strokeLinecap="round" />
@@ -185,7 +185,7 @@ export function ProductDetailSection() {
               </div>
 
               {/* Badge 2: STONE GROUND MASALA */}
-              <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col items-center text-center p-2 rounded-xl bg-gray-50/70 sm:bg-transparent">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2">
                   <svg viewBox="0 0 40 40" className="w-9 h-9 stroke-[#111827] fill-none stroke-[2.5]">
                     <circle cx="20" cy="14" r="5" />
@@ -201,7 +201,7 @@ export function ProductDetailSection() {
               </div>
 
               {/* Badge 3: CRISPY RAVA CRUST */}
-              <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col items-center text-center p-2 rounded-xl bg-gray-50/70 sm:bg-transparent">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2">
                   <svg viewBox="0 0 40 40" className="w-9 h-9 stroke-[#111827] fill-none stroke-[2.5]">
                     <circle cx="20" cy="8" r="3" fill="#111827" />
@@ -220,7 +220,7 @@ export function ProductDetailSection() {
               </div>
 
               {/* Badge 4: ZERO PRESERVATIVES */}
-              <div className="flex flex-col items-center text-center">
+              <div className="flex flex-col items-center text-center p-2 rounded-xl bg-gray-50/70 sm:bg-transparent">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center mb-2">
                   <svg viewBox="0 0 40 40" className="w-9 h-9 stroke-[#111827] fill-none stroke-[2.5]">
                     <path
@@ -268,19 +268,19 @@ export function ProductDetailSection() {
             </h3>
 
             <div className="w-full overflow-x-auto">
-              <table className="w-full text-left border-collapse font-sans text-sm sm:text-base">
+              <table className="w-full text-left border-collapse font-sans text-xs sm:text-base">
                 <thead>
                   <tr className="border-b-2 border-black">
-                    <th className="py-3 pr-4 font-bold text-[#111827]">{tr('details.tableContent')}</th>
-                    <th className="py-3 px-4 font-bold text-[#111827] text-right sm:text-left">
+                    <th className="py-3 pr-2 sm:pr-4 font-bold text-[#111827]">{tr('details.tableContent')}</th>
+                    <th className="py-3 px-2 sm:px-4 font-bold text-[#111827] text-right sm:text-left">
                       {tr('details.tableAmount')}
                     </th>
-                    <th className="py-3 pl-4 font-bold text-[#111827] text-right">{tr('details.tableDailyValue')}</th>
+                    <th className="py-3 pl-2 sm:pl-4 font-bold text-[#111827] text-right">{tr('details.tableDailyValue')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-300 text-gray-700">
                   <tr>
-                    <td className="py-3.5 pr-4 font-semibold text-[#111827]">{tr('details.calories')}</td>
+                    <td className="py-3 sm:py-3.5 pr-2 sm:pr-4 font-semibold text-[#111827]">{tr('details.calories')}</td>
                     <td className="py-3.5 px-4 text-right sm:text-left">{currentFlavor.calories} kcal</td>
                     <td className="py-3.5 pl-4 text-right">—</td>
                   </tr>

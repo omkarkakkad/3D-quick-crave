@@ -88,17 +88,17 @@ export function MenuSection() {
   ];
 
   return (
-    <section id="menu" className="relative py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20 select-none">
+    <section id="menu" className="relative py-14 sm:py-20 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20 select-none">
       {/* MANA-style Clean Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-6 border-b border-gray-200 gap-6">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10 pb-6 border-b border-gray-200 gap-6">
         <div>
           <span className="text-xs font-extrabold uppercase tracking-widest text-[#233876] block mb-2 font-sans">
             {tr('menu.kicker')}
           </span>
-          <h2 className="font-bubble text-4xl sm:text-5xl lg:text-6xl text-[#111827] font-black tracking-tight">
+          <h2 className="font-bubble text-3xl sm:text-5xl lg:text-6xl text-[#111827] font-black tracking-tight">
             {tr('menu.title')}
           </h2>
-          <p className="text-base text-gray-600 mt-2 max-w-lg">
+          <p className="text-sm sm:text-base text-gray-600 mt-2 max-w-lg">
             {tr('menu.desc')}
           </p>
         </div>
@@ -125,7 +125,7 @@ export function MenuSection() {
       </div>
 
       {/* MANA Horizontal Rounded Category Pill Rail */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-4 mb-10 scrollbar-none">
+      <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-8 sm:mb-10 scrollbar-none -mx-3 px-3 sm:mx-0 sm:px-0">
         {categories.map((cat) => {
           const isActive = menuFilter === cat.value;
           return (
@@ -184,7 +184,7 @@ export function MenuSection() {
                 key={item.id}
                 onPointerEnter={() => setCursor(item.spiceLevel === 3 ? 'taste' : 'explore', displayName)}
                 onPointerLeave={() => setCursor('default', null)}
-                className="group rounded-3xl bg-white border border-gray-200 hover:border-gray-300 p-5 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1"
+                className="group rounded-2xl sm:rounded-3xl bg-white border border-gray-200 hover:border-gray-300 p-4 sm:p-5 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1"
               >
                 <div>
                   {/* Photo Container */}

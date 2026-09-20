@@ -25,16 +25,16 @@ export function CombosHighlight() {
   };
 
   return (
-    <section id="combos" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
+    <section id="combos" className="py-12 sm:py-20 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20">
       {/* Container in Sweetgreen warm neutral stone */}
-      <div className="rounded-[2.5rem] bg-[#F5F1E9] border border-[#E5DFD3] p-8 sm:p-12 lg:p-16 shadow-sm">
+      <div className="rounded-3xl sm:rounded-[2.5rem] bg-[#F5F1E9] border border-[#E5DFD3] p-5 sm:p-12 lg:p-16 shadow-sm">
         {/* Section Title */}
-        <div className="max-w-2xl mb-12 text-left">
+        <div className="max-w-2xl mb-8 sm:mb-12 text-left">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E9F0EB] text-[#2E6641] text-xs font-bold tracking-widest uppercase mb-3">
             <Box size={13} />
             <span>{tr('combos.kicker')}</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-[#12382C] font-bold tracking-tight">
+          <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl text-[#12382C] font-bold tracking-tight">
             {tr('combos.title')}
           </h2>
           <p className="text-sm sm:text-base text-[#4A5568] mt-2 leading-relaxed">
@@ -50,7 +50,7 @@ export function CombosHighlight() {
             return (
               <div
                 key={combo.id}
-                className="group rounded-3xl bg-white border border-[#E8E2D5] p-5 flex flex-col justify-between hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                className="group rounded-2xl sm:rounded-3xl bg-white border border-[#E8E2D5] p-4 sm:p-5 flex flex-col justify-between hover:shadow-md hover:-translate-y-1 transition-all duration-300"
               >
                 <div>
                   <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-[#EFE9DF] mb-4">

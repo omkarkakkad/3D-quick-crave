@@ -111,27 +111,27 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* Trailing emoji cursor */}
+      {/* Trailing emoji cursor - hidden on mobile/touch screens */}
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999] transition-[opacity] duration-200 ease-out will-change-transform flex items-center justify-center"
+        className="hidden md:flex fixed top-0 left-0 pointer-events-none z-[9999] transition-[opacity] duration-200 ease-out will-change-transform items-center justify-center"
         style={{ opacity: 0, fontSize: '36px', lineHeight: 1 }}
       >
         {emoji}
       </div>
 
-      {/* Small dot at exact mouse position */}
+      {/* Small dot at exact mouse position - hidden on mobile */}
       <div
         ref={dotRef}
-        className="fixed top-0 left-0 w-[8px] h-[8px] rounded-full pointer-events-none z-[9999] will-change-transform"
+        className="hidden md:block fixed top-0 left-0 w-[8px] h-[8px] rounded-full pointer-events-none z-[9999] will-change-transform"
         style={{ backgroundColor: color, opacity: 0.8 }}
       />
 
-      {/* Label tooltip */}
+      {/* Label tooltip - hidden on mobile */}
       {cursorLabel && (
         <div
           ref={labelRef}
-          className="fixed top-0 left-0 pointer-events-none z-[9999] whitespace-nowrap will-change-transform"
+          className="hidden md:block fixed top-0 left-0 pointer-events-none z-[9999] whitespace-nowrap will-change-transform"
         >
           <div
             className="px-4 py-2 rounded-full text-xs font-bold tracking-wide shadow-xl border"

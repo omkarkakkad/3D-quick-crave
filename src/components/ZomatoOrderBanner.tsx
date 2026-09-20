@@ -8,9 +8,9 @@ export function ZomatoOrderBanner() {
   const setCursor = useStore((s) => s.setCursor);
 
   return (
-    <section id="order" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20 select-none">
-      <div className="rounded-[2.5rem] bg-white border border-gray-200 p-8 sm:p-12 lg:p-16 shadow-lg">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+    <section id="order" className="py-12 sm:py-16 px-3 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20 select-none">
+      <div className="rounded-3xl sm:rounded-[2.5rem] bg-white border border-gray-200 p-5 sm:p-12 lg:p-16 shadow-lg">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           {/* Left Column: MANA Playful Editorial Copy */}
           <div className="lg:col-span-7">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#E0EFFF] text-[#1E2B58] text-xs font-black tracking-widest uppercase mb-4 font-sans">
@@ -18,15 +18,15 @@ export function ZomatoOrderBanner() {
               <span>{tr('order.badge')}</span>
             </div>
 
-            <h2 className="font-bubble text-4xl sm:text-5xl lg:text-6xl text-[#111827] font-black tracking-tight leading-[1.05] mb-4">
+            <h2 className="font-bubble text-3xl sm:text-5xl lg:text-6xl text-[#111827] font-black tracking-tight leading-[1.05] mb-4">
               {tr('order.title')}
             </h2>
 
-            <p className="text-gray-600 text-base sm:text-lg leading-relaxed max-w-lg mb-8 font-normal">
+            <p className="text-gray-600 text-sm sm:text-lg leading-relaxed max-w-lg mb-6 sm:mb-8 font-normal">
               {tr('order.desc')}
             </p>
 
-            <div className="flex flex-wrap items-center gap-3.5">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-3.5">
               {/* Primary: Zomato */}
               <a
                 href={zomatoUrl}
@@ -34,7 +34,7 @@ export function ZomatoOrderBanner() {
                 rel="noreferrer"
                 onPointerEnter={() => setCursor('open', tr('order.zomatoBtn'))}
                 onPointerLeave={() => setCursor('default', null)}
-                className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white text-sm font-bold uppercase tracking-wider shadow-lg active:scale-95 transition-all"
+                className="inline-flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3.5 sm:py-4 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white text-xs sm:text-sm font-bold uppercase tracking-wider shadow-lg active:scale-95 transition-all w-full sm:w-auto"
               >
                 <span>{tr('order.zomatoBtn')}</span>
                 <ArrowUpRight size={16} />
@@ -47,7 +47,7 @@ export function ZomatoOrderBanner() {
                 rel="noreferrer"
                 onPointerEnter={() => setCursor('open', tr('order.whatsappBtn'))}
                 onPointerLeave={() => setCursor('default', null)}
-                className="inline-flex items-center gap-2 px-6 py-4 rounded-full bg-gray-100 hover:bg-gray-200 text-[#111827] text-sm font-bold tracking-wide transition-all active:scale-95"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-4 rounded-full bg-gray-100 hover:bg-gray-200 text-[#111827] text-xs sm:text-sm font-bold tracking-wide transition-all active:scale-95 w-full sm:w-auto"
               >
                 <MessageCircle size={18} className="text-[#25D366]" />
                 <span>{tr('order.whatsappBtn')}</span>
@@ -57,7 +57,7 @@ export function ZomatoOrderBanner() {
 
           {/* Right Column: Hotline Contact Details Card */}
           <div className="lg:col-span-5">
-            <div className="rounded-3xl bg-[#FDF9F3] border border-gray-200 p-6 sm:p-8 shadow-sm">
+            <div className="rounded-2xl sm:rounded-3xl bg-[#FDF9F3] border border-gray-200 p-4 sm:p-8 shadow-sm">
               <div className="flex items-center justify-between pb-4 border-b border-gray-200 mb-5">
                 <div>
                   <span className="text-[10px] font-black uppercase tracking-widest text-gray-400 block mb-0.5">

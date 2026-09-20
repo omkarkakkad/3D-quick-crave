@@ -150,12 +150,12 @@ export function GsapLoader({ onComplete }: GsapLoaderProps) {
       />
 
       {/* Foreground Content Layer */}
-      <div className="relative z-20 w-full h-full flex flex-col justify-between p-6 sm:p-12 text-white">
+      <div className="relative z-20 w-full h-full flex flex-col justify-between p-4 sm:p-12 text-white">
         {/* Top Header Information Row */}
-        <div ref={brandRef} className="flex items-center justify-between border-b border-white/15 pb-4">
-          <div className="flex items-center gap-3">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#9BC57D] animate-ping" />
-            <span className="font-bubble text-xl sm:text-2xl font-black uppercase tracking-wider text-white">
+        <div ref={brandRef} className="flex items-center justify-between border-b border-white/15 pb-3 sm:pb-4">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-[#9BC57D] animate-ping" />
+            <span className="font-bubble text-lg sm:text-2xl font-black uppercase tracking-wider text-white">
               QUICK<span className="text-[#F9D36A] ml-1">CRAVE</span>
             </span>
           </div>
@@ -170,10 +170,10 @@ export function GsapLoader({ onComplete }: GsapLoaderProps) {
         </div>
 
         {/* Center: Long Story Text Reveal & Ambient Kinetic Stream */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center my-auto max-w-4xl mx-auto px-4">
+        <div className="flex-1 flex flex-col items-center justify-center text-center my-auto max-w-4xl mx-auto px-2 sm:px-4">
           {/* Subtle Background Kinetic Marquee */}
-          <div className="w-full overflow-hidden whitespace-nowrap opacity-15 mb-6 pointer-events-none">
-            <div ref={marqueeRef} className="inline-block font-black text-4xl sm:text-6xl tracking-tight uppercase font-bubble">
+          <div className="w-full overflow-hidden whitespace-nowrap opacity-15 mb-4 sm:mb-6 pointer-events-none">
+            <div ref={marqueeRef} className="inline-block font-black text-3xl sm:text-6xl tracking-tight uppercase font-bubble">
               {lang === 'mr'
                 ? 'सुरमई रवा फ्राय • पापलेट तवा फ्राय • मालवणी खोबरे कढी • सोलकढी • ताजी मासळी • दगडी पाटा मसाला • सुरमई रवा फ्राय • पापलेट तवा फ्राय • मालवणी खोबरे कढी • सोलकढी • ताजी मासळी • दगडी पाटा मसाला • '
                 : 'SURMAI RAVA FRY • POMFRET TAVA FRY • MALVANI COCONUT CURRY • SOL KADI • WILD CATCH • CRISPY CRUST • STONE GROUND MASALA • SURMAI RAVA FRY • POMFRET TAVA FRY • MALVANI COCONUT CURRY • SOL KADI • WILD CATCH • CRISPY CRUST • STONE GROUND MASALA • '}
@@ -181,18 +181,18 @@ export function GsapLoader({ onComplete }: GsapLoaderProps) {
           </div>
 
           {/* Dynamic Long Running Story Phrase */}
-          <div ref={storyTextRef} className="min-h-[90px] flex items-center justify-center">
-            <h2 className="font-bubble text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-tight max-w-3xl transition-all duration-300">
+          <div ref={storyTextRef} className="min-h-[110px] sm:min-h-[90px] flex items-center justify-center">
+            <h2 className="font-bubble text-lg sm:text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-white leading-tight max-w-3xl transition-all duration-300 px-2">
               "{phrases[activePhraseIndex]}"
             </h2>
           </div>
 
-          <div className="mt-4 flex items-center gap-2">
+          <div className="mt-3 sm:mt-4 flex items-center gap-2">
             {phrases.map((_, idx) => (
               <span
                 key={idx}
                 className={`h-1.5 rounded-full transition-all duration-300 ${
-                  idx === activePhraseIndex ? 'w-8 bg-[#F9D36A]' : 'w-2 bg-white/30'
+                  idx === activePhraseIndex ? 'w-6 sm:w-8 bg-[#F9D36A]' : 'w-2 bg-white/30'
                 }`}
               />
             ))}
@@ -200,14 +200,14 @@ export function GsapLoader({ onComplete }: GsapLoaderProps) {
         </div>
 
         {/* Bottom Loading Progress & Counter Bar */}
-        <div className="flex flex-col gap-3 max-w-xl mx-auto w-full pt-4">
+        <div className="flex flex-col gap-2.5 sm:gap-3 max-w-xl mx-auto w-full pt-3 sm:pt-4">
           <div className="flex items-baseline justify-between">
-            <span className="text-xs uppercase tracking-widest text-gray-300 font-bold">
-              Preparing Coastal Kitchen Experience
+            <span className="text-[11px] sm:text-xs uppercase tracking-widest text-gray-300 font-bold truncate pr-2">
+              {lang === 'mr' ? 'किनारपट्टी अनुभव तयार करत आहोत' : 'Preparing Coastal Kitchen'}
             </span>
-            <div className="font-mono text-3xl sm:text-4xl font-extrabold text-[#F9D36A]">
+            <div className="font-mono text-2xl sm:text-4xl font-extrabold text-[#F9D36A]">
               <span ref={counterRef}>00</span>
-              <span className="text-sm ml-1 text-white/70">%</span>
+              <span className="text-xs sm:text-sm ml-1 text-white/70">%</span>
             </div>
           </div>
 

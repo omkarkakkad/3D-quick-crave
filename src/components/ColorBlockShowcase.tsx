@@ -93,7 +93,7 @@ function ShowcaseColumn({
       onClick={onClick}
       onPointerEnter={onHover}
       onPointerLeave={onLeave}
-      className={`relative p-6 sm:p-10 flex flex-col items-center justify-between cursor-pointer group overflow-hidden transition-transform duration-300 ${bgClassName || ''} ${borderClass || ''}`}
+      className={`relative p-6 sm:p-8 md:p-10 flex flex-col items-center justify-between cursor-pointer group overflow-hidden transition-transform duration-300 min-h-[460px] sm:min-h-[560px] lg:min-h-[750px] ${bgClassName || ''} ${borderClass || ''}`}
       style={bgColor ? { backgroundColor: bgColor } : undefined}
     >
       {/* GSAP-animated doodle overlay */}
@@ -139,25 +139,25 @@ export function ColorBlockShowcase() {
 
   return (
     <section id="showcase" className="relative w-full overflow-hidden select-none">
-      <div className="grid grid-cols-2 md:grid-cols-4 min-h-[750px] w-full">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 min-h-[500px] lg:min-h-[750px] w-full">
         {/* ── COLUMN 1: Surmai Fry (Yellow) ── */}
         <ShowcaseColumn
           index={0}
           productId="surmai-fry"
           bgClassName="bg-[#FBC743]"
-          borderClass="border-r border-black/5"
+          borderClass="border-b sm:border-b-0 sm:border-r border-black/5"
           onClick={() => handleSelectFlavor(0, 'surmai-fry')}
           onHover={() => setCursor('explore', isMr ? 'सुरमई फ्राय' : 'SURMAI FRY')}
           onLeave={() => setCursor('default', null)}
           doodles={
             <>
-              <div data-doodle className="absolute -left-6 bottom-10 w-44 sm:w-56 opacity-80">
+              <div data-doodle className="absolute -left-6 bottom-10 w-36 sm:w-56 opacity-80">
                 <BlueDancerDoodle className="w-full" />
               </div>
               <div data-doodle className="absolute right-2 bottom-14 w-20 sm:w-28 rotate-12 opacity-80">
                 <SliceCitrusDoodle className="w-full" />
               </div>
-              <div data-doodle className="absolute right-1 top-16 w-28 sm:w-36 opacity-70">
+              <div data-doodle className="absolute right-1 top-16 w-24 sm:w-36 opacity-70">
                 <RedMonsterDoodle className="w-full scale-75 rotate-180" />
               </div>
               <div data-doodle className="absolute left-1/2 -top-2 w-6 h-6">
@@ -174,17 +174,17 @@ export function ColorBlockShowcase() {
               {isMr ? 'सुरमई फ्राय' : 'SURMAI FRY'}
             </h3>
           </div>
-          <div className="relative my-6 w-44 sm:w-56 h-56 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
+          <div className="relative my-5 sm:my-6 w-40 sm:w-56 h-48 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
             <img src="/images/surmai.jpg" alt="Surmai Fry" className="w-full h-full object-cover rounded-2xl shadow-2xl drop-shadow-2xl" />
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleSelectFlavor(0, 'surmai-fry'); }}
             onPointerEnter={() => setCursor('open', `${tr('showcase.viewDishOrder')} · ${isMr ? 'सुरमई फ्राय' : 'SURMAI FRY'}`)}
             onPointerLeave={() => setCursor('explore', isMr ? 'सुरमई फ्राय' : 'SURMAI FRY')}
-            className="z-10 py-3 px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center gap-2 group-hover:scale-105 transition-all"
+            className="z-10 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center justify-center gap-2 group-hover:scale-105 transition-all max-w-[90%] truncate"
           >
-            <span>{tr('showcase.viewDishOrder')} · ₹399</span>
-            <Plus size={14} />
+            <span className="truncate">{tr('showcase.viewDishOrder')} · ₹399</span>
+            <Plus size={14} className="shrink-0" />
           </button>
         </ShowcaseColumn>
 
@@ -193,16 +193,16 @@ export function ColorBlockShowcase() {
           index={1}
           productId="pomfret-fry"
           bgClassName="bg-[#5E9CE4]"
-          borderClass="border-r border-black/5"
+          borderClass="border-b sm:border-b-0 lg:border-r border-black/5"
           onClick={() => handleSelectFlavor(1, 'pomfret-fry')}
           onHover={() => setCursor('explore', isMr ? 'पापलेट फ्राय' : 'POMFRET FRY')}
           onLeave={() => setCursor('default', null)}
           doodles={
             <>
-              <div data-doodle className="absolute -right-4 bottom-8 w-40 sm:w-52 opacity-80">
+              <div data-doodle className="absolute -right-4 bottom-8 w-36 sm:w-52 opacity-80">
                 <BlackberryDoodle className="w-full" />
               </div>
-              <div data-doodle className="absolute left-2 top-20 w-36 sm:w-48 opacity-70 -rotate-12">
+              <div data-doodle className="absolute left-2 top-20 w-28 sm:w-48 opacity-70 -rotate-12">
                 <HibiscusDoodle className="w-full" />
               </div>
               <div data-doodle className="absolute left-1/3 -bottom-4 w-24 sm:w-32 opacity-75">
@@ -222,17 +222,17 @@ export function ColorBlockShowcase() {
               {isMr ? 'पापलेट फ्राय' : 'POMFRET FRY'}
             </h3>
           </div>
-          <div className="relative my-6 w-44 sm:w-56 h-56 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
+          <div className="relative my-5 sm:my-6 w-40 sm:w-56 h-48 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
             <img src="/images/pomfret-fry.jpg" alt="Pomfret Fry" className="w-full h-full object-cover rounded-2xl shadow-2xl drop-shadow-2xl" />
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleSelectFlavor(1, 'pomfret-fry'); }}
             onPointerEnter={() => setCursor('open', `${tr('showcase.viewDishOrder')} · ${isMr ? 'पापलेट फ्राय' : 'POMFRET FRY'}`)}
             onPointerLeave={() => setCursor('explore', isMr ? 'पापलेट फ्राय' : 'POMFRET FRY')}
-            className="z-10 py-3 px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center gap-2 group-hover:scale-105 transition-all"
+            className="z-10 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center justify-center gap-2 group-hover:scale-105 transition-all max-w-[90%] truncate"
           >
-            <span>{tr('showcase.viewDishOrder')} · ₹399</span>
-            <Plus size={14} />
+            <span className="truncate">{tr('showcase.viewDishOrder')} · ₹399</span>
+            <Plus size={14} className="shrink-0" />
           </button>
         </ShowcaseColumn>
 
@@ -241,16 +241,16 @@ export function ColorBlockShowcase() {
           index={2}
           productId="sol-kadi"
           bgColor={solKadi.bgColor}
-          borderClass="border-r border-black/5"
+          borderClass="border-b sm:border-b-0 sm:border-r border-black/5"
           onClick={() => handleSelectFlavor(2, 'sol-kadi')}
           onHover={() => setCursor('explore', isMr ? 'सोलकढी' : 'SOL KADI')}
           onLeave={() => setCursor('default', null)}
           doodles={
             <>
-              <div data-doodle className="absolute -left-4 bottom-12 w-36 sm:w-48 opacity-75">
+              <div data-doodle className="absolute -left-4 bottom-12 w-32 sm:w-48 opacity-75">
                 <RedMonsterDoodle className="w-full" />
               </div>
-              <div data-doodle className="absolute right-1 bottom-6 w-28 sm:w-36 opacity-80">
+              <div data-doodle className="absolute right-1 bottom-6 w-24 sm:w-36 opacity-80">
                 <SliceCitrusDoodle className="w-full" />
               </div>
               <div data-doodle className="absolute left-1/4 top-16 w-8 h-8 opacity-50">
@@ -270,17 +270,17 @@ export function ColorBlockShowcase() {
               {isMr ? 'सोलकढी' : 'SOL KADI'}
             </h3>
           </div>
-          <div className="relative my-6 w-44 sm:w-56 h-56 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
+          <div className="relative my-5 sm:my-6 w-40 sm:w-56 h-48 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
             <img src="/images/solkadi.jpg" alt="Sol Kadi" className="w-full h-full object-cover rounded-2xl shadow-2xl drop-shadow-2xl" />
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleSelectFlavor(2, 'sol-kadi'); }}
             onPointerEnter={() => setCursor('open', `${tr('showcase.viewDishOrder')} · ${isMr ? 'सोलकढी' : 'SOL KADI'}`)}
             onPointerLeave={() => setCursor('explore', isMr ? 'सोलकढी' : 'SOL KADI')}
-            className="z-10 py-3 px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center gap-2 group-hover:scale-105 transition-all"
+            className="z-10 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center justify-center gap-2 group-hover:scale-105 transition-all max-w-[90%] truncate"
           >
-            <span>{tr('showcase.viewDishOrder')} · ₹99</span>
-            <Plus size={14} />
+            <span className="truncate">{tr('showcase.viewDishOrder')} · ₹99</span>
+            <Plus size={14} className="shrink-0" />
           </button>
         </ShowcaseColumn>
 
@@ -294,13 +294,13 @@ export function ColorBlockShowcase() {
           onLeave={() => setCursor('default', null)}
           doodles={
             <>
-              <div data-doodle className="absolute -left-4 bottom-10 w-32 sm:w-44 opacity-80">
+              <div data-doodle className="absolute -left-4 bottom-10 w-28 sm:w-44 opacity-80">
                 <HibiscusDoodle className="w-full" />
               </div>
-              <div data-doodle className="absolute right-2 top-20 w-28 sm:w-40 opacity-75">
+              <div data-doodle className="absolute right-2 top-20 w-24 sm:w-40 opacity-75">
                 <ArchCloudWindow className="w-full" />
               </div>
-              <div data-doodle className="absolute right-1 bottom-8 w-24 sm:w-32 rotate-[-15deg] opacity-80">
+              <div data-doodle className="absolute right-1 bottom-8 w-20 sm:w-32 rotate-[-15deg] opacity-80">
                 <SliceCitrusDoodle className="w-full" />
               </div>
               <div data-doodle className="absolute left-1/3 top-14 w-8 h-8 opacity-50">
@@ -320,27 +320,27 @@ export function ColorBlockShowcase() {
               {isMr ? 'कोकम शर्बत' : 'KOKUM SARBAT'}
             </h3>
           </div>
-          <div className="relative my-6 w-44 sm:w-56 h-56 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
+          <div className="relative my-5 sm:my-6 w-40 sm:w-56 h-48 sm:h-72 flex items-center justify-center z-10 group-hover:scale-105 transition-transform duration-500">
             <img src="/images/kokum-drink.jpg" alt="Kokum Sherbet" className="w-full h-full object-cover rounded-2xl shadow-2xl drop-shadow-2xl" />
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); handleSelectFlavor(3, 'kokum-sarbat'); }}
             onPointerEnter={() => setCursor('open', `${tr('showcase.viewDishOrder')} · ${isMr ? 'कोकम शर्बत' : 'KOKUM SARBAT'}`)}
             onPointerLeave={() => setCursor('explore', isMr ? 'कोकम शर्बत' : 'KOKUM SARBAT')}
-            className="z-10 py-3 px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center gap-2 group-hover:scale-105 transition-all"
+            className="z-10 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-white text-[#111827] text-xs sm:text-sm font-bold shadow-md hover:bg-gray-50 flex items-center justify-center gap-2 group-hover:scale-105 transition-all max-w-[90%] truncate"
           >
-            <span>{tr('showcase.viewDishOrder')} · ₹79</span>
-            <Plus size={14} />
+            <span className="truncate">{tr('showcase.viewDishOrder')} · ₹79</span>
+            <Plus size={14} className="shrink-0" />
           </button>
         </ShowcaseColumn>
       </div>
 
-      {/* Floating Circular Navigation Arrows */}
+      {/* Floating Circular Navigation Arrows - for large screens */}
       <button
         onClick={() => handleNavigate('prev')}
         onPointerEnter={() => setCursor('open', tr('hero.prevDish'))}
         onPointerLeave={() => setCursor('default', null)}
-        className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white text-[#111827] hover:scale-110 active:scale-95 flex items-center justify-center shadow-2xl border border-black/10 z-20"
+        className="hidden lg:flex absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white text-[#111827] hover:scale-110 active:scale-95 items-center justify-center shadow-2xl border border-black/10 z-20"
         aria-label={tr('hero.prevDish')}
       >
         <ChevronLeft size={24} />
@@ -349,7 +349,7 @@ export function ColorBlockShowcase() {
         onClick={() => handleNavigate('next')}
         onPointerEnter={() => setCursor('open', tr('hero.nextDish'))}
         onPointerLeave={() => setCursor('default', null)}
-        className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white text-[#111827] hover:scale-110 active:scale-95 flex items-center justify-center shadow-2xl border border-black/10 z-20"
+        className="hidden lg:flex absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white text-[#111827] hover:scale-110 active:scale-95 items-center justify-center shadow-2xl border border-black/10 z-20"
         aria-label={tr('hero.nextDish')}
       >
         <ChevronRight size={24} />

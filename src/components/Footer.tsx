@@ -100,9 +100,9 @@ export function Footer() {
         </div>
 
         {/* Bottom Sub-footer */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400 text-center sm:text-left">
           <p>© {new Date().getFullYear()} QUICK CRAVE. Inspired by MANA Yerba Maté aesthetic & Konkan coastal culinary craft.</p>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-5">
             <span>{tr('footer.tagWild')}</span>
             <span>•</span>
             <span>{tr('footer.tagStone')}</span>
