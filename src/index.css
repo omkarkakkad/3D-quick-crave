@@ -188,3 +188,26 @@ body[data-lang='mr'] .tracking-\[0\.55em\] {
     scroll-behavior: auto;
   }
 }
+
+/* ─── Custom Cursor ─── */
+/* Hide default cursor on desktop, show custom cursor */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}
+/* Keep default cursor on touch devices */
+@media (pointer: coarse) {
+  .custom-cursor-wrap {
+    display: none !important;
+  }
+}
+
+/* Smoother label appear/disappear */
+.cursor-label-enter {
+  animation: cursorLabelIn 0.18s ease-out forwards;
+}
+@keyframes cursorLabelIn {
+  from { opacity: 0; transform: translateY(4px) scale(0.92); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

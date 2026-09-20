@@ -1,10 +1,10 @@
-import { useRef, useState, useEffect, Suspense, useMemo } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useGLTF, Center, Float } from '@react-three/drei';
+import { useRef, useEffect, Suspense, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { useGLTF, Center, OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import gsap from 'gsap';
-import { ChevronLeft, ChevronRight, ArrowRight, Sparkles, Box, Compass, Flame } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { useStore, SIGNATURE_FLAVORS } from '../store/useStore';
 import { useT } from '../i18n/useT';
 import {
@@ -124,15 +124,97 @@ function SizzleParticles() {
   );
 }
 
-// 3D GLTF Barramundi Fish Catch on Cast-Iron Coastal Platter (Horizontal & Elegantly Scaled)
-function BarramundiCatchModel({ dishImage }: { dishImage: string }) {
+// 3D GLTF Barramundi Fish Catch on Cast-Iron Coastal Platter (varies per dish)
+function BarramundiCatchModel({ dishImage, flavorKey }: { dishImage: string; flavorKey: string }) {
   const { scene } = useGLTF('/models/barramundi.glb');
   const cloned = useMemo(() => scene.clone(), [scene]);
   const groupRef = useRef<THREE.Group>(null);
 
+  // Per-dish platter & garnish config
+  const dishConfig = useMemo(() => {
+    switch (flavorKey) {
+      case 'surmai':
+        return {
+          platterColor: '#2C1810',
+          platterRim: '#B8860B',
+          rimText: 'QUICK CRAVE  ·  SURMAI FRY  ·  MALVANI COASTAL KITCHEN  ·  ',
+          leafColor: '#1B5E20',
+          garnishes: [
+            { kind: 'lemon' as const, pos: [1.15, -0.12, 0.45] as [number, number, number], scale: 0.75 },
+            { kind: 'lemon' as const, pos: [-1.15, -0.12, -0.4] as [number, number, number], scale: 0.65 },
+            { kind: 'chilli-red' as const, pos: [1.2, -0.1, -0.5] as [number, number, number], scale: 0.75 },
+            { kind: 'chilli-green' as const, pos: [-1.2, -0.1, 0.5] as [number, number, number], scale: 0.7 },
+            { kind: 'curryleaf' as const, pos: [-0.85, -0.15, 0.95] as [number, number, number], scale: 0.8 },
+            { kind: 'kokum' as const, pos: [0, -0.16, 1.15] as [number, number, number], scale: 0.8 },
+          ],
+        };
+      case 'pomfret':
+        return {
+          platterColor: '#1A1A2E',
+          platterRim: '#C9A84C',
+          rimText: 'QUICK CRAVE  ·  POMFRET FRY  ·  MALVANI COASTAL KITCHEN  ·  ',
+          leafColor: '#2E7D32',
+          garnishes: [
+            { kind: 'lemon' as const, pos: [1.1, -0.12, 0.55] as [number, number, number], scale: 0.7 },
+            { kind: 'chilli-green' as const, pos: [1.2, -0.1, -0.35] as [number, number, number], scale: 0.8 },
+            { kind: 'chilli-red' as const, pos: [-1.15, -0.1, 0.45] as [number, number, number], scale: 0.7 },
+            { kind: 'curryleaf' as const, pos: [-0.9, -0.15, -0.9] as [number, number, number], scale: 0.85 },
+            { kind: 'curryleaf' as const, pos: [0.9, -0.15, -0.85] as [number, number, number], scale: 0.8 },
+            { kind: 'kokum' as const, pos: [0.5, -0.16, 1.1] as [number, number, number], scale: 0.75 },
+            { kind: 'kokum' as const, pos: [-0.5, -0.16, 1.1] as [number, number, number], scale: 0.7 },
+          ],
+        };
+      default:
+        return {
+          platterColor: '#1E293B',
+          platterRim: '#C8960C',
+          rimText: 'QUICK CRAVE  ·  MALVANI COASTAL KITCHEN  ·  ',
+          leafColor: '#166534',
+          garnishes: [
+            { kind: 'lemon' as const, pos: [1.15, -0.12, 0.45] as [number, number, number], scale: 0.75 },
+            { kind: 'lemon' as const, pos: [-1.15, -0.12, -0.4] as [number, number, number], scale: 0.65 },
+            { kind: 'chilli-red' as const, pos: [1.2, -0.1, -0.5] as [number, number, number], scale: 0.75 },
+            { kind: 'chilli-green' as const, pos: [-1.2, -0.1, 0.5] as [number, number, number], scale: 0.7 },
+            { kind: 'curryleaf' as const, pos: [-0.85, -0.15, 0.95] as [number, number, number], scale: 0.8 },
+            { kind: 'curryleaf' as const, pos: [0.85, -0.15, 0.9] as [number, number, number], scale: 0.8 },
+            { kind: 'kokum' as const, pos: [0, -0.16, 1.15] as [number, number, number], scale: 0.8 },
+          ],
+        };
+    }
+  }, [flavorKey]);
+
+  // Branding texture for the platter rim band
+  const rimBrandTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 2048;
+    canvas.height = 128;
+    const ctx = canvas.getContext('2d');
+
+    if (ctx) {
+      ctx.clearRect(0, 0, 2048, 128);
+
+      // Gold band background
+      ctx.fillStyle = dishConfig.platterRim;
+      ctx.fillRect(0, 0, 2048, 128);
+
+      // Repeating branding text
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 48px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      for (let x = 0; x < 2048; x += 520) {
+        ctx.fillText(dishConfig.rimText, x + 260, 82);
+      }
+    }
+
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.repeat.set(1, 1);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }, [dishConfig]);
+
   useFrame((state) => {
     if (groupRef.current) {
-      // Gentle subtle breathing sway and swim motion
       groupRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 1.0) * 0.05;
       groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 1.8) * 0.03;
     }
@@ -143,19 +225,30 @@ function BarramundiCatchModel({ dishImage }: { dishImage: string }) {
       {/* Hand-thrown Ceramic Sizzler Platter (Lying Flat) */}
       <mesh position={[0, -0.28, 0]} receiveShadow castShadow>
         <cylinderGeometry args={[1.6, 1.4, 0.08, 64]} />
-        <meshStandardMaterial color="#1E293B" roughness={0.35} metalness={0.25} />
+        <meshStandardMaterial color={dishConfig.platterColor} roughness={0.35} metalness={0.25} />
       </mesh>
 
-      {/* Terracotta / Gold Accent Platter Rim (Flat Ring) */}
-      <mesh position={[0, -0.24, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[1.52, 0.03, 16, 64]} />
-        <meshStandardMaterial color="#F59E0B" roughness={0.3} metalness={0.6} />
+      {/* Gold rim band with dish-specific branding */}
+      <mesh position={[0, -0.22, 0]}>
+        <cylinderGeometry args={[1.62, 1.62, 0.04, 64, 1, true]} />
+        <meshStandardMaterial
+          map={rimBrandTexture}
+          roughness={0.2}
+          metalness={0.7}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+
+      {/* Inner dark edge ring */}
+      <mesh position={[0, -0.22, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[1.38, 1.58, 64]} />
+        <meshStandardMaterial color="#0F172A" roughness={0.4} metalness={0.3} />
       </mesh>
 
       {/* Fresh Green Banana Leaf Liner Bed (Flat Circle) */}
       <mesh position={[0, -0.23, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <circleGeometry args={[1.44, 64]} />
-        <meshStandardMaterial color="#166534" roughness={0.6} metalness={0.05} />
+        <circleGeometry args={[1.36, 64]} />
+        <meshStandardMaterial color={dishConfig.leafColor} roughness={0.6} metalness={0.05} />
       </mesh>
 
       {/* Sizzling Embers */}
@@ -172,22 +265,18 @@ function BarramundiCatchModel({ dishImage }: { dishImage: string }) {
         />
       </Center>
 
-      {/* Floating Fresh Coastal Garnishes on Platter Edges */}
-      <FloatingGarnish kind="lemon" position={[1.15, -0.12, 0.45]} scale={0.75} />
-      <FloatingGarnish kind="lemon" position={[-1.15, -0.12, -0.4]} scale={0.65} />
-      <FloatingGarnish kind="chilli-red" position={[1.2, -0.1, -0.5]} scale={0.75} />
-      <FloatingGarnish kind="chilli-green" position={[-1.2, -0.1, 0.5]} scale={0.7} />
-      <FloatingGarnish kind="curryleaf" position={[-0.85, -0.15, 0.95]} scale={0.8} />
-      <FloatingGarnish kind="curryleaf" position={[0.85, -0.15, 0.9]} scale={0.8} />
-      <FloatingGarnish kind="kokum" position={[0, -0.16, 1.15]} scale={0.8} />
+      {/* Floating Fresh Coastal Garnishes — per-dish arrangement */}
+      {dishConfig.garnishes.map((g, i) => (
+        <FloatingGarnish key={i} kind={g.kind} position={g.pos} scale={g.scale} />
+      ))}
     </group>
   );
 }
 
 useGLTF.preload('/models/barramundi.glb');
 
-// MANA Signature 3D Cylindrical Craft Product Can — Perfectly Proportioned Slim Can
-function ManaCraftCan({
+// 3D Branded Glass — tumbler with liquid, branding on the glass surface, splash
+function ManaGlassModel({
   flavorName,
   subName,
   bgColor,
@@ -200,186 +289,295 @@ function ManaCraftCan({
   darkColor: string;
   isMr?: boolean;
 }) {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
+  const splashRef = useRef<THREE.Group>(null);
 
-  // Dynamic canvas texture matching Quick Crave menu branding (drawn on front & back so never blank)
-  const labelTexture = useMemo(() => {
+  useFrame((state) => {
+    if (groupRef.current) {
+      groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 1.2) * 0.02;
+    }
+    if (splashRef.current) {
+      splashRef.current.rotation.y = state.clock.elapsedTime * 0.6;
+    }
+  });
+
+  // Branding texture applied directly to the glass surface
+  const glassTexture = useMemo(() => {
     const canvas = document.createElement('canvas');
     canvas.width = 1024;
     canvas.height = 1024;
     const ctx = canvas.getContext('2d');
 
     if (ctx) {
-      // Base background color
-      ctx.fillStyle = bgColor;
+      // Flip canvas so text reads correctly on cylinder (cylinder UV mirrors from outside)
+      ctx.translate(1024, 0);
+      ctx.scale(-1, 1);
+
+      // Base — frosted glass tint
+      ctx.fillStyle = '#E8F0F4';
       ctx.fillRect(0, 0, 1024, 1024);
 
-      // Function to render branding & dish details centered at an X coordinate
-      const renderFace = (centerX: number) => {
-        // Top Rim Banner
-        ctx.fillStyle = darkColor;
-        ctx.fillRect(centerX - 460, 40, 920, 65);
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 24px system-ui, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(
-          isMr ? 'क्विक क्रेव्ह · अस्सल मालवणी किचन' : 'QUICK CRAVE · MALVANI COASTAL KITCHEN',
-          centerX,
-          80
-        );
+      // Bottom half — liquid color showing through
+      ctx.fillStyle = bgColor;
+      ctx.globalAlpha = 0.7;
+      ctx.fillRect(0, 520, 1024, 504);
+      ctx.globalAlpha = 1;
 
-        // Big Bold Bubble Wordmark
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = '900 95px system-ui, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('QUICK', centerX, 230);
-        ctx.fillText('CRAVE', centerX, 330);
+      // === Branding label — centered middle band ===
+      ctx.fillStyle = darkColor;
+      ctx.beginPath();
+      ctx.roundRect(0, 340, 1024, 340, 0);
+      ctx.fill();
 
-        // Coastal Wave Underline
-        ctx.strokeStyle = '#FFFFFF';
-        ctx.lineWidth = 6;
-        ctx.beginPath();
-        ctx.moveTo(centerX - 120, 365);
-        ctx.quadraticCurveTo(centerX - 60, 345, centerX, 365);
-        ctx.quadraticCurveTo(centerX + 60, 385, centerX + 120, 365);
-        ctx.stroke();
+      // Top accent stripe
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 340, 1024, 6);
 
-        // Active Dish Name Pill Banner
-        ctx.fillStyle = darkColor;
-        ctx.beginPath();
-        ctx.roundRect(centerX - 240, 580, 480, 80, 40);
-        ctx.fill();
+      // QUICK CRAVE wordmark
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = '900 72px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('QUICK CRAVE', 512, 440);
 
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 36px system-ui, sans-serif';
-        ctx.fillText(flavorName.toUpperCase(), centerX, 634);
+      // Tagline
+      ctx.fillStyle = 'rgba(255,255,255,0.5)';
+      ctx.font = '600 22px system-ui, sans-serif';
+      ctx.fillText(
+        isMr ? 'अस्सल मालवणी किचन' : 'MALVANI COASTAL KITCHEN',
+        512, 475
+      );
 
-        // Subtitle / Price
-        ctx.fillStyle = darkColor;
-        ctx.font = 'bold 26px system-ui, sans-serif';
-        ctx.fillText(subName.toUpperCase(), centerX, 730);
+      // Dish name pill
+      ctx.fillStyle = bgColor;
+      ctx.beginPath();
+      ctx.roundRect(260, 500, 504, 60, 30);
+      ctx.fill();
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 30px system-ui, sans-serif';
+      ctx.fillText(flavorName.toUpperCase(), 512, 540);
 
-        ctx.font = '600 22px system-ui, sans-serif';
-        ctx.fillText(
-          isMr ? '१००% ताजी मासळी · दगडी पाटा मसाला' : '100% WILD CATCH · STONE GROUND MASALAS',
-          centerX,
-          790
-        );
+      // Bottom accent stripe
+      ctx.fillStyle = bgColor;
+      ctx.fillRect(0, 674, 1024, 6);
 
-        // Zomato Callout
-        ctx.fillStyle = '#E23744';
-        ctx.beginPath();
-        ctx.roundRect(centerX - 160, 850, 320, 55, 28);
-        ctx.fill();
-        ctx.fillStyle = '#FFFFFF';
-        ctx.font = 'bold 22px system-ui, sans-serif';
-        ctx.fillText(isMr ? 'झोमॅटो वरून मागवा' : 'ORDER ON ZOMATO', centerX, 885);
-      };
-
-      // Draw on center front (512) and left/right seam (0 / 1024)
-      renderFace(512);
-
-      // Playful dots and sparkles scattered across the background
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-      for (let i = 0; i < 40; i++) {
+      // Decorative dots pattern
+      ctx.fillStyle = 'rgba(255,255,255,0.12)';
+      for (let i = 0; i < 30; i++) {
         const x = ((i * 137) % 960) + 32;
-        const y = ((i * 229) % 800) + 120;
+        const y = ((i * 229) % 280) + 60;
         ctx.beginPath();
-        ctx.arc(x, y, 4 + (i % 5), 0, Math.PI * 2);
+        ctx.arc(x, y, 3 + (i % 4), 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
     const tex = new THREE.CanvasTexture(canvas);
     tex.colorSpace = THREE.SRGBColorSpace;
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.repeat.x = -1;
+    tex.offset.x = 1;
     return tex;
-  }, [flavorName, subName, bgColor, darkColor]);
+  }, [flavorName, bgColor, darkColor, isMr]);
+
+  // Inner glass tint (visible through the opening)
+  const innerTint = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 256;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.fillStyle = bgColor;
+      ctx.globalAlpha = 0.3;
+      ctx.fillRect(0, 0, 256, 256);
+    }
+    const tex = new THREE.CanvasTexture(canvas);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    return tex;
+  }, [bgColor]);
 
   return (
-    <group position={[0, 0, 0]}>
-      {/* Main Slim Can Body with front-facing label */}
-      <mesh ref={meshRef} position={[0, 0, 0]} rotation={[0, Math.PI, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[0.58, 0.58, 1.95, 64]} />
+    <group ref={groupRef} scale={[0.88, 0.88, 0.88]}>
+      {/* ── GLASS BODY — FrontSide only (label reads correctly) ── */}
+      <mesh position={[0, 0, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[0.68, 0.48, 1.8, 48]} />
         <meshStandardMaterial
-          map={labelTexture}
-          roughness={0.25}
-          metalness={0.12}
+          map={glassTexture}
+          transparent
+          opacity={0.97}
+          roughness={0.1}
+          metalness={0.03}
+          side={THREE.FrontSide}
         />
       </mesh>
 
-      {/* Top Silver Bevel Rim */}
-      <mesh position={[0, 1.0, 0]}>
-        <cylinderGeometry args={[0.54, 0.58, 0.06, 64]} />
-        <meshStandardMaterial color="#E2E8F0" metalness={0.92} roughness={0.15} />
+      {/* ── GLASS INNER WALL — BackSide (tinted, no label) ── */}
+      <mesh position={[0, 0, 0]}>
+        <cylinderGeometry args={[0.67, 0.47, 1.78, 48]} />
+        <meshStandardMaterial
+          color={bgColor}
+          transparent
+          opacity={0.15}
+          roughness={0.1}
+          metalness={0.02}
+          side={THREE.BackSide}
+        />
       </mesh>
 
-      {/* Top Can Lid Inset */}
-      <mesh position={[0, 1.03, 0]}>
-        <cylinderGeometry args={[0.5, 0.5, 0.02, 48]} />
-        <meshStandardMaterial color="#CBD5E1" metalness={0.9} roughness={0.2} />
+      {/* ── LIQUID inside — slightly smaller, fills to brim ── */}
+      <mesh position={[0, -0.02, 0]}>
+        <cylinderGeometry args={[0.62, 0.42, 1.65, 48]} />
+        <meshStandardMaterial
+          color={bgColor}
+          transparent
+          opacity={0.98}
+          roughness={0.12}
+          metalness={0.02}
+        />
       </mesh>
 
-      {/* Pull Tab Accent */}
-      <mesh position={[0, 1.04, 0.12]}>
-        <boxGeometry args={[0.16, 0.015, 0.32]} />
-        <meshStandardMaterial color="#94A3B8" metalness={0.95} roughness={0.1} />
+      {/* Liquid surface disc */}
+      <mesh position={[0, 0.8, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[0.62, 48]} />
+        <meshStandardMaterial
+          color={bgColor}
+          transparent
+          opacity={0.88}
+          roughness={0.06}
+          metalness={0.15}
+        />
       </mesh>
 
-      {/* Bottom Silver Bevel Rim */}
-      <mesh position={[0, -1.0, 0]}>
-        <cylinderGeometry args={[0.58, 0.52, 0.06, 64]} />
-        <meshStandardMaterial color="#E2E8F0" metalness={0.92} roughness={0.15} />
+      {/* ── SPLASH blobs at the rim ── */}
+      <group ref={splashRef} position={[0, 0.8, 0]}>
+        <mesh position={[0.34, 0.16, 0.1]} scale={[0.12, 0.16, 0.12]}>
+          <sphereGeometry args={[1, 10, 8]} />
+          <meshStandardMaterial color={bgColor} transparent opacity={0.85} roughness={0.1} />
+        </mesh>
+        <mesh position={[0.46, 0.38, -0.04]} scale={[0.06, 0.07, 0.06]}>
+          <sphereGeometry args={[1, 8, 6]} />
+          <meshStandardMaterial color={bgColor} transparent opacity={0.75} roughness={0.08} />
+        </mesh>
+        <mesh position={[-0.28, 0.1, 0.14]} scale={[0.1, 0.12, 0.1]}>
+          <sphereGeometry args={[1, 8, 8]} />
+          <meshStandardMaterial color={bgColor} transparent opacity={0.8} roughness={0.1} />
+        </mesh>
+        <mesh position={[0.08, 0.32, 0.18]} scale={[0.04, 0.04, 0.04]}>
+          <sphereGeometry args={[1, 6, 6]} />
+          <meshStandardMaterial color="#FFFFFF" transparent opacity={0.4} roughness={0.05} />
+        </mesh>
+      </group>
+
+      {/* ── GLASS RIM — subtle thick lip ── */}
+      <mesh position={[0, 0.9, 0]}>
+        <torusGeometry args={[0.68, 0.022, 10, 48]} />
+        <meshStandardMaterial
+          color="#E8F4FA"
+          transparent
+          opacity={0.6}
+          roughness={0.05}
+          metalness={0.3}
+        />
+      </mesh>
+
+      {/* ── GLASS BASE — thick bottom disc ── */}
+      <mesh position={[0, -0.9, 0]}>
+        <cylinderGeometry args={[0.48, 0.5, 0.07, 48]} />
+        <meshStandardMaterial
+          color="#C8DEE8"
+          transparent
+          opacity={0.45}
+          roughness={0.08}
+          metalness={0.2}
+        />
+      </mesh>
+
+      {/* ── FLOATING BUBBLES inside the glass ── */}
+      {[
+        { pos: [0.2, -0.3, 0.15] as [number, number, number], s: 0.03, speed: 1.8 },
+        { pos: [-0.15, 0.1, 0.2] as [number, number, number], s: 0.025, speed: 2.2 },
+        { pos: [0.1, 0.4, -0.1] as [number, number, number], s: 0.02, speed: 1.5 },
+        { pos: [-0.25, -0.5, 0.05] as [number, number, number], s: 0.035, speed: 2.0 },
+        { pos: [0.05, -0.1, -0.2] as [number, number, number], s: 0.018, speed: 2.5 },
+      ].map((b, i) => (
+        <mesh key={i} position={b.pos}>
+          <sphereGeometry args={[b.s, 8, 8]} />
+          <meshStandardMaterial color="#FFFFFF" transparent opacity={0.35} roughness={0.05} />
+        </mesh>
+      ))}
+
+      {/* ── FLOATING FRUIT / GARNISH around the glass ── */}
+      {/* Lemon wedge */}
+      <group position={[0.85, 0.2, 0.5]} rotation={[0.3, 0.5, 0.2]} scale={0.5}>
+        <mesh scale={[0.34, 0.16, 0.34]}>
+          <sphereGeometry args={[1, 12, 12, 0, Math.PI]} />
+          <meshStandardMaterial color="#FACC15" roughness={0.3} />
+        </mesh>
+        <mesh position={[0, 0, 0.02]} scale={[0.3, 0.12, 0.3]}>
+          <circleGeometry args={[1, 12]} />
+          <meshStandardMaterial color="#FEF08A" roughness={0.4} />
+        </mesh>
+      </group>
+
+      {/* Kokum fruit (for kokum sherbet) or mint leaf (for sol kadi) */}
+      <mesh position={[-0.9, 0.5, 0.3]} rotation={[0.4, -0.3, 0.6]} scale={0.35}>
+        <sphereGeometry args={[0.18, 10, 8]} />
+        <meshStandardMaterial color="#881337" roughness={0.5} />
+      </mesh>
+
+      {/* Mint / curry leaf */}
+      <group position={[0.7, -0.4, -0.6]} rotation={[0.2, 0.8, -0.3]} scale={0.45}>
+        <mesh rotation={[0.2, 0, 0.3]} scale={[0.14, 0.35, 0.03]}>
+          <sphereGeometry args={[1, 8, 6]} />
+          <meshStandardMaterial color="#15803D" roughness={0.4} />
+        </mesh>
+      </group>
+
+      {/* Floating ice cube */}
+      <mesh position={[0.3, 0.55, -0.3]} rotation={[0.2, 0.4, 0.1]} scale={0.12}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="#E8F4FA" transparent opacity={0.4} roughness={0.05} metalness={0.1} />
+      </mesh>
+
+      {/* Tiny sparkle */}
+      <mesh position={[-0.5, 0.7, 0.4]} scale={0.02}>
+        <sphereGeometry args={[1, 6, 6]} />
+        <meshStandardMaterial color="#FFFFFF" emissive="#FFFFFF" emissiveIntensity={0.5} />
+      </mesh>
+      <mesh position={[0.6, -0.1, 0.5]} scale={0.015}>
+        <sphereGeometry args={[1, 6, 6]} />
+        <meshStandardMaterial color="#FFFFFF" emissive="#FFFFFF" emissiveIntensity={0.5} />
       </mesh>
     </group>
+
   );
 }
 
-// 3D Scene Controller
+// 3D Scene Controller — uses OrbitControls for smooth drag-to-rotate
 function Scene3D({
   flavor,
-  show3dFish,
-  isDragging,
-  isMr,
-  onPointerDown,
-  onPointerUp
+  isMr
 }: {
   flavor: (typeof SIGNATURE_FLAVORS)[0];
-  show3dFish: boolean;
-  isDragging: boolean;
   isMr: boolean;
-  onPointerDown: () => void;
-  onPointerUp: () => void;
 }) {
   const groupRef = useRef<THREE.Group>(null);
-  const targetRotationY = useRef(0);
-  const { camera, pointer } = useThree();
+  const controlsRef = useRef<any>(null);
 
-  // Smooth rotation spin when switching flavors
+  const isDrink = flavor.id === 'sol-kadi' || flavor.id === 'kokum-sarbat';
+
+  // Entry animation on flavor change
   useEffect(() => {
     if (groupRef.current) {
-      gsap.to(groupRef.current.rotation, {
-        y: targetRotationY.current + Math.PI * 2,
-        duration: 0.85,
-        ease: 'power3.out'
-      });
-      targetRotationY.current += Math.PI * 2;
+      gsap.fromTo(groupRef.current.scale,
+        { x: 0.01, y: 0.01, z: 0.01 },
+        { x: 1, y: 1, z: 1, duration: 0.7, ease: 'back.out(1.4)' }
+      );
     }
-  }, [flavor.id, show3dFish]);
-
-  useFrame((_, delta) => {
-    const g = groupRef.current;
-    if (!g) return;
-
-    if (!isDragging) {
-      g.rotation.y += delta * 0.45;
-      g.rotation.x = THREE.MathUtils.lerp(g.rotation.x, pointer.y * 0.15, delta * 2.5);
-      g.rotation.z = THREE.MathUtils.lerp(g.rotation.z, -pointer.x * 0.1, delta * 2.5);
+    // Reset controls to default position
+    if (controlsRef.current) {
+      controlsRef.current.reset();
     }
-
-    camera.position.x = THREE.MathUtils.lerp(camera.position.x, pointer.x * 0.35, delta * 2);
-    camera.position.y = THREE.MathUtils.lerp(camera.position.y, 0.1 - pointer.y * 0.2, delta * 2);
-    camera.lookAt(0, 0, 0);
-  });
+  }, [flavor.id]);
 
   return (
     <>
@@ -394,24 +592,34 @@ function Scene3D({
         <shadowMaterial opacity={0.16} />
       </mesh>
 
-      <group
-        ref={groupRef}
-        position={[0, 0, 0]}
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-      >
-        {show3dFish ? (
-          <Suspense fallback={null}>
-            <BarramundiCatchModel dishImage={flavor.image} />
-          </Suspense>
-        ) : (
-          <ManaCraftCan
+      {/* OrbitControls — smooth damping, click-hold-drag, clamped rotation */}
+      <OrbitControls
+        ref={controlsRef}
+        enablePan={false}
+        enableZoom={false}
+        enableDamping
+        dampingFactor={0.08}
+        rotateSpeed={0.5}
+        autoRotate
+        autoRotateSpeed={isDrink ? 0.4 : 0.6}
+        minPolarAngle={Math.PI / 2.8}
+        maxPolarAngle={Math.PI / 1.7}
+        target={[0, 0, 0]}
+      />
+
+      <group ref={groupRef} position={[0, 0, 0]}>
+        {isDrink ? (
+          <ManaGlassModel
             flavorName={isMr ? flavor.nameMr : flavor.name}
             subName={isMr ? flavor.subtitleMr : flavor.subtitle}
             bgColor={flavor.bgColor}
             darkColor={flavor.darkColor}
             isMr={isMr}
           />
+        ) : (
+          <Suspense fallback={null}>
+            <BarramundiCatchModel dishImage={flavor.image} flavorKey={flavor.key} />
+          </Suspense>
         )}
       </group>
     </>
@@ -420,14 +628,13 @@ function Scene3D({
 
 export function Hero3D() {
   const heroRef = useRef<HTMLDivElement>(null);
-  const [show3dFish, setShow3dFish] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
 
   const { tr, isMr } = useT();
 
   const activeIndex = useStore((s) => s.activeFlavorIndex);
   const nextFlavor = useStore((s) => s.nextFlavor);
   const prevFlavor = useStore((s) => s.prevFlavor);
+  const setCursor = useStore((s) => s.setCursor);
   const currentFlavor = SIGNATURE_FLAVORS[activeIndex];
 
   // GSAP Smooth Background Color Morphing on Flavor Change
@@ -562,13 +769,58 @@ export function Hero3D() {
             </div>
           </>
         )}
+
+        {/* FLAVOR 4: PINK (Kokum Sherbet — tropical magenta theme) */}
+        {currentFlavor.doodleSet === 'pink' && (
+          <>
+            {/* Left Hibiscus Flower — large, tropical */}
+            <div className="absolute -left-6 sm:left-8 bottom-20 sm:bottom-28 w-52 sm:w-72 md:w-80 animate-[float_7s_ease-in-out_infinite]">
+              <HibiscusDoodle className="w-full" />
+            </div>
+
+            {/* Left Tropical Botanical Leaves */}
+            <div className="absolute left-0 sm:left-16 -bottom-6 w-56 sm:w-72 opacity-90">
+              <BotanicalLeavesFlower className="w-full -rotate-12" />
+            </div>
+
+            {/* Right Arch Window with Clouds */}
+            <div className="absolute -right-4 sm:right-14 top-24 sm:top-32 w-36 sm:w-52 opacity-90">
+              <ArchCloudWindow className="w-full" />
+            </div>
+
+            {/* Right Citrus Slice — kokum garnish feel */}
+            <div className="absolute right-8 sm:right-28 bottom-20 sm:bottom-32 w-36 sm:w-48 animate-[float_6s_ease-in-out_infinite]">
+              <SliceCitrusDoodle className="w-full rotate-[-15deg]" />
+            </div>
+
+            {/* Floating Bubble Rings */}
+            <div className="absolute left-1/3 top-32 w-10 h-10 opacity-40">
+              <BubbleRing className="w-full" />
+            </div>
+            <div className="absolute right-1/4 bottom-48 w-8 h-8 opacity-40">
+              <BubbleRing className="w-full" />
+            </div>
+
+            {/* Sparkle Stars */}
+            <div className="absolute left-[42%] top-28 w-8 h-8 animate-pulse">
+              <SparkleStar className="w-full" />
+            </div>
+            <div className="absolute right-[38%] top-52 w-6 h-6 animate-pulse">
+              <SparkleStar className="w-full" />
+            </div>
+          </>
+        )}
       </div>
 
       {/* Top Spacer for fixed navbar */}
       <div className="pt-24 sm:pt-28" />
 
       {/* Centered 3D Canvas Viewport — Perfectly Framed & Proportioned */}
-      <div className="relative flex-1 w-full max-w-4xl mx-auto flex items-center justify-center z-10">
+      <div
+        className="relative flex-1 w-full max-w-4xl mx-auto flex items-center justify-center z-10"
+        onPointerEnter={() => setCursor('drag', isMr ? 'घसरा करा · फिरवा' : 'DRAG TO EXPLORE')}
+        onPointerLeave={() => setCursor('default', null)}
+      >
         <Canvas
           camera={{ position: [0, 0, 4.4], fov: 38 }}
           shadows
@@ -577,43 +829,9 @@ export function Hero3D() {
         >
           <Scene3D
             flavor={currentFlavor}
-            show3dFish={show3dFish}
-            isDragging={isDragging}
             isMr={isMr}
-            onPointerDown={() => setIsDragging(true)}
-            onPointerUp={() => setIsDragging(false)}
           />
         </Canvas>
-
-        {/* 3D Model Switcher Pill — Dual Mode Pill */}
-        <div className="absolute top-2 right-4 sm:right-8 z-20 flex items-center gap-1 p-1 rounded-full bg-white/95 shadow-md border border-black/5 backdrop-blur-sm">
-          <button
-            onClick={() => setShow3dFish(false)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-              !show3dFish
-                ? 'bg-[#1E2B58] text-white shadow-xs'
-                : 'text-gray-600 hover:text-black hover:bg-gray-100'
-            }`}
-          >
-            <span className="flex items-center gap-1.5">
-              <Box size={13} />
-              <span>{tr('hero.3dCan')}</span>
-            </span>
-          </button>
-          <button
-            onClick={() => setShow3dFish(true)}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all ${
-              show3dFish
-                ? 'bg-[#1E2B58] text-white shadow-xs'
-                : 'text-gray-600 hover:text-black hover:bg-gray-100'
-            }`}
-          >
-            <span className="flex items-center gap-1.5">
-              <Flame size={13} className="text-[#F9D36A]" />
-              <span>{tr('hero.3dPlatter')}</span>
-            </span>
-          </button>
-        </div>
       </div>
 
       {/* MANA-style Interactive Bottom Navigation Controls */}
@@ -621,6 +839,8 @@ export function Hero3D() {
         {/* Left Floating Circular Arrow Button */}
         <button
           onClick={prevFlavor}
+          onPointerEnter={() => setCursor('open', tr('hero.prevDish'))}
+          onPointerLeave={() => setCursor('default', null)}
           className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5"
           aria-label={tr('hero.prevDish')}
         >
@@ -631,6 +851,8 @@ export function Hero3D() {
         <Link
           to={`/products/${currentFlavor.id}`}
           style={{ backgroundColor: currentFlavor.buttonBg }}
+          onPointerEnter={() => setCursor('open', isMr ? currentFlavor.nameMr : currentFlavor.name)}
+          onPointerLeave={() => setCursor('default', null)}
           className="group flex-1 max-w-sm py-3.5 sm:py-4 px-6 sm:px-8 rounded-full text-white text-base sm:text-lg font-bold font-bubble tracking-wide shadow-xl hover:shadow-2xl hover:scale-[1.02] active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
         >
           <span>{isMr ? currentFlavor.nameMr : currentFlavor.name}</span>
@@ -640,6 +862,8 @@ export function Hero3D() {
         {/* Right Floating Circular Arrow Button */}
         <button
           onClick={nextFlavor}
+          onPointerEnter={() => setCursor('open', tr('hero.nextDish'))}
+          onPointerLeave={() => setCursor('default', null)}
           className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white text-[#1E293B] hover:scale-105 active:scale-95 flex items-center justify-center shadow-lg transition-transform duration-200 border border-black/5"
           aria-label={tr('hero.nextDish')}
         >

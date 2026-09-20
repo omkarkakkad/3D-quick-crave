@@ -6,9 +6,11 @@ import { ArrowUpRight, Phone } from 'lucide-react';
 import { Navbar } from './components/Navbar';
 import { CartDrawer } from './components/CartDrawer';
 import { GsapLoader } from './components/GsapLoader';
+import { CustomCursor } from './components/CustomCursor';
 import { HomePage } from './pages/HomePage';
 import { ProductPage } from './pages/ProductPage';
 import { PHONE_1, zomatoUrl } from './data/menu';
+import { useStore } from './store/useStore';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,6 +18,7 @@ export default function App() {
   const [showLoader, setShowLoader] = useState(true);
   const [showFloatingPill, setShowFloatingPill] = useState(false);
   const pillRef = useRef<HTMLDivElement>(null);
+  const setCursor = useStore((s) => s.setCursor);
 
   useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
@@ -58,6 +61,9 @@ export default function App() {
   return (
     <BrowserRouter>
       <div id="top" className="min-h-screen bg-[#FDF9F3] text-[#111827] font-sans selection:bg-[#1E2B58] selection:text-white overflow-x-clip">
+        {/* Custom Cursor */}
+        <CustomCursor />
+
         {/* GSAP Preloader Animation */}
         {showLoader && <GsapLoader onComplete={() => setShowLoader(false)} />}
 
@@ -84,6 +90,8 @@ export default function App() {
             href={zomatoUrl}
             target="_blank"
             rel="noreferrer"
+            onPointerEnter={() => setCursor('open', 'Order on Zomato')}
+            onPointerLeave={() => setCursor('default', null)}
             className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md active:scale-95"
           >
             <span>Order on Zomato</span>
@@ -92,8 +100,9 @@ export default function App() {
 
           <a
             href={`tel:+91${PHONE_1}`}
+            onPointerEnter={() => setCursor('open', `Call ${PHONE_1}`)}
+            onPointerLeave={() => setCursor('default', null)}
             className="inline-flex items-center gap-1.5 px-3.5 py-2.5 text-xs font-bold text-[#1E2B58] hover:bg-gray-100 rounded-full transition-colors"
-            title={`Call ${PHONE_1}`}
           >
             <Phone size={13} className="text-[#1E2B58]" />
             <span className="hidden sm:inline">{PHONE_1}</span>

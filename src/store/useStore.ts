@@ -43,7 +43,7 @@ export interface SignatureFlavor {
   sodium: string;
   catchTime: string;
   catchTimeMr: string;
-  doodleSet: 'green' | 'yellow' | 'blue' | 'coral';
+  doodleSet: 'green' | 'yellow' | 'blue' | 'coral' | 'pink';
 }
 
 export const SIGNATURE_FLAVORS: SignatureFlavor[] = [
@@ -158,6 +158,34 @@ export const SIGNATURE_FLAVORS: SignatureFlavor[] = [
     catchTime: 'Chef Curated Daily',
     catchTimeMr: 'दररोज सकाळी ताजी मासळी',
     doodleSet: 'coral'
+  },
+  {
+    id: 'kokum-sarbat',
+    key: 'kokum',
+    name: 'Kokum Sherbet',
+    nameMr: 'कोकम शर्बत',
+    subtitle: 'Wild Kokum · Chilled Coastal Cooler',
+    subtitleMr: 'रानटी कोकम · थंडगार किनारपट्टी कुलर',
+    tagline: 'Tangy Refresher · Pure Kokum Agal',
+    taglineMr: 'आंबट ताजेपणा · शुद्ध कोकम आगळ',
+    price: 79,
+    bgColor: '#C2185B',
+    darkColor: '#880E4F',
+    buttonBg: '#AD1457',
+    accentColor: '#F8BBD0',
+    image: '/images/kokum-drink.jpg',
+    description:
+      'Chilled wild kokum sherbet blended with jaggery, roasted cumin and a hint of black salt — the ultimate coastal thirst quencher.',
+    descriptionMr:
+      'रानटी कोकमाचा थंड शर्बत, गूळ, भुनलेला जिरा आणि काळे मीठाचा स्पर्श असलेला — अंतिम किनारपट्टी प्याऊ.',
+    calories: 65,
+    omega3: '0.1g',
+    protein: '0.5g',
+    carbs: '15g',
+    sodium: '45mg',
+    catchTime: 'Fresh Pressed Daily',
+    catchTimeMr: 'दररोज सकाळी ताजे तयार',
+    doodleSet: 'pink'
   }
 ];
 

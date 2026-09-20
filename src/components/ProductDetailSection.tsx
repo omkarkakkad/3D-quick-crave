@@ -11,6 +11,7 @@ export function ProductDetailSection() {
   const addToCart = useStore((s) => s.addToCart);
 
   const { tr, isMr } = useT();
+  const setCursor = useStore((s) => s.setCursor);
 
   const currentFlavor = SIGNATURE_FLAVORS[activeIndex];
   const [qty, setQty] = useState(1);
@@ -51,6 +52,8 @@ export function ProductDetailSection() {
               {/* Floating Circular Navigation Arrows on Product Card */}
               <button
                 onClick={prevFlavor}
+                onPointerEnter={() => setCursor('open', tr('hero.prevDish'))}
+                onPointerLeave={() => setCursor('default', null)}
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white text-[#1E293B] hover:scale-110 active:scale-95 flex items-center justify-center shadow-lg transition-transform border border-black/5"
                 aria-label={tr('hero.prevDish')}
               >
@@ -58,6 +61,8 @@ export function ProductDetailSection() {
               </button>
               <button
                 onClick={nextFlavor}
+                onPointerEnter={() => setCursor('open', tr('hero.nextDish'))}
+                onPointerLeave={() => setCursor('default', null)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white text-[#1E293B] hover:scale-110 active:scale-95 flex items-center justify-center shadow-lg transition-transform border border-black/5"
                 aria-label={tr('hero.nextDish')}
               >
@@ -131,6 +136,8 @@ export function ProductDetailSection() {
             <div className="flex flex-col sm:flex-row gap-3 mb-10">
               <button
                 onClick={handleAddToCart}
+                onPointerEnter={() => setCursor('open', `${tr('details.addToOrder')} · ${isMr ? currentFlavor.nameMr : currentFlavor.name}`)}
+                onPointerLeave={() => setCursor('default', null)}
                 style={{ backgroundColor: currentFlavor.bgColor }}
                 className="flex-1 py-4 px-8 rounded-full text-[#111827] hover:brightness-95 active:scale-[0.98] font-bold text-base sm:text-lg shadow-md transition-all flex items-center justify-center gap-2"
               >
@@ -153,6 +160,8 @@ export function ProductDetailSection() {
                 href={zomatoUrl}
                 target="_blank"
                 rel="noreferrer"
+                onPointerEnter={() => setCursor('open', tr('details.zomato'))}
+                onPointerLeave={() => setCursor('default', null)}
                 className="py-4 px-6 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white font-bold text-sm uppercase tracking-wider shadow-md transition-all flex items-center justify-center gap-2 active:scale-[0.98]"
               >
                 <span>{tr('details.zomato')}</span>

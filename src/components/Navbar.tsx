@@ -6,12 +6,13 @@ import { PHONE_1, zomatoUrl } from '../data/menu';
 import { useT } from '../i18n/useT';
 
 export function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(() => window.scrollY > 30);
   const [announcementVisible, setAnnouncementVisible] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const cart = useStore((s) => s.cart);
   const setCartOpen = useStore((s) => s.setCartOpen);
+  const setCursor = useStore((s) => s.setCursor);
   const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
 
   const { tr, lang, setLang } = useT();
@@ -47,14 +48,14 @@ export function Navbar() {
         className={`w-full transition-all duration-300 px-4 sm:px-8 py-3.5 sm:py-4 flex items-center justify-between ${
           scrolled
             ? 'bg-white/95 backdrop-blur-md shadow-sm border-b border-gray-100'
-            : 'bg-transparent'
+            : 'bg-white/80 backdrop-blur-sm'
         }`}
       >
         {/* Left: Playful MANA-style Chunky White/Dark Logo */}
         <Link to="/" className="flex items-center gap-2 group focus:outline-none">
           <div className="font-bubble font-black text-2xl sm:text-3xl tracking-tight flex items-center drop-shadow-sm">
-            <span className={scrolled ? 'text-[#1E2B58]' : 'text-white'}>QUICK</span>
-            <span className={`ml-1.5 -rotate-2 ${scrolled ? 'text-[#E05A36]' : 'text-white'}`}>
+            <span className="text-[#1E2B58]">QUICK</span>
+            <span className="ml-1.5 -rotate-2 text-[#E05A36]">
               CRAVE
             </span>
           </div>
@@ -66,6 +67,8 @@ export function Navbar() {
           <div className="relative group hidden md:block">
             <a
               href="#menu"
+              onPointerEnter={() => setCursor('explore', tr('nav.shop'))}
+              onPointerLeave={() => setCursor('default', null)}
               className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 text-xs sm:text-sm font-bold tracking-wide shadow-sm transition-all duration-200 border border-black/5 active:scale-95"
             >
               <span>{tr('nav.shop')}</span>
@@ -76,6 +79,8 @@ export function Navbar() {
           {/* Learn / Story Pill */}
           <a
             href="#story"
+            onPointerEnter={() => setCursor('explore', tr('nav.learn'))}
+            onPointerLeave={() => setCursor('default', null)}
             className="hidden md:inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 text-xs sm:text-sm font-bold tracking-wide shadow-sm transition-all duration-200 border border-black/5 active:scale-95"
           >
             <span>{tr('nav.learn')}</span>
@@ -85,6 +90,8 @@ export function Navbar() {
           {/* Feast Boxes Pill linking to dedicated Feast page */}
           <Link
             to="/products/pomfret-feast"
+            onPointerEnter={() => setCursor('explore', tr('nav.feastBoxes'))}
+            onPointerLeave={() => setCursor('default', null)}
             className="hidden lg:inline-flex items-center px-5 py-2.5 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 text-xs sm:text-sm font-bold tracking-wide shadow-sm transition-all duration-200 border border-black/5 active:scale-95"
           >
             <span>{tr('nav.feastBoxes')}</span>
@@ -103,9 +110,9 @@ export function Navbar() {
           {/* Dual Language Switcher Pill (EN | MR) - Always Accessible */}
           <button
             onClick={() => setLang(lang === 'en' ? 'mr' : 'en')}
+            onPointerEnter={() => setCursor('open', lang === 'en' ? 'मराठी मध्ये बदला' : 'Switch to English')}
+            onPointerLeave={() => setCursor('default', null)}
             className="inline-flex items-center gap-1 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 text-xs font-black tracking-wider shadow-sm border border-black/5 transition-all active:scale-95"
-            title={lang === 'en' ? 'मराठी मध्ये बदला (Switch to Marathi)' : 'Switch to English'}
-            aria-label="Toggle language between English and Marathi"
           >
             <span
               className={`px-2 py-0.5 rounded-full transition-all ${
@@ -129,6 +136,8 @@ export function Navbar() {
             href={zomatoUrl}
             target="_blank"
             rel="noreferrer"
+            onPointerEnter={() => setCursor('open', tr('nav.orderZomato'))}
+            onPointerLeave={() => setCursor('default', null)}
             className="hidden sm:inline-flex items-center gap-1.5 px-4 py-2.5 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all active:scale-95"
           >
             <span>{tr('nav.orderZomato')}</span>
@@ -147,6 +156,8 @@ export function Navbar() {
           {/* Shopping Bag Pill Icon with Counter Badge */}
           <button
             onClick={() => setCartOpen(true)}
+            onPointerEnter={() => setCursor('open', tr('nav.viewCart'))}
+            onPointerLeave={() => setCursor('default', null)}
             className="relative w-10 h-10 rounded-full bg-white text-[#1E293B] hover:bg-gray-50 flex items-center justify-center shadow-sm border border-black/5 transition-all active:scale-95"
             aria-label={tr('nav.viewCart')}
           >

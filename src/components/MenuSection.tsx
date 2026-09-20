@@ -12,6 +12,7 @@ export function MenuSection() {
   const searchQuery = useStore((s) => s.searchQuery);
   const setSearchQuery = useStore((s) => s.setSearchQuery);
   const addToCart = useStore((s) => s.addToCart);
+  const setCursor = useStore((s) => s.setCursor);
   const [addedIds, setAddedIds] = useState<Record<string, boolean>>({});
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -181,6 +182,8 @@ export function MenuSection() {
             return (
               <div
                 key={item.id}
+                onPointerEnter={() => setCursor(item.spiceLevel === 3 ? 'taste' : 'explore', displayName)}
+                onPointerLeave={() => setCursor('default', null)}
                 className="group rounded-3xl bg-white border border-gray-200 hover:border-gray-300 p-5 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1"
               >
                 <div>
@@ -255,6 +258,8 @@ export function MenuSection() {
                     {/* Add to Bag Pill */}
                     <button
                       onClick={() => handleAdd(item)}
+                      onPointerEnter={() => setCursor('open', `${tr('menu.add')} · ${displayName}`)}
+                      onPointerLeave={() => setCursor('explore', displayName)}
                       className={`py-2.5 px-4 rounded-full text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all duration-200 active:scale-95 shadow-sm ${
                         isAdded
                           ? 'bg-[#15803D] text-white'
@@ -279,8 +284,9 @@ export function MenuSection() {
                       href={zomatoUrl}
                       target="_blank"
                       rel="noreferrer"
+                      onPointerEnter={() => setCursor('open', tr('order.zomatoBtn'))}
+                      onPointerLeave={() => setCursor('explore', displayName)}
                       className="p-2.5 rounded-full bg-[#E23744]/10 hover:bg-[#E23744] text-[#E23744] hover:text-white transition-colors"
-                      title={tr('order.zomatoBtn')}
                     >
                       <ArrowUpRight size={14} />
                     </a>

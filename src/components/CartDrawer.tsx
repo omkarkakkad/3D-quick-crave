@@ -12,6 +12,7 @@ export function CartDrawer() {
   const addToCart = useStore((s) => s.addToCart);
 
   const { tr, isMr } = useT();
+  const setCursor = useStore((s) => s.setCursor);
 
   const total = cart.reduce((a, c) => a + c.price * c.qty, 0);
   const totalItems = cart.reduce((a, c) => a + c.qty, 0);
@@ -145,6 +146,8 @@ export function CartDrawer() {
                   href={`${whatsappUrl}&text=${orderMessage}`}
                   target="_blank"
                   rel="noreferrer"
+                  onPointerEnter={() => setCursor('open', tr('cart.sendWhatsApp'))}
+                  onPointerLeave={() => setCursor('default', null)}
                   className="w-full py-3.5 rounded-full bg-[#12382C] hover:bg-[#1E4D3D] text-[#FAF8F5] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm mb-2.5 transition-all active:scale-95"
                 >
                   <MessageCircle size={16} />
@@ -156,6 +159,8 @@ export function CartDrawer() {
                   href={zomatoUrl}
                   target="_blank"
                   rel="noreferrer"
+                  onPointerEnter={() => setCursor('open', tr('cart.orderZomatoDirect'))}
+                  onPointerLeave={() => setCursor('default', null)}
                   className="w-full py-3 rounded-full bg-[#FAF8F5] hover:bg-[#F4F0E8] border border-[#E8E2D5] text-[#12382C] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all mb-2"
                 >
                   <span>{tr('cart.orderZomatoDirect')}</span>

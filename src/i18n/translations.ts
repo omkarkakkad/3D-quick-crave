@@ -93,7 +93,7 @@ export const t: Translations = {
   'details.wild': { en: '100% Wild', hi: '100% प्राकृतिक', mr: '१००% नैसर्गिक' },
 
   // ─── COLOR BLOCK SHOWCASE ───
-  'showcase.drinkTag': { en: 'DRINK · ₹99', hi: 'पेय · ₹99', mr: 'पाचक पेय · ₹९९' },
+  'showcase.drinkTag': { en: 'COASTAL DRINK', hi: 'तटीय पेय', mr: 'किनारपट्टी पेय' },
   'showcase.chefsSpecialTag': { en: "CHEF'S SPECIAL · ₹399", hi: 'शेफ स्पेशल · ₹399', mr: 'शेफ स्पेशल · ₹३९९' },
   'showcase.viewDishOrder': { en: 'View Dish & Order', hi: 'डिश देखें और ऑर्डर करें', mr: 'डिश पहा आणि ऑर्डर करा' },
 
@@ -268,5 +268,20 @@ export const t: Translations = {
     en: 'Dockside catch inspected at 5:30 AM. Prepared to order with cold-pressed coconut oil.',
     hi: 'सुबह 5:30 बजे चुनी गई ताज़ी मछली। कोल्ड-प्रेस्ड नारियल तेल में ताज़ा तैयार।',
     mr: 'पहाटे ५:३० ची निवडक ताजी मासळी. अस्सल नारळाच्या तेलात आणि मसाल्यात खास तयार.'
+  },
+  'prod.chefPortion': {
+    en: 'Standard Portion',
+    hi: 'स्टैंडर्ड पोर्शन',
+    mr: 'मानक भाग'
+  },
+  'prod.execPlatter': {
+    en: 'Executive Feast',
+    hi: 'एग्ज़ीक्यूटिव फ़ीस्ट',
+    mr: 'एक्झिक्युटिव्ह दावत'
+  },
+  'prod.famBox': {
+    en: 'Family Box',
+    hi: 'फ़ैमिली बॉक्स',
+    mr: 'कुटुंब बॉक्स'
   }
 };

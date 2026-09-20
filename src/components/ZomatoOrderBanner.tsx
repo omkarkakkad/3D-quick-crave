@@ -1,9 +1,11 @@
 import { Phone, ArrowUpRight, MessageCircle, Clock, MapPin, Sparkles } from 'lucide-react';
 import { PHONE_1, PHONE_2, zomatoUrl, whatsappUrl, callUrl, callUrl2 } from '../data/menu';
 import { useT } from '../i18n/useT';
+import { useStore } from '../store/useStore';
 
 export function ZomatoOrderBanner() {
   const { tr } = useT();
+  const setCursor = useStore((s) => s.setCursor);
 
   return (
     <section id="order" className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto scroll-mt-20 select-none">
@@ -30,6 +32,8 @@ export function ZomatoOrderBanner() {
                 href={zomatoUrl}
                 target="_blank"
                 rel="noreferrer"
+                onPointerEnter={() => setCursor('open', tr('order.zomatoBtn'))}
+                onPointerLeave={() => setCursor('default', null)}
                 className="inline-flex items-center gap-2.5 px-8 py-4 rounded-full bg-[#E23744] hover:bg-[#CB202D] text-white text-sm font-bold uppercase tracking-wider shadow-lg active:scale-95 transition-all"
               >
                 <span>{tr('order.zomatoBtn')}</span>
@@ -41,6 +45,8 @@ export function ZomatoOrderBanner() {
                 href={whatsappUrl}
                 target="_blank"
                 rel="noreferrer"
+                onPointerEnter={() => setCursor('open', tr('order.whatsappBtn'))}
+                onPointerLeave={() => setCursor('default', null)}
                 className="inline-flex items-center gap-2 px-6 py-4 rounded-full bg-gray-100 hover:bg-gray-200 text-[#111827] text-sm font-bold tracking-wide transition-all active:scale-95"
               >
                 <MessageCircle size={18} className="text-[#25D366]" />
@@ -70,6 +76,8 @@ export function ZomatoOrderBanner() {
               <div className="space-y-3 mb-6">
                 <a
                   href={callUrl}
+                  onPointerEnter={() => setCursor('open', `${tr('order.call')} · ${PHONE_1}`)}
+                  onPointerLeave={() => setCursor('default', null)}
                   className="flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-gray-50 border border-gray-200 text-[#111827] transition-all group shadow-sm"
                 >
                   <div className="flex items-center gap-3">
@@ -88,6 +96,8 @@ export function ZomatoOrderBanner() {
 
                 <a
                   href={callUrl2}
+                  onPointerEnter={() => setCursor('open', `${tr('order.call')} · 022 ${PHONE_2}`)}
+                  onPointerLeave={() => setCursor('default', null)}
                   className="flex items-center justify-between p-3.5 rounded-2xl bg-white hover:bg-gray-50 border border-gray-200 text-[#111827] transition-all group shadow-sm"
                 >
                   <div className="flex items-center gap-3">
