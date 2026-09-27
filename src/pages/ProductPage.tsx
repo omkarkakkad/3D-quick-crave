@@ -17,8 +17,9 @@ export function ProductPage() {
 
   const { tr, isMr } = useT();
 
-  // Find product from menu or signature flavors
-  const allProducts = menu;
+  const menuItems = useStore((s) => s.menuItems);
+  // Find product from store menu or signature flavors
+  const allProducts = menuItems.length > 0 ? menuItems : menu;
   const currentProduct =
     allProducts.find((p) => p.id === productId) ||
     allProducts[0]; // fallback
@@ -59,11 +60,19 @@ export function ProductPage() {
     navigate(`/products/${allProducts[nextIdx].id}`);
   };
 
+  const isOutOfStock = currentProduct.inStock === false;
+  const hasDiscount = currentProduct.discountPrice && currentProduct.discountPrice < currentProduct.price;
+  const effectivePrice = hasDiscount ? currentProduct.discountPrice! : currentProduct.price;
+  const discountPct = hasDiscount
+    ? Math.round(((currentProduct.price - currentProduct.discountPrice!) / currentProduct.price) * 100)
+    : 0;
+
   const handleAddToCart = () => {
+    if (isOutOfStock) return;
     addToCart({
       id: currentProduct.id,
       name: `${isMr ? currentProduct.nameMr : currentProduct.name} (${portion})`,
-      price: currentProduct.price,
+      price: effectivePrice,
       category: currentProduct.category
     });
     setAdded(true);
@@ -77,9 +86,6 @@ export function ProductPage() {
 
   return (
     <div className="min-h-screen bg-[#FDF9F3] text-[#111827] font-sans selection:bg-[#1E2B58] selection:text-white">
-      <Navbar />
-      <CartDrawer />
-
       {/* Spacer for fixed navbar */}
       <div className="pt-28 sm:pt-32" />
 
@@ -138,10 +144,25 @@ export function ProductPage() {
             </h1>
 
             {/* Price & Subtitle */}
-            <div className="flex items-baseline gap-6 mb-6">
+            <div className="flex items-baseline gap-4 mb-6 flex-wrap">
               <span className="text-3xl sm:text-4xl font-extrabold text-[#111827]">
-                ₹{currentProduct.price}
+                ₹{effectivePrice}
               </span>
+              {hasDiscount && (
+                <span className="font-mono text-xl text-gray-400 line-through">
+                  ₹{currentProduct.price}
+                </span>
+              )}
+              {hasDiscount && (
+                <span className="px-2.5 py-0.5 rounded-full bg-[#15803D] text-white text-xs font-black uppercase tracking-wider">
+                  {discountPct}% OFF
+                </span>
+              )}
+              {isOutOfStock && (
+                <span className="px-3 py-1 rounded-full bg-red-600 text-white text-xs font-black uppercase tracking-wider">
+                  {isMr ? 'विक्री समाप्त' : 'Sold Out'}
+                </span>
+              )}
               <span className="text-base sm:text-lg font-bold text-gray-500">
                 {displayCategory} · {displayVibes}
               </span>
@@ -194,11 +215,18 @@ export function ProductPage() {
             {/* Full-Width Add To Cart Button */}
             <div className="flex flex-col sm:flex-row gap-3 mb-10">
               <button
+                disabled={isOutOfStock}
                 onClick={handleAddToCart}
-                style={{ backgroundColor: themeColor }}
-                className="flex-1 py-3.5 sm:py-4 px-6 sm:px-8 rounded-full text-[#111827] hover:brightness-95 active:scale-[0.98] font-bold text-sm sm:text-lg shadow-md transition-all flex items-center justify-center gap-2"
+                style={{ backgroundColor: isOutOfStock ? '#E5E7EB' : themeColor }}
+                className={`flex-1 py-3.5 sm:py-4 px-6 sm:px-8 rounded-full font-bold text-sm sm:text-lg shadow-md transition-all flex items-center justify-center gap-2 ${
+                  isOutOfStock
+                    ? 'text-gray-400 cursor-not-allowed border border-gray-300'
+                    : 'text-[#111827] hover:brightness-95 active:scale-[0.98]'
+                }`}
               >
-                {added ? (
+                {isOutOfStock ? (
+                  <span>{isMr ? 'विक्री समाप्त' : 'Sold Out'}</span>
+                ) : added ? (
                   <>
                     <Check size={20} className="text-[#111827]" />
                     <span>{tr('details.addedToOrder')}</span>
@@ -207,7 +235,7 @@ export function ProductPage() {
                   <>
                     <ShoppingBag size={20} />
                     <span>
-                      {tr('details.addToOrder')} · ₹{currentProduct.price * qty}
+                      {tr('details.addToOrder')} · ₹{effectivePrice * qty}
                     </span>
                   </>
                 )}
