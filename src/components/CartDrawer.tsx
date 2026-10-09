@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { X, Trash2, MessageCircle, Phone, ArrowUpRight, ShoppingBag } from 'lucide-react';
-import { useStore } from '../store/useStore';
+import { X, Trash2, MessageCircle, Phone, ArrowUpRight, ShoppingBag, Tag, Sparkles, Check, AlertCircle } from 'lucide-react';
+import { useStore, type Order } from '../store/useStore';
 import { whatsappUrl, zomatoUrl, PHONE_1 } from '../data/menu';
 import { useT } from '../i18n/useT';
 
@@ -10,23 +11,84 @@ export function CartDrawer() {
   const setCartOpen = useStore((s) => s.setCartOpen);
   const removeFromCart = useStore((s) => s.removeFromCart);
   const addToCart = useStore((s) => s.addToCart);
+  const clearCart = useStore((s) => s.clearCart);
+
+  const appliedCoupon = useStore((s) => s.appliedCoupon);
+  const couponDiscount = useStore((s) => s.couponDiscount);
+  const applyCoupon = useStore((s) => s.applyCoupon);
+  const removeCoupon = useStore((s) => s.removeCoupon);
+  const addOrder = useStore((s) => s.addOrder);
+
+  const [couponInput, setCouponInput] = useState('');
+  const [couponMsg, setCouponMsg] = useState<{ text: string; isError: boolean } | null>(null);
 
   const { tr, isMr } = useT();
   const setCursor = useStore((s) => s.setCursor);
 
-  const total = cart.reduce((a, c) => a + c.price * c.qty, 0);
+  const subtotal = cart.reduce((a, c) => a + c.price * c.qty, 0);
+  const total = Math.max(0, subtotal - couponDiscount);
   const totalItems = cart.reduce((a, c) => a + c.qty, 0);
 
+  const handleApplyCoupon = () => {
+    if (!couponInput.trim()) return;
+    const res = applyCoupon(couponInput.trim(), subtotal);
+    setCouponMsg({ text: res.message, isError: !res.success });
+    if (res.success) {
+      setCouponInput('');
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    removeCoupon();
+    setCouponMsg(null);
+  };
+
+  // WhatsApp checkout message with coupon breakdown
   const greeting = isMr
     ? `नमस्कार QUICK CRAVE! मला पुढील पदार्थांची ऑर्डर द्यायची आहे:\n\n`
     : `Hi QUICK CRAVE! I'd like to place an order:\n\n`;
 
+  const itemsList = cart.map((c) => `• ${c.name} (x${c.qty}) — ₹${c.price * c.qty}`).join('\n');
+  const discountLine = appliedCoupon
+    ? `\nSubtotal: ₹${subtotal}\nCoupon Applied (${appliedCoupon.code}): -₹${couponDiscount}`
+    : '';
+
   const orderMessage = encodeURIComponent(
     greeting +
-      cart.map((c) => `• ${c.name} (x${c.qty}) — ₹${c.price * c.qty}`).join('\n') +
-      `\n\nTotal: ₹${total}\n\n` +
+      itemsList +
+      discountLine +
+      `\n\nTotal Payable: ₹${total}\n\n` +
       (isMr ? `कृपया ऑर्डरची खात्री आणि डिलिव्हरी वेळ सांगा.` : `Please confirm availability and delivery time.`)
   );
+
+  // When customer clicks WhatsApp checkout, record live order in store for admin
+  const handleRecordCheckout = () => {
+    const newOrder: Order = {
+      id: 'ord-' + Date.now().toString(),
+      orderNumber: 'QC-' + Math.floor(1000 + Math.random() * 9000),
+      customerName: 'Customer (WhatsApp Checkout)',
+      customerPhone: `+91 ${PHONE_1}`,
+      deliveryAddress: 'Direct Kitchen WhatsApp Delivery',
+      items: cart.map((c) => ({
+        id: c.id,
+        name: c.name,
+        price: c.price,
+        qty: c.qty,
+        category: c.category
+      })),
+      subtotal,
+      discount: couponDiscount,
+      couponCode: appliedCoupon ? appliedCoupon.code : undefined,
+      total,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+      estimatedPrepMinutes: 20,
+      paymentMethod: 'UPI / Online',
+      notes: appliedCoupon ? `Coupon ${appliedCoupon.code} applied (-₹${couponDiscount})` : undefined
+    };
+
+    addOrder(newOrder);
+  };
 
   return (
     <AnimatePresence>
@@ -131,14 +193,97 @@ export function CartDrawer() {
 
             {/* Cart Footer */}
             {cart.length > 0 && (
-              <div className="p-6 border-t border-[#E8E2D5] bg-white">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-sm font-semibold text-[#718096]">
-                    {tr('cart.subtotal')}
-                  </span>
-                  <span className="font-serif text-3xl font-bold text-[#12382C]">
-                    ₹{total}
-                  </span>
+              <div className="p-5 border-t border-[#E8E2D5] bg-white space-y-3">
+                {/* Coupon Code Section */}
+                <div className="p-3 rounded-2xl bg-[#FAF8F5] border border-[#E8E2D5]">
+                  {appliedCoupon ? (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-lg bg-[#15803D]/15 text-[#15803D] flex items-center justify-center">
+                          <Tag size={14} />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-mono text-xs font-bold text-[#12382C]">
+                              {appliedCoupon.code}
+                            </span>
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#15803D] text-white font-bold">
+                              Saved ₹{couponDiscount}
+                            </span>
+                          </div>
+                          <span className="text-[10px] text-[#718096]">
+                            {appliedCoupon.description}
+                          </span>
+                        </div>
+                      </div>
+                      <button
+                        onClick={handleRemoveCoupon}
+                        className="text-xs text-red-500 hover:text-red-700 font-bold px-2 py-1"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="flex gap-2">
+                        <div className="relative flex-1">
+                          <Tag size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                          <input
+                            type="text"
+                            value={couponInput}
+                            onChange={(e) => {
+                              setCouponInput(e.target.value.toUpperCase());
+                              if (couponMsg) setCouponMsg(null);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') handleApplyCoupon();
+                            }}
+                            placeholder="Enter coupon code (e.g. MALVANI20)"
+                            className="w-full pl-8 pr-3 py-1.5 rounded-xl border border-gray-300 text-xs font-mono font-bold uppercase focus:outline-none focus:border-[#1E2B58] bg-white"
+                          />
+                        </div>
+                        <button
+                          onClick={handleApplyCoupon}
+                          className="px-3.5 py-1.5 rounded-xl bg-[#1E2B58] hover:bg-[#253B80] text-white text-xs font-bold transition-colors"
+                        >
+                          Apply
+                        </button>
+                      </div>
+
+                      {couponMsg && (
+                        <p
+                          className={`text-[11px] mt-1.5 font-medium flex items-center gap-1 ${
+                            couponMsg.isError ? 'text-red-600' : 'text-emerald-700'
+                          }`}
+                        >
+                          {couponMsg.isError ? <AlertCircle size={12} /> : <Check size={12} />}
+                          <span>{couponMsg.text}</span>
+                        </p>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Subtotal & Discount Financials */}
+                <div className="space-y-1.5 pt-1 text-xs">
+                  <div className="flex justify-between items-center text-[#718096]">
+                    <span>{tr('cart.subtotal')}</span>
+                    <span className="font-mono font-bold text-sm text-[#12382C]">₹{subtotal}</span>
+                  </div>
+
+                  {couponDiscount > 0 && (
+                    <div className="flex justify-between items-center text-[#15803D] font-bold">
+                      <span>Discount ({appliedCoupon?.code})</span>
+                      <span className="font-mono text-sm">-₹{couponDiscount}</span>
+                    </div>
+                  )}
+
+                  <div className="flex justify-between items-center pt-2 border-t border-gray-100">
+                    <span className="text-sm font-bold text-[#111827]">Final Total</span>
+                    <span className="font-serif text-2xl font-bold text-[#12382C]">
+                      ₹{total}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Primary: WhatsApp Checkout */}
@@ -146,9 +291,10 @@ export function CartDrawer() {
                   href={`${whatsappUrl}&text=${orderMessage}`}
                   target="_blank"
                   rel="noreferrer"
+                  onClick={handleRecordCheckout}
                   onPointerEnter={() => setCursor('open', tr('cart.sendWhatsApp'))}
                   onPointerLeave={() => setCursor('default', null)}
-                  className="w-full py-3.5 rounded-full bg-[#12382C] hover:bg-[#1E4D3D] text-[#FAF8F5] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm mb-2.5 transition-all active:scale-95"
+                  className="w-full py-3.5 rounded-full bg-[#12382C] hover:bg-[#1E4D3D] text-[#FAF8F5] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95"
                 >
                   <MessageCircle size={16} />
                   <span>{tr('cart.sendWhatsApp')}</span>
@@ -161,13 +307,13 @@ export function CartDrawer() {
                   rel="noreferrer"
                   onPointerEnter={() => setCursor('open', tr('cart.orderZomatoDirect'))}
                   onPointerLeave={() => setCursor('default', null)}
-                  className="w-full py-3 rounded-full bg-[#FAF8F5] hover:bg-[#F4F0E8] border border-[#E8E2D5] text-[#12382C] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all mb-2"
+                  className="w-full py-2.5 rounded-full bg-[#FAF8F5] hover:bg-[#F4F0E8] border border-[#E8E2D5] text-[#12382C] font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all"
                 >
                   <span>{tr('cart.orderZomatoDirect')}</span>
                   <ArrowUpRight size={14} />
                 </a>
 
-                <div className="text-center pt-2">
+                <div className="text-center pt-1">
                   <a
                     href={`tel:+91${PHONE_1}`}
                     className="text-xs text-[#718096] hover:text-[#12382C] transition-colors"

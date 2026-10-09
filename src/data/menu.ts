@@ -5,6 +5,7 @@ export interface MenuItem {
   name: string;
   nameMr: string;
   price: number;
+  discountPrice?: number;
   category: MenuCategory;
   categoryMr: string;
   description: string;
@@ -16,6 +17,8 @@ export interface MenuItem {
   isCombo?: boolean;
   isBestseller?: boolean;
   spiceLevel?: 1 | 2 | 3;
+  inStock?: boolean;
+  ordersCount?: number;
 }
 
 export const menu: MenuItem[] = [

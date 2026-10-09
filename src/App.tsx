@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ArrowUpRight, Phone } from 'lucide-react';
@@ -10,12 +10,16 @@ import { CustomCursor } from './components/CustomCursor';
 import { MobileActionDock } from './components/MobileActionDock';
 import { HomePage } from './pages/HomePage';
 import { ProductPage } from './pages/ProductPage';
+import { AdminPage } from './pages/AdminPage';
 import { PHONE_1, zomatoUrl } from './data/menu';
 import { useStore } from './store/useStore';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function App() {
+function AppContent() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+
   const [showLoader, setShowLoader] = useState(true);
   const [showFloatingPill, setShowFloatingPill] = useState(false);
   const pillRef = useRef<HTMLDivElement>(null);
@@ -39,7 +43,7 @@ export default function App() {
   // GSAP animation for floating order pill
   useEffect(() => {
     if (pillRef.current) {
-      if (showFloatingPill) {
+      if (showFloatingPill && !isAdmin) {
         gsap.to(pillRef.current, {
           y: 0,
           opacity: 1,
@@ -57,33 +61,46 @@ export default function App() {
         });
       }
     }
-  }, [showFloatingPill]);
+  }, [showFloatingPill, isAdmin]);
 
   return (
-    <BrowserRouter>
-      <div id="top" className="min-h-screen bg-[#FDF9F3] text-[#111827] font-sans selection:bg-[#1E2B58] selection:text-white overflow-x-clip">
-        {/* Custom Cursor */}
-        <CustomCursor />
+    <div
+      id="top"
+      className={`min-h-screen text-[#111827] font-sans selection:bg-[#1E2B58] selection:text-white overflow-x-clip ${
+        isAdmin ? 'bg-[#0A101D]' : 'bg-[#FDF9F3]'
+      }`}
+    >
+      {/* Custom Cursor */}
+      {!isAdmin && <CustomCursor />}
 
-        {/* GSAP Preloader Animation */}
-        {showLoader && <GsapLoader onComplete={() => setShowLoader(false)} />}
+      {/* GSAP Preloader Animation */}
+      {showLoader && !isAdmin && <GsapLoader onComplete={() => setShowLoader(false)} />}
 
-        <Navbar />
-        <CartDrawer />
-        <MobileActionDock />
+      {/* Storefront Global Navigation & Overlays */}
+      {!isAdmin && (
+        <>
+          <Navbar />
+          <CartDrawer />
+          <MobileActionDock />
+        </>
+      )}
 
-        <Routes>
-          {/* Home Route */}
-          <Route path="/" element={<HomePage />} />
+      <Routes>
+        {/* Home Route */}
+        <Route path="/" element={<HomePage />} />
 
-          {/* Dedicated Individual Product Pages (MANA Yerba Maté Reference Style) */}
-          <Route path="/products/:productId" element={<ProductPage />} />
+        {/* Dedicated Individual Product Pages */}
+        <Route path="/products/:productId" element={<ProductPage />} />
 
-          {/* Catch-all redirect */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+        {/* Advanced Password-Protected Kitchen Admin Panel */}
+        <Route path="/admin" element={<AdminPage />} />
 
-        {/* Floating Sticky Quick Order Pill for Desktop (GSAP Animated) */}
+        {/* Catch-all redirect */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+
+      {/* Floating Sticky Quick Order Pill for Desktop (Only on Storefront) */}
+      {!isAdmin && (
         <div
           ref={pillRef}
           className="hidden md:flex fixed bottom-4 sm:bottom-6 right-3 sm:right-8 z-40 items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 rounded-full bg-white/95 backdrop-blur-md border border-gray-200 shadow-2xl opacity-0 translate-y-10 pointer-events-auto"
@@ -110,7 +127,15 @@ export default function App() {
             <span className="hidden sm:inline">{PHONE_1}</span>
           </a>
         </div>
-      </div>
+      )}
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }

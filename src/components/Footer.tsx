@@ -1,4 +1,5 @@
-import { Phone, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Phone, ArrowUpRight, Lock } from 'lucide-react';
 import { PHONE_1, PHONE_2, zomatoUrl, whatsappUrl } from '../data/menu';
 import { useT } from '../i18n/useT';
 
@@ -108,6 +109,14 @@ export function Footer() {
             <span>{tr('footer.tagStone')}</span>
             <span>•</span>
             <span>{tr('footer.tagZero')}</span>
+            <span>•</span>
+            <Link
+              to="/admin"
+              className="text-gray-400 hover:text-[#F9D36A] flex items-center gap-1 transition-colors font-medium"
+            >
+              <Lock size={11} />
+              <span>Admin Portal</span>
+            </Link>
           </div>
         </div>
       </div>

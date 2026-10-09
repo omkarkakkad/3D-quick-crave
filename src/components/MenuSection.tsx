@@ -13,16 +13,19 @@ export function MenuSection() {
   const setSearchQuery = useStore((s) => s.setSearchQuery);
   const addToCart = useStore((s) => s.addToCart);
   const setCursor = useStore((s) => s.setCursor);
+  const menuItems = useStore((s) => s.menuItems);
   const [addedIds, setAddedIds] = useState<Record<string, boolean>>({});
   const gridRef = useRef<HTMLDivElement>(null);
 
   const { tr, isMr } = useT();
 
   const handleAdd = (item: MenuItem) => {
+    if (item.inStock === false) return;
+    const effectivePrice = item.discountPrice && item.discountPrice < item.price ? item.discountPrice : item.price;
     addToCart({
       id: item.id,
       name: isMr ? item.nameMr : item.name,
-      price: item.price,
+      price: effectivePrice,
       category: item.category
     });
     setAddedIds((prev) => ({ ...prev, [item.id]: true }));
@@ -32,7 +35,7 @@ export function MenuSection() {
   };
 
   // Filter items
-  const filtered = menu.filter((item) => {
+  const filtered = menuItems.filter((item) => {
     if (menuFilter === "CHEF'S SPECIAL" && item.category !== "CHEF'S SPECIAL") return false;
     if (menuFilter === 'MAIN COURSE' && item.category !== 'MAIN COURSE') return false;
     if (menuFilter === 'COMBOS' && !item.isCombo) return false;
@@ -64,26 +67,26 @@ export function MenuSection() {
   }, [menuFilter, searchQuery]);
 
   const categories: { label: string; value: MenuFilter; count: number }[] = [
-    { label: tr('menu.all'), value: 'ALL', count: menu.length },
+    { label: tr('menu.all'), value: 'ALL', count: menuItems.length },
     {
       label: tr('menu.chefSpecials'),
       value: "CHEF'S SPECIAL",
-      count: menu.filter((m) => m.category === "CHEF'S SPECIAL").length
+      count: menuItems.filter((m) => m.category === "CHEF'S SPECIAL").length
     },
     {
       label: tr('menu.coastalCurries'),
       value: 'MAIN COURSE',
-      count: menu.filter((m) => m.category === 'MAIN COURSE' && !m.isCombo).length
+      count: menuItems.filter((m) => m.category === 'MAIN COURSE' && !m.isCombo).length
     },
     {
       label: tr('menu.feastBoxes'),
       value: 'COMBOS',
-      count: menu.filter((m) => m.isCombo).length
+      count: menuItems.filter((m) => m.isCombo).length
     },
     {
       label: tr('menu.drinks'),
       value: 'DRINKS',
-      count: menu.filter((m) => m.category === 'DRINKS').length
+      count: menuItems.filter((m) => m.category === 'DRINKS').length
     }
   ];
 
@@ -174,6 +177,12 @@ export function MenuSection() {
         >
           {filtered.map((item) => {
             const isAdded = addedIds[item.id];
+            const isOutOfStock = item.inStock === false;
+            const hasDiscount = item.discountPrice && item.discountPrice < item.price;
+            const discountPct = hasDiscount
+              ? Math.round(((item.price - item.discountPrice!) / item.price) * 100)
+              : 0;
+
             const displayName = isMr ? item.nameMr : item.name;
             const displayCategory = isMr ? item.categoryMr : item.category;
             const displayDescription = isMr ? item.descriptionMr : item.description;
@@ -184,7 +193,9 @@ export function MenuSection() {
                 key={item.id}
                 onPointerEnter={() => setCursor(item.spiceLevel === 3 ? 'taste' : 'explore', displayName)}
                 onPointerLeave={() => setCursor('default', null)}
-                className="group rounded-2xl sm:rounded-3xl bg-white border border-gray-200 hover:border-gray-300 p-4 sm:p-5 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1"
+                className={`group rounded-2xl sm:rounded-3xl bg-white border border-gray-200 hover:border-gray-300 p-4 sm:p-5 transition-all duration-300 flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 ${
+                  isOutOfStock ? 'opacity-75' : ''
+                }`}
               >
                 <div>
                   {/* Photo Container */}
@@ -201,9 +212,17 @@ export function MenuSection() {
 
                     {/* Top Badges */}
                     <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none">
-                      <span className="px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[#111827] text-[10px] font-black tracking-wider uppercase shadow-sm">
-                        {displayCategory}
-                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <span className="px-3 py-1 rounded-full bg-white/95 backdrop-blur-md text-[#111827] text-[10px] font-black tracking-wider uppercase shadow-sm">
+                          {displayCategory}
+                        </span>
+                        {hasDiscount && (
+                          <span className="px-2 py-1 rounded-full bg-[#15803D] text-white text-[10px] font-black uppercase tracking-wider shadow-sm">
+                            {discountPct}% OFF
+                          </span>
+                        )}
+                      </div>
+
                       {item.isBestseller && (
                         <span className="px-2.5 py-1 rounded-full bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] text-[10px] font-bold uppercase tracking-wider flex items-center gap-1 shadow-sm">
                           <Flame size={11} className="text-[#D97706]" />
@@ -211,6 +230,15 @@ export function MenuSection() {
                         </span>
                       )}
                     </div>
+
+                    {/* Out of Stock Overlay */}
+                    {isOutOfStock && (
+                      <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px] flex items-center justify-center pointer-events-none">
+                        <span className="px-4 py-1.5 rounded-full bg-red-600 text-white font-black text-xs uppercase tracking-widest shadow-lg">
+                          {isMr ? 'विक्री समाप्त' : 'Sold Out'}
+                        </span>
+                      </div>
+                    )}
                   </Link>
 
                   {/* Flavor Tags & Spice Info */}
@@ -249,24 +277,36 @@ export function MenuSection() {
                     <span className="text-[10px] uppercase font-extrabold text-gray-400 block leading-none mb-1">
                       {tr('menu.price')}
                     </span>
-                    <span className="font-bubble text-2xl font-black text-[#111827]">
-                      ₹{item.price}
-                    </span>
+                    <div className="flex items-baseline gap-1.5">
+                      <span className="font-bubble text-2xl font-black text-[#111827]">
+                        ₹{hasDiscount ? item.discountPrice : item.price}
+                      </span>
+                      {hasDiscount && (
+                        <span className="font-mono text-xs text-gray-400 line-through">
+                          ₹{item.price}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-2">
                     {/* Add to Bag Pill */}
                     <button
+                      disabled={isOutOfStock}
                       onClick={() => handleAdd(item)}
-                      onPointerEnter={() => setCursor('open', `${tr('menu.add')} · ${displayName}`)}
+                      onPointerEnter={() => !isOutOfStock && setCursor('open', `${tr('menu.add')} · ${displayName}`)}
                       onPointerLeave={() => setCursor('explore', displayName)}
                       className={`py-2.5 px-4 rounded-full text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all duration-200 active:scale-95 shadow-sm ${
-                        isAdded
+                        isOutOfStock
+                          ? 'bg-gray-200 text-gray-400 cursor-not-allowed border border-gray-300'
+                          : isAdded
                           ? 'bg-[#15803D] text-white'
                           : 'bg-[#1E2B58] text-white hover:bg-[#253B80]'
                       }`}
                     >
-                      {isAdded ? (
+                      {isOutOfStock ? (
+                        <span>{isMr ? 'विक्री समाप्त' : 'Sold Out'}</span>
+                      ) : isAdded ? (
                         <>
                           <Check size={14} />
                           <span>{tr('menu.added')}</span>
